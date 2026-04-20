@@ -7,8 +7,9 @@ public class CharacterControler : MonoBehaviour
     public float speed = 5f;
     public float accelerationValue = 1f;
     public bool devOut = false;
-    public float size = 1f;
+    public float sizeChange = 0f;
 
+    private float size;
     private UnityEngine.Vector3 momentum = UnityEngine.Vector3.zero;
     private UnityEngine.Vector3 momentumVelocity = UnityEngine.Vector3.zero;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -18,11 +19,7 @@ public class CharacterControler : MonoBehaviour
 
     // Update is called once per frame
     void Update(){
-        if(size != transform.localScale.x)
-        {
-            transform.localScale = new UnityEngine.Vector3(size, size, size);
-            transform.Translate(0, size/2, 0);
-        }
+        size = transform.localScale.x;
 
         //Bewegungsrichtung berechnen
         UnityEngine.Vector3 movement = new UnityEngine.Vector3( toInt(Input.GetKey(KeyCode.D)) - toInt(Input.GetKey(KeyCode.A)), 0, 
@@ -31,6 +28,9 @@ public class CharacterControler : MonoBehaviour
         //Smooth movement
         momentum = UnityEngine.Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, Mathf.Sqrt(size/10));
         
+        if(momentum != UnityEngine.Vector3.zero){
+            transform.localScale = new UnityEngine.Vector3(size, size, size) + new UnityEngine.Vector3(sizeChange/100*momentum.magnitude, sizeChange/100*momentum.magnitude, sizeChange/100*momentum.magnitude);
+        }
 
         //bewegen
         transform.Translate(momentum * speed* Time.deltaTime);
