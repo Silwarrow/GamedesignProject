@@ -7,6 +7,7 @@ public class CharacterControler : MonoBehaviour
     public float speed = 5f;
     public float accelerationValue = 1f;
     public bool devOut = false;
+    public float size = 1f;
 
     private float acceleration = 0f, accelTime = 0, deccelTime = 0;
     private UnityEngine.Vector3 momentum = UnityEngine.Vector3.zero;
@@ -18,31 +19,21 @@ public class CharacterControler : MonoBehaviour
 
     // Update is called once per frame
     void Update(){
-        float size = (transform.localScale.x+transform.localScale.y+transform.localScale.z)/3f;
-        
+        if(size != transform.localScale.x)
+        {
+            transform.localScale = new UnityEngine.Vector3(size, size, size);
+            transform.Translate(0, size/2, 0);
+        }
+
         //Bewegungsrichtung berechnen
         UnityEngine.Vector3 movement = new UnityEngine.Vector3( toInt(Input.GetKey(KeyCode.D)) - toInt(Input.GetKey(KeyCode.A)), 0, 
                                                                 toInt(Input.GetKey(KeyCode.W)) - toInt(Input.GetKey(KeyCode.S)));
 
-        momentum = UnityEngine.Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, 0.5f);
-
-        //Nach bewegungsdauer
-        if(movement == UnityEngine.Vector3.zero)
-        {
-            deccelTime+=Time.deltaTime;
-            accelTime=0;
-            acceleration = Mathf.Exp(-deccelTime* (accelerationValue/size));
-        }
-        else
-        {
-            accelTime+=Time.deltaTime;
-            deccelTime=0;
-            acceleration = 1 -Mathf.Exp(-2*accelTime*(accelerationValue/size));
-        }
+        momentum = UnityEngine.Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, Mathf.Sqrt(size/10));
         
 
         //bewegen
-        transform.Translate(momentum * speed * acceleration * Time.deltaTime);
+        transform.Translate(momentum * speed* Time.deltaTime);
 
         //Dev output
         if (devOut)
