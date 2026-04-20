@@ -9,7 +9,6 @@ public class CharacterControler : MonoBehaviour
     public bool devOut = false;
     public float size = 1f;
 
-    private float acceleration = 0f, accelTime = 0, deccelTime = 0;
     private UnityEngine.Vector3 momentum = UnityEngine.Vector3.zero;
     private UnityEngine.Vector3 momentumVelocity = UnityEngine.Vector3.zero;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -29,6 +28,7 @@ public class CharacterControler : MonoBehaviour
         UnityEngine.Vector3 movement = new UnityEngine.Vector3( toInt(Input.GetKey(KeyCode.D)) - toInt(Input.GetKey(KeyCode.A)), 0, 
                                                                 toInt(Input.GetKey(KeyCode.W)) - toInt(Input.GetKey(KeyCode.S)));
 
+        //Smooth movement
         momentum = UnityEngine.Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, Mathf.Sqrt(size/10));
         
 
@@ -38,7 +38,7 @@ public class CharacterControler : MonoBehaviour
         //Dev output
         if (devOut)
         {
-            Debug.Log("Momentum: " + momentum + " Acceleration: " + acceleration);
+            Debug.Log("Momentum: " + momentum);
         }
     }
 
