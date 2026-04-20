@@ -37,7 +37,7 @@ public class CharacterControler : MonoBehaviour
         {
             accelTime+=Time.deltaTime;
             deccelTime=0;
-            acceleration = 1 -Mathf.Exp(-accelTime*(accelerationValue/size));
+            acceleration = 1 -Mathf.Exp(-2*accelTime*(accelerationValue/size));
         }
         
 
