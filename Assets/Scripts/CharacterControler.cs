@@ -26,7 +26,7 @@ public class CharacterControler : MonoBehaviour
                                                                 toInt(Input.GetKey(KeyCode.W)) - toInt(Input.GetKey(KeyCode.S)));
 
         //Smooth movement
-        momentum = UnityEngine.Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, Mathf.Sqrt(size/10));
+        momentum = UnityEngine.Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, Mathf.Sqrt((float)Math.Pow(size, 1.5)/10));
         
         if(momentum != UnityEngine.Vector3.zero){
             transform.localScale = new UnityEngine.Vector3(size, size, size) + new UnityEngine.Vector3(sizeChange/100*momentum.magnitude, sizeChange/100*momentum.magnitude, sizeChange/100*momentum.magnitude);

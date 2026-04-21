@@ -275,7 +275,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterControler
   speed: 5
   accelerationValue: 4
-  devOut: 1
+  devOut: 0
+  sizeChange: 0.2
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
