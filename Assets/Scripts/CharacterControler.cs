@@ -7,13 +7,16 @@ public class CharacterControler : MonoBehaviour
     public float speed = 5f;
     public bool devOut = false;
     public float sizeChange = 0f;
+    public float maxSize = 10f;
+    public float minSize = 0.1f;
 
     private float size;
     private UnityEngine.Vector3 momentum = UnityEngine.Vector3.zero;
     private UnityEngine.Vector3 momentumVelocity = UnityEngine.Vector3.zero;
+    private GameObject PlayerManager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start(){
-        
+    void Awake(){
+        PlayerManager = GameObject.Find("PlayerManager");
     }
 
     // Update is called once per frame
@@ -34,10 +37,25 @@ public class CharacterControler : MonoBehaviour
         //bewegen
         transform.Translate(momentum * speed* Time.deltaTime);
 
+        if(size < minSize || size > maxSize){
+            PlayerManager.GetComponent<RespawnControler>().RespawnPlayer();
+            Destroy(gameObject);
+        }
+
         //Dev output
         if (devOut)
         {
             Debug.Log("Momentum: " + momentum);
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        //Fals Todesszone betreten, Spieler respawnen und aktuelles Objekt zerstören
+        if (other.CompareTag("DeathArea"))
+        {
+            PlayerManager.GetComponent<RespawnControler>().RespawnPlayer();
+            Destroy(gameObject);
         }
     }
 
