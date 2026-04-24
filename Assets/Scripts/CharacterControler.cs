@@ -5,7 +5,6 @@ using UnityEngine;
 public class CharacterControler : MonoBehaviour
 {
     public float speed = 5f;
-    public float accelerationValue = 1f;
     public bool devOut = false;
     public float sizeChange = 0f;
 
