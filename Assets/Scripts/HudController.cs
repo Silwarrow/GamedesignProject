@@ -3,18 +3,22 @@ using UnityEngine.UI;
 
 public class HudController : MonoBehaviour
 {
-    public Text valueText;
-    public int progress = 0;
-    public Slider slider;
-
-    public void OnSliderChange(float value)
+    public Slider meltMeter;
+    
+    public void SetSliderValues(int minValue, int maxValue, int startValue)
     {
-        valueText.text = value.ToString();
+        meltMeter.minValue = minValue;
+        meltMeter.maxValue = maxValue;
+        meltMeter.value = startValue;
     }
     
-    public void UpdateProgress()
+    public void UpdateSliderValue(int newValue)
     {
-        progress++;
-        slider.value = progress;
+        
+    }
+
+    public void ChangeImage()
+    {
+        
     }
 }
