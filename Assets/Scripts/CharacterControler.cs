@@ -30,23 +30,22 @@ public class CharacterControler : MonoBehaviour
                                         toInt(Input.GetKey(KeyCode.W)) - toInt(Input.GetKey(KeyCode.S)));
 
         //Smooth movement
-        momentum = Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, Mathf.Sqrt((float)Mathf.Pow(size, 1.5f)/10));
+        float momentumVariable = Mathf.Sqrt((float)Mathf.Pow(size, 1.5f)/10);
+        momentum = Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, momentumVariable);
         
         //Größer werden
-        if((momentum.x != 0 || momentum.z != 0) && isGrounded){
+        if(((momentum.x >= 0.1f || momentum.x <= -0.1f) || (momentum.z >= 0.1f || momentum.z <= -0.1f)) && isGrounded){
+            Debug.Log("MomentumZ: " + momentum.z + " MomentumX: " + momentum.x);
             transform.localScale = new Vector3(size, size, size) + new Vector3(sizeChange/100*momentum.magnitude, sizeChange/100*momentum.magnitude, sizeChange/100*momentum.magnitude);
         }
 
         //Sprungfähigkeit testen
-        if(momentum.y <= 0.1f && momentum.y >= -0.1f)
-        {
-            isGrounded = true;
-        }
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, size/2 + 0.1f);
 
         //Springen
         if(Input.GetKeyDown(KeyCode.Space) && isGrounded && canJump)
         {
-            momentum.y = jumpHeight * Time.deltaTime;
+            momentum.y = jumpHeight;
             isGrounded = false;
         }
 
@@ -63,7 +62,6 @@ public class CharacterControler : MonoBehaviour
         if (devOut)
         {
             Debug.Log("Momentum: " + momentum);
-            Debug.Log("Momentum Velocity: " + momentum.y);
         }
     }
 
