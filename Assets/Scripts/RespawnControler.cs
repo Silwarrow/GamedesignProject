@@ -10,21 +10,25 @@ public class RespawnControler : MonoBehaviour
     public float sizeChange = 0.2f;
     public float minSize = 0.1f;
     public float maxSize = 10f;
-
+    public bool canJump = false;
+    public float jumpHeight = 5f;
     private void Awake() {
         playerPrefab = Resources.Load<GameObject>("Prefabs/Player");
+        Destroy(GameObject.FindGameObjectWithTag("Player"));
+        RespawnPlayer();
     }
-    public void RespawnPlayer(CharacterControler sourceController)
+
+    public void RespawnPlayer()
     {
         GameObject newPlayer = Instantiate(playerPrefab, respawnPoint, respawnRotation);
         newPlayer.transform.localScale = respawnScale;
         CharacterControler newController = newPlayer.GetComponent<CharacterControler>();
 
-        newController.sizeChange = sourceController.sizeChange;
-        newController.minSize = sourceController.minSize;
-        newController.maxSize = sourceController.maxSize;
-        newController.canJump = sourceController.canJump;
-        newController.jumpHeight = sourceController.jumpHeight;
+        newController.sizeChange = sizeChange;
+        newController.minSize = minSize;
+        newController.maxSize = maxSize;
+        newController.canJump = canJump;
+        newController.jumpHeight = jumpHeight;
     }
 
 }

@@ -54,7 +54,7 @@ public class CharacterControler : MonoBehaviour
 
         //Tod nach Größe
         if(size < minSize || size > maxSize){
-            PlayerManager.GetComponent<RespawnControler>().RespawnPlayer(this);
+            PlayerManager.GetComponent<RespawnControler>().RespawnPlayer();
             Destroy(gameObject);
         }
 
@@ -70,7 +70,7 @@ public class CharacterControler : MonoBehaviour
         //Falls Todeszone betreten, Spieler respawnen und aktuelles Objekt zerstören
         if (other.CompareTag("DeathArea"))
         {
-            PlayerManager.GetComponent<RespawnControler>().RespawnPlayer(this);
+            PlayerManager.GetComponent<RespawnControler>().RespawnPlayer();
             Destroy(gameObject);
         }
     }
