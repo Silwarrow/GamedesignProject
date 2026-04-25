@@ -45,11 +45,11 @@ public class CharacterControler : MonoBehaviour
         //Springen
         if(Input.GetKeyDown(KeyCode.Space) && isGrounded && canJump)
         {
-            momentum.y = jumpHeight;
+            momentum.y = jumpHeight/Mathf.Sqrt(size);
             isGrounded = false;
         }
 
-        //bewegen
+        //Bewegen
         transform.Translate(momentum * speed* Time.deltaTime);
 
         //Tod nach Größe
