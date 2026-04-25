@@ -1,5 +1,4 @@
 using System;
-using System.Numerics;
 using UnityEngine;
 
 public class CharacterControler : MonoBehaviour
@@ -11,8 +10,8 @@ public class CharacterControler : MonoBehaviour
     public float minSize = 0.1f;
 
     private float size;
-    private UnityEngine.Vector3 momentum = UnityEngine.Vector3.zero;
-    private UnityEngine.Vector3 momentumVelocity = UnityEngine.Vector3.zero;
+    private Vector3 momentum = Vector3.zero;
+    private Vector3 momentumVelocity = Vector3.zero;
     private GameObject PlayerManager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake(){
@@ -24,14 +23,14 @@ public class CharacterControler : MonoBehaviour
         size = transform.localScale.x;
 
         //Bewegungsrichtung berechnen
-        UnityEngine.Vector3 movement = new UnityEngine.Vector3( toInt(Input.GetKey(KeyCode.D)) - toInt(Input.GetKey(KeyCode.A)), 0, 
+        Vector3 movement = new Vector3( toInt(Input.GetKey(KeyCode.D)) - toInt(Input.GetKey(KeyCode.A)), 0, 
                                                                 toInt(Input.GetKey(KeyCode.W)) - toInt(Input.GetKey(KeyCode.S)));
 
         //Smooth movement
-        momentum = UnityEngine.Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, Mathf.Sqrt((float)Math.Pow(size, 1.5)/10));
+        momentum = Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, Mathf.Sqrt((float)Math.Pow(size, 1.5)/10));
         
-        if(momentum != UnityEngine.Vector3.zero){
-            transform.localScale = new UnityEngine.Vector3(size, size, size) + new UnityEngine.Vector3(sizeChange/100*momentum.magnitude, sizeChange/100*momentum.magnitude, sizeChange/100*momentum.magnitude);
+        if(momentum != Vector3.zero){
+            transform.localScale = new Vector3(size, size, size) + new Vector3(sizeChange/100*momentum.magnitude, sizeChange/100*momentum.magnitude, sizeChange/100*momentum.magnitude);
         }
 
         //bewegen
