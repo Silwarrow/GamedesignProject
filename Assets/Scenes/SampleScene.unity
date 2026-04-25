@@ -281,6 +281,9 @@ MonoBehaviour:
   respawnPoint: {x: 0, y: 1, z: 0}
   respawnRotation: {x: 0, y: 0, z: 0, w: 0}
   respawnScale: {x: 1, y: 1, z: 1}
+  sizeChange: 0.2
+  minSize: 0.1
+  maxSize: 10
 --- !u!4 &189152104
 Transform:
   m_ObjectHideFlags: 0
@@ -884,6 +887,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7200293016552792051, guid: 0a0b4efd5cb7106fe889ba3ca1c2009a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9159855011426013177, guid: 0a0b4efd5cb7106fe889ba3ca1c2009a, type: 3}
+      propertyPath: canJump
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

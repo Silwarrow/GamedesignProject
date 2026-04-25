@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class CharacterControler : MonoBehaviour
@@ -8,11 +7,14 @@ public class CharacterControler : MonoBehaviour
     public float sizeChange = 0f;
     public float maxSize = 10f;
     public float minSize = 0.1f;
+    public bool canJump = false;
+    public float jumpHeight = 5f;
 
     private float size;
     private Vector3 momentum = Vector3.zero;
     private Vector3 momentumVelocity = Vector3.zero;
     private GameObject PlayerManager;
+    private bool isGrounded = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake(){
         PlayerManager = FindFirstObjectByType<RespawnControler>().gameObject;
@@ -28,15 +30,30 @@ public class CharacterControler : MonoBehaviour
                                                                 toInt(Input.GetKey(KeyCode.W)) - toInt(Input.GetKey(KeyCode.S)));
 
         //Smooth movement
-        momentum = Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, Mathf.Sqrt((float)Math.Pow(size, 1.5)/10));
+        momentum = Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, Mathf.Sqrt((float)Mathf.Pow(size, 1.5f)/10));
         
-        if(momentum != Vector3.zero){
+        //Größer werden
+        if((momentum.x != 0 || momentum.z != 0) && isGrounded){
             transform.localScale = new Vector3(size, size, size) + new Vector3(sizeChange/100*momentum.magnitude, sizeChange/100*momentum.magnitude, sizeChange/100*momentum.magnitude);
+        }
+
+        //Sprungfähigkeit testen
+        if((momentum.y == 0 || momentum.y <= 0.1f) && momentum.y >= -0.1f && canJump)
+        {
+            isGrounded = true;
+        }
+
+        //Springen
+        if(Input.GetKeyDown(KeyCode.Space) && isGrounded && canJump)
+        {
+            momentum.y = jumpHeight;
+            isGrounded = false;
         }
 
         //bewegen
         transform.Translate(momentum * speed* Time.deltaTime);
 
+        //Tod nach Größe
         if(size < minSize || size > maxSize){
             PlayerManager.GetComponent<RespawnControler>().RespawnPlayer();
             Destroy(gameObject);
@@ -46,6 +63,7 @@ public class CharacterControler : MonoBehaviour
         if (devOut)
         {
             Debug.Log("Momentum: " + momentum);
+            Debug.Log("Momentum Velocity: " + momentum.y);
         }
     }
 
