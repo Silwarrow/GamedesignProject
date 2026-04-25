@@ -2,43 +2,43 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements.Experimental;
 
-public class HudController : MonoBehaviour
+public class SpriteChanger : MonoBehaviour
 {
     public Slider meltBar;
-    [SerializeField] Sprite[] BarSprite;
-    [SerializeField] Sprite newSprite; //current Sprite
-    
+    public Sprite[] BarSprites;
+    [SerializeField] private Image backgroundImage;
+
 
     void Update() //switch Sprites
     {
-        if (meltBar.value <= -72.9)
+        ChangeSprite();
+    }
+
+    void ChangeSprite()
+    {
+        if (meltBar.value <= -72.9f)
         {
-            newSprite = BarSprite[0];
-            gameObject.GetComponent<SpriteRenderer>().sprite = newSprite;
+            backgroundImage.sprite = BarSprites[0]; //smallRed
         }
         
-        if (meltBar.value > -72.9 && meltBar.value < -28.8)
+        if (meltBar.value > -72.9f && meltBar.value < -28.8f)
         {
-            newSprite = BarSprite[1];
-            gameObject.GetComponent<SpriteRenderer>().sprite = newSprite;
+            backgroundImage.sprite = BarSprites[1]; //smallYellow
         }
 
-        if (meltBar.value > -28.8 && meltBar.value < 28.8)
+        if (meltBar.value > -28.8f && meltBar.value < 17.5)
         {
-            newSprite = BarSprite[2];
-            gameObject.GetComponent<SpriteRenderer>().sprite = newSprite;
+            backgroundImage.sprite = BarSprites[2]; //mediumGreen
         }
 
-        if (meltBar.value > 28.8 && meltBar.value < 72.9)
+        if (meltBar.value > 17.5 && meltBar.value < 72.9f)
         {
-            newSprite = BarSprite[3];
-            gameObject.GetComponent<SpriteRenderer>().sprite = newSprite;
+            backgroundImage.sprite = BarSprites[3]; //bigYellow
         }
 
-        if (meltBar.value >= 72.9)
+        if (meltBar.value > 72.9f)
         {
-            newSprite = BarSprite[4];
-            gameObject.GetComponent<SpriteRenderer>().sprite = newSprite;
+            backgroundImage.sprite = BarSprites[4]; //bigRed
         }
     }
 }

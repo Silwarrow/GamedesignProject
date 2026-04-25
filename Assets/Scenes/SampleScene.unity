@@ -653,6 +653,7 @@ GameObject:
   - component: {fileID: 514224564}
   - component: {fileID: 514224566}
   - component: {fileID: 514224565}
+  - component: {fileID: 514224567}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -717,6 +718,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 514224563}
   m_CullTransparentMesh: 1
+--- !u!114 &514224567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 514224563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1f33013723e92c41988f5e47190bdb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteChanger
+  meltBar: {fileID: 0}
+  img: {fileID: 0}
+  BarSprites:
+  - {fileID: 21300000, guid: c48afbdc2f9461f448cf68ca2c0d4317, type: 3}
+  - {fileID: 21300000, guid: 9fc98a0fa289ea048a695cf801ebe1cd, type: 3}
+  - {fileID: 21300000, guid: 7b8ad1457898dc245aaf17680965f861, type: 3}
+  - {fileID: 21300000, guid: f2473f25315b18442a5c7aac4884e0c4, type: 3}
+  - {fileID: 21300000, guid: 8570e68c67bc0444dbcb38a385263dc8, type: 3}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -967,6 +988,7 @@ GameObject:
   - component: {fileID: 1808814055}
   - component: {fileID: 1808814056}
   - component: {fileID: 1808814057}
+  - component: {fileID: 1808814058}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -1042,7 +1064,7 @@ MonoBehaviour:
   m_MinValue: -100
   m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: -84.7
+  m_Value: -100
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1057,8 +1079,30 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b1f33013723e92c41988f5e47190bdb0, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HudController
-  meltMeter: {fileID: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteChanger
+  meltBar: {fileID: 1808814056}
+  img: {fileID: 0}
+  BarSprites:
+  - {fileID: 21300000, guid: c48afbdc2f9461f448cf68ca2c0d4317, type: 3}
+  - {fileID: 21300000, guid: 9fc98a0fa289ea048a695cf801ebe1cd, type: 3}
+  - {fileID: 21300000, guid: 7b8ad1457898dc245aaf17680965f861, type: 3}
+  - {fileID: 21300000, guid: f2473f25315b18442a5c7aac4884e0c4, type: 3}
+  - {fileID: 21300000, guid: 8570e68c67bc0444dbcb38a385263dc8, type: 3}
+--- !u!114 &1808814058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1808814054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.VisualScripting.Core::Unity.VisualScripting.Variables
+  _data:
+    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[],"$version":"A"},"$version":"A"}}'
+    _objectReferences: []
 --- !u!1 &1829616111
 GameObject:
   m_ObjectHideFlags: 0
