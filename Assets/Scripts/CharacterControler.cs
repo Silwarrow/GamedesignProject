@@ -8,7 +8,7 @@ public class CharacterControler : MonoBehaviour
     public float maxSize = 10f;
     public float minSize = 0.1f;
     public bool canJump = false;
-    public float jumpHeight = 5f;
+    public float jumpHeight = 750f;
 
     private float size;
     private Vector3 momentum = Vector3.zero;
@@ -27,7 +27,7 @@ public class CharacterControler : MonoBehaviour
 
         //Bewegungsrichtung berechnen
         Vector3 movement = new Vector3( toInt(Input.GetKey(KeyCode.D)) - toInt(Input.GetKey(KeyCode.A)), 0, 
-                                                                toInt(Input.GetKey(KeyCode.W)) - toInt(Input.GetKey(KeyCode.S)));
+                                        toInt(Input.GetKey(KeyCode.W)) - toInt(Input.GetKey(KeyCode.S)));
 
         //Smooth movement
         momentum = Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, Mathf.Sqrt((float)Mathf.Pow(size, 1.5f)/10));
@@ -38,7 +38,7 @@ public class CharacterControler : MonoBehaviour
         }
 
         //Sprungfähigkeit testen
-        if((momentum.y == 0 || momentum.y <= 0.1f) && momentum.y >= -0.1f && canJump)
+        if(momentum.y <= 0.1f && momentum.y >= -0.1f)
         {
             isGrounded = true;
         }
@@ -46,7 +46,7 @@ public class CharacterControler : MonoBehaviour
         //Springen
         if(Input.GetKeyDown(KeyCode.Space) && isGrounded && canJump)
         {
-            momentum.y = jumpHeight;
+            momentum.y = jumpHeight * Time.deltaTime;
             isGrounded = false;
         }
 
