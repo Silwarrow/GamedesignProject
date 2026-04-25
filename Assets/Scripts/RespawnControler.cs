@@ -7,6 +7,9 @@ public class RespawnControler : MonoBehaviour
     public Vector3 respawnPoint = new Vector3(0, 1, 0);
     public Quaternion respawnRotation = new Quaternion(0, 0, 0, 1);
     public Vector3 respawnScale = new Vector3(1, 1, 1);
+    public float sizeChange = 0.2f;
+    public float minSize = 0.1f;
+    public float maxSize = 10f;
 
     private void Awake() {
         playerPrefab = Resources.Load<GameObject>("Prefabs/Player");
@@ -15,6 +18,9 @@ public class RespawnControler : MonoBehaviour
     {
         GameObject newPlayer = Instantiate(playerPrefab, respawnPoint, respawnRotation);
         newPlayer.transform.localScale = respawnScale;
+        newPlayer.GetComponent<CharacterControler>().sizeChange = sizeChange;
+        newPlayer.GetComponent<CharacterControler>().minSize = minSize;
+        newPlayer.GetComponent<CharacterControler>().maxSize = maxSize;
     }
 
 }
