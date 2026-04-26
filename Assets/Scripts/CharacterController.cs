@@ -4,8 +4,8 @@ public class CharacterController : MonoBehaviour
 {
     public float speed = 5f;
     public bool devOut = false;
-    public float sizeChange = 0f;
-    public float lightSizeChange = 0f;
+    public float growthRate = 0f;
+    public float shrinkRate = 0f;
     public float maxSize = 10f;
     public float minSize = 0.1f;
     public bool canJump = false;
@@ -52,12 +52,12 @@ public class CharacterController : MonoBehaviour
         //Außerhalb vom Schatten immer schrumpfen (auch im Stand)
         if (!isInShadow)
         {
-            sizeDelta -= lightSizeChange / 100f * Time.deltaTime;
+            sizeDelta -= shrinkRate / 100f * Time.deltaTime;
         }
         //Im Schatten nur beim Bewegen wachsen
         else if (isMovingOnPlane)
         {
-            sizeDelta += sizeChange / 100f * momentum.magnitude * Time.deltaTime;
+            sizeDelta += growthRate / 100f * momentum.magnitude * Time.deltaTime;
         }
 
         if (sizeDelta != 0f)
