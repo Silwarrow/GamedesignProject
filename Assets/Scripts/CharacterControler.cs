@@ -5,16 +5,27 @@ public class CharacterControler : MonoBehaviour
     public float speed = 5f;
     public bool devOut = false;
     public float sizeChange = 0f;
+    public float lightSizeChange = 0f;
     public float maxSize = 10f;
     public float minSize = 0.1f;
     public bool canJump = false;
     public float jumpHeight = 750f;
+    public float shadowRayDistance = 50f;
+    public Transform sunLight;
+    public float groundProbeDistance = 3f;
+    public float shadowSampleRadius = 0.4f;
+    public int shadowSampleCount = 5;
+    public float shadowCoverageRequired = 0.5f;
+    public LayerMask groundMask = ~0;
+    public LayerMask shadowBlockerMask = ~0;
+    public float shadowRayStartOffset = 0.05f;
 
     private float size;
     private Vector3 momentum = Vector3.zero;
     private Vector3 momentumVelocity = Vector3.zero;
     private GameObject PlayerManager;
     private bool isGrounded = false;
+    private bool isInShadow = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake(){
         PlayerManager = FindFirstObjectByType<RespawnControler>().gameObject;
@@ -32,11 +43,28 @@ public class CharacterControler : MonoBehaviour
         //Smooth movement
         float momentumVariable = Mathf.Sqrt((float)Mathf.Pow(size, 1.5f)/10);
         momentum = Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, momentumVariable);
-        
-        //Größer werden
-        if(((momentum.x >= 0.1f || momentum.x <= -0.1f) || (momentum.z >= 0.1f || momentum.z <= -0.1f)) && isGrounded){
-            Debug.Log("MomentumZ: " + momentum.z + " MomentumX: " + momentum.x);
-            transform.localScale = new Vector3(size, size, size) + new Vector3(sizeChange/100*momentum.magnitude, sizeChange/100*momentum.magnitude, sizeChange/100*momentum.magnitude);
+
+        isInShadow = IsInShadow();
+
+        bool isMovingOnPlane = (Mathf.Abs(momentum.x) >= 0.1f || Mathf.Abs(momentum.z) >= 0.1f) && isGrounded;
+        float sizeDelta = 0f;
+
+        //Außerhalb vom Schatten immer schrumpfen (auch im Stand)
+        if (!isInShadow)
+        {
+            sizeDelta -= lightSizeChange / 100f * Time.deltaTime;
+        }
+        //Im Schatten nur beim Bewegen wachsen
+        else if (isMovingOnPlane)
+        {
+            sizeDelta += sizeChange / 100f * momentum.magnitude * Time.deltaTime;
+        }
+
+        if (sizeDelta != 0f)
+        {
+            float nextSize = size + sizeDelta;
+            transform.localScale = new Vector3(nextSize, nextSize, nextSize);
+            size = nextSize;
         }
 
         //Sprungfähigkeit testen
@@ -61,7 +89,7 @@ public class CharacterControler : MonoBehaviour
         //Dev output
         if (devOut)
         {
-            Debug.Log("Momentum: " + momentum);
+            Debug.Log("Momentum: " + momentum + " IsInShadow: " + isInShadow + " Size: " + size);
         }
     }
 
@@ -77,5 +105,45 @@ public class CharacterControler : MonoBehaviour
 
     private int toInt(bool b){
         return b ? 1 : 0;
+    }
+
+    private bool IsInShadow()
+    {
+        Vector3 probeStart = transform.position + Vector3.up * shadowRayStartOffset;
+        RaycastHit groundHit;
+
+        if (!Physics.Raycast(probeStart, Vector3.down, out groundHit, groundProbeDistance, groundMask, QueryTriggerInteraction.Ignore))
+        {
+            return false;
+        }
+
+        Vector3 lightDir = Vector3.up;
+        if (sunLight != null)
+        {
+            lightDir = -sunLight.forward.normalized;
+        }
+
+        Vector3 sampleBase = groundHit.point + groundHit.normal * 0.03f;
+        int blockedSamples = 0;
+        int totalSamples = Mathf.Max(1, shadowSampleCount);
+
+        for (int i = 0; i < totalSamples; i++)
+        {
+            Vector3 sampleOffset = Vector3.zero;
+            if (i > 0)
+            {
+                float angle = (i - 1) * Mathf.PI * 2f / Mathf.Max(1, totalSamples - 1);
+                sampleOffset = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)) * shadowSampleRadius;
+            }
+
+            Vector3 sampleOrigin = sampleBase + sampleOffset;
+            if (Physics.Raycast(sampleOrigin, lightDir, shadowRayDistance, shadowBlockerMask, QueryTriggerInteraction.Ignore))
+            {
+                blockedSamples++;
+            }
+        }
+
+        float coverage = (float)blockedSamples / totalSamples;
+        return coverage >= shadowCoverageRequired;
     }
 }
