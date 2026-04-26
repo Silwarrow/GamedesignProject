@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CharacterControler : MonoBehaviour
+public class CharacterController : MonoBehaviour
 {
     public float speed = 5f;
     public bool devOut = false;
@@ -28,7 +28,7 @@ public class CharacterControler : MonoBehaviour
     private bool isInShadow = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake(){
-        PlayerManager = FindFirstObjectByType<RespawnControler>().gameObject;
+        PlayerManager = FindFirstObjectByType<RespawnController>().gameObject;
 
     }
 
@@ -82,7 +82,7 @@ public class CharacterControler : MonoBehaviour
 
         //Tod nach Größe
         if(size < minSize || size > maxSize){
-            PlayerManager.GetComponent<RespawnControler>().RespawnPlayer();
+            PlayerManager.GetComponent<RespawnController>().RespawnPlayer();
             Destroy(gameObject);
         }
 
@@ -98,7 +98,7 @@ public class CharacterControler : MonoBehaviour
         //Falls Todeszone betreten, Spieler respawnen und aktuelles Objekt zerstören
         if (other.CompareTag("DeathArea"))
         {
-            PlayerManager.GetComponent<RespawnControler>().RespawnPlayer();
+            PlayerManager.GetComponent<RespawnController>().RespawnPlayer();
             Destroy(gameObject);
         }
     }
