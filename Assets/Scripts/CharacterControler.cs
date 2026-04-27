@@ -4,7 +4,8 @@ public class CharacterControler : MonoBehaviour
 {
     public float speed = 5f;
     public bool devOut = false;
-    public float sizeChange = 0f;
+    public float growthRate = 0f;
+    public float shrinkRate = 0f;
     public float maxSize = 10f;
     public float minSize = 0.1f;
     public bool canJump = false;
@@ -15,6 +16,7 @@ public class CharacterControler : MonoBehaviour
     private Vector3 momentumVelocity = Vector3.zero;
     private GameObject PlayerManager;
     private bool isGrounded = false;
+    private bool isSmelting = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake(){
         PlayerManager = FindFirstObjectByType<RespawnControler>().gameObject;
@@ -35,8 +37,12 @@ public class CharacterControler : MonoBehaviour
         
         //Größer werden
         if(((momentum.x >= 0.1f || momentum.x <= -0.1f) || (momentum.z >= 0.1f || momentum.z <= -0.1f)) && isGrounded){
-            Debug.Log("MomentumZ: " + momentum.z + " MomentumX: " + momentum.x);
-            transform.localScale = new Vector3(size, size, size) + new Vector3(sizeChange/100*momentum.magnitude, sizeChange/100*momentum.magnitude, sizeChange/100*momentum.magnitude);
+            transform.localScale = new Vector3(size, size, size) + new Vector3(growthRate/100*momentum.magnitude, growthRate/100*momentum.magnitude, growthRate/100*momentum.magnitude);
+        }
+        //Kleiner werden
+        if(isSmelting){
+            Debug.Log("Smelting...");
+            transform.localScale = (new Vector3(size, size, size) - new Vector3(shrinkRate*Time.deltaTime, shrinkRate*Time.deltaTime, shrinkRate*Time.deltaTime));
         }
 
         //Sprungfähigkeit testen
@@ -67,11 +73,22 @@ public class CharacterControler : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Collided with: " + other.gameObject.tag);
         //Falls Todeszone betreten, Spieler respawnen und aktuelles Objekt zerstören
         if (other.CompareTag("DeathArea"))
         {
             PlayerManager.GetComponent<RespawnControler>().RespawnPlayer();
             Destroy(gameObject);
+        }
+        if (other.CompareTag("Smelting")){
+            Debug.Log("Collided with smelting zone");
+            isSmelting = true;
+        }
+    }
+    void OnTriggerExit(Collider other){
+        if (other.CompareTag("Smelting")){
+            Debug.Log("Exited smelting zone");
+            isSmelting = false;
         }
     }
 
