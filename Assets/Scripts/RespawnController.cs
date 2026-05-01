@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class RespawnControler : MonoBehaviour
+public class RespawnController : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public GameObject playerPrefab;
@@ -23,7 +23,7 @@ public class RespawnControler : MonoBehaviour
     {
         GameObject newPlayer = Instantiate(playerPrefab, respawnPoint, respawnRotation);
         newPlayer.transform.localScale = respawnScale;
-        CharacterControler newController = newPlayer.GetComponent<CharacterControler>();
+        CharacterController newController = newPlayer.GetComponent<CharacterController>();
 
         newController.growthRate = growthRate;
         newController.shrinkRate = shrinkRate;

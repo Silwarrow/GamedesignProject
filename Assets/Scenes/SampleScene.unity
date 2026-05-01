@@ -285,7 +285,7 @@ MonoBehaviour:
   shrinkRate: 0.2
   minSize: 0.1
   maxSize: 10
-  canJump: 0
+  canJump: 1
   jumpHeight: 5
 --- !u!4 &189152104
 Transform:

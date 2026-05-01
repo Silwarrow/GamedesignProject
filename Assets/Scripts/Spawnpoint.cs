@@ -18,18 +18,18 @@ public class Spawnpoint : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            RespawnControler respawnControler = playerManager.GetComponent<RespawnControler>();
-            respawnControler.respawnPoint = spawnPoint;
-            respawnControler.respawnRotation = spawnRotation;
-            respawnControler.respawnScale = spawnScale;
+            RespawnController respawnController = playerManager.GetComponent<RespawnController>();
+            respawnController.respawnPoint = spawnPoint;
+            respawnController.respawnRotation = spawnRotation;
+            respawnController.respawnScale = spawnScale;
 
-            CharacterControler characterControler = other.GetComponent<CharacterControler>();
-            respawnControler.growthRate = characterControler.growthRate;
-            respawnControler.shrinkRate = characterControler.shrinkRate;
-            respawnControler.minSize = characterControler.minSize;
-            respawnControler.maxSize = characterControler.maxSize;
-            respawnControler.canJump = characterControler.canJump;
-            respawnControler.jumpHeight = characterControler.jumpHeight;
+            CharacterController characterController = other.GetComponent<CharacterController>();
+            respawnController.growthRate = characterController.growthRate;
+            respawnController.shrinkRate = characterController.shrinkRate;
+            respawnController.minSize = characterController.minSize;
+            respawnController.maxSize = characterController.maxSize;
+            respawnController.canJump = characterController.canJump;
+            respawnController.jumpHeight = characterController.jumpHeight;
         }
     }
 }
