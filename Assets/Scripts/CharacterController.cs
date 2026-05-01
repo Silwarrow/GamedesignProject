@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterController : MonoBehaviour
 {
@@ -7,7 +8,7 @@ public class CharacterController : MonoBehaviour
     public float growthRate = 0f;
     public float shrinkRate = 0f;
     public float maxSize = 10f;
-    public float minSize = 0.1f;
+    public float minSize = 1f;
     public bool canJump = false;
     public float jumpHeight = 750f;
 
@@ -17,9 +18,11 @@ public class CharacterController : MonoBehaviour
     private GameObject PlayerManager;
     private bool isGrounded = false;
     private bool isSmelting = false;
+    private Slider meltBar;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake(){
         PlayerManager = FindFirstObjectByType<RespawnController>().gameObject;
+        meltBar = FindFirstObjectByType<Canvas>().GetComponentInChildren<Slider>();
 
     }
 
@@ -44,6 +47,9 @@ public class CharacterController : MonoBehaviour
             Debug.Log("Smelting...");
             transform.localScale = (new Vector3(size, size, size) - new Vector3(shrinkRate*Time.deltaTime, shrinkRate*Time.deltaTime, shrinkRate*Time.deltaTime));
         }
+
+        //Canvas Slider anpassen
+        meltBar.value = ((size - minSize) / (maxSize - minSize)) * 200 - 100;
 
         //Sprungfähigkeit testen
         isGrounded = Physics.Raycast(transform.position, Vector3.down, size/2 + 0.1f);
