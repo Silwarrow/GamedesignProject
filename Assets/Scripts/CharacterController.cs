@@ -17,7 +17,7 @@ public class CharacterController : MonoBehaviour
     private Vector3 momentumVelocity = Vector3.zero;
     private GameObject PlayerManager;
     private bool isGrounded = false;
-    private bool isSmelting = false;
+    private bool isSmelting = true;
     private Slider meltBar;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake(){
@@ -44,7 +44,6 @@ public class CharacterController : MonoBehaviour
         }
         //Kleiner werden
         if(isSmelting){
-            Debug.Log("Smelting...");
             transform.localScale = (new Vector3(size, size, size) - new Vector3(shrinkRate*Time.deltaTime, shrinkRate*Time.deltaTime, shrinkRate*Time.deltaTime));
         }
 
@@ -86,15 +85,13 @@ public class CharacterController : MonoBehaviour
             PlayerManager.GetComponent<RespawnController>().RespawnPlayer();
             Destroy(gameObject);
         }
-        if (other.CompareTag("Smelting")){
-            Debug.Log("Collided with smelting zone");
-            isSmelting = true;
+        if (other.CompareTag("Shadow")){
+            isSmelting = false;
         }
     }
     void OnTriggerExit(Collider other){
-        if (other.CompareTag("Smelting")){
-            Debug.Log("Exited smelting zone");
-            isSmelting = false;
+        if (other.CompareTag("Shadow")){
+            isSmelting = true;
         }
     }
 
