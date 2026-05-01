@@ -1030,7 +1030,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RespawnController
   playerPrefab: {fileID: 0}
-  respawnPoint: {x: 1, y: 3, z: 1}
+  respawnPoint: {x: 0, y: 1, z: 0}
   respawnRotation: {x: 0, y: 0, z: 0, w: 1}
   respawnScale: {x: 5.5, y: 5.5, z: 5.5}
   growthRate: 0.2
@@ -1177,7 +1177,7 @@ MonoBehaviour:
   m_MinValue: -100
   m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: -100
+  m_Value: -29.1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1193,7 +1193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1f33013723e92c41988f5e47190bdb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpriteChanger
-  meltBar: {fileID: 1808814056}
+  meltBar: {fileID: 0}
   BarSprites:
   - {fileID: 21300000, guid: c48afbdc2f9461f448cf68ca2c0d4317, type: 3}
   - {fileID: 21300000, guid: 9fc98a0fa289ea048a695cf801ebe1cd, type: 3}
