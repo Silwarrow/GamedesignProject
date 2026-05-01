@@ -1,5 +1,3 @@
-using System;
-using System.Numerics;
 using UnityEngine;
 
 public class CharacterController : MonoBehaviour
@@ -34,7 +32,7 @@ public class CharacterController : MonoBehaviour
                                                                 toInt(Input.GetKey(KeyCode.W)) - toInt(Input.GetKey(KeyCode.S)));
 
         //Smooth movement
-        momentum = UnityEngine.Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, Mathf.Sqrt((float)Math.Pow(size, 1.5)/10));
+        momentum = UnityEngine.Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, Mathf.Sqrt((float)Mathf.Pow(size, 1.5f)/10));
         
         //Größer werden
         if(((momentum.x >= 0.1f || momentum.x <= -0.1f) || (momentum.z >= 0.1f || momentum.z <= -0.1f)) && isGrounded){
