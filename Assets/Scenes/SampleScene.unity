@@ -1030,12 +1030,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RespawnController
   playerPrefab: {fileID: 0}
-  respawnPoint: {x: 0, y: 1, z: 0}
+  respawnPoint: {x: 1, y: 3, z: 1}
   respawnRotation: {x: 0, y: 0, z: 0, w: 1}
-  respawnScale: {x: 1, y: 1, z: 1}
+  respawnScale: {x: 5.5, y: 5.5, z: 5.5}
   growthRate: 0.2
   shrinkRate: 0.2
-  minSize: 0.1
+  minSize: 1
   maxSize: 10
   canJump: 1
   jumpHeight: 5
