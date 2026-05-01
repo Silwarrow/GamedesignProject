@@ -28,11 +28,12 @@ public class CharacterController : MonoBehaviour
         size = transform.localScale.x;
 
         //Bewegungsrichtung berechnen
-        UnityEngine.Vector3 movement = new UnityEngine.Vector3( toInt(Input.GetKey(KeyCode.D)) - toInt(Input.GetKey(KeyCode.A)), 0, 
-                                                                toInt(Input.GetKey(KeyCode.W)) - toInt(Input.GetKey(KeyCode.S)));
+        Vector3 movement = new Vector3( toInt(Input.GetKey(KeyCode.D)) - toInt(Input.GetKey(KeyCode.A)), 0, 
+                                        toInt(Input.GetKey(KeyCode.W)) - toInt(Input.GetKey(KeyCode.S)));
 
         //Smooth movement
-        momentum = UnityEngine.Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, Mathf.Sqrt((float)Mathf.Pow(size, 1.5f)/10));
+        float momentumVariable = Mathf.Sqrt((float)Mathf.Pow(size, 1.5f)/10);
+        momentum = Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, momentumVariable);
         
         //Größer werden
         if(((momentum.x >= 0.1f || momentum.x <= -0.1f) || (momentum.z >= 0.1f || momentum.z <= -0.1f)) && isGrounded){
@@ -44,7 +45,17 @@ public class CharacterController : MonoBehaviour
             transform.localScale = (new Vector3(size, size, size) - new Vector3(shrinkRate*Time.deltaTime, shrinkRate*Time.deltaTime, shrinkRate*Time.deltaTime));
         }
 
-        //bewegen
+        //Sprungfähigkeit testen
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, size/2 + 0.1f);
+
+        //Springen
+        if(Input.GetKeyDown(KeyCode.Space) && isGrounded && canJump)
+        {
+            momentum.y = jumpHeight/Mathf.Sqrt(size);
+            isGrounded = false;
+        }
+
+        //Bewegen
         transform.Translate(momentum * speed* Time.deltaTime);
 
         //Tod nach Größe
