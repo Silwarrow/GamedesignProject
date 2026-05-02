@@ -245,12 +245,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterController
   speed: 5
   devOut: 0
-  growthRate: 0
-  shrinkRate: 0
+  growthRate: 0.05
+  shrinkRate: 0.2
   maxSize: 10
   minSize: 0.1
-  canJump: 0
-  jumpHeight: 750
+  canJump: 1
+  jumpHeight: 5
 --- !u!65 &3499767203031480384
 BoxCollider:
   m_ObjectHideFlags: 0
