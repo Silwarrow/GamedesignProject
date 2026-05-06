@@ -37,6 +37,8 @@ public class CharacterController : MonoBehaviour
         //Smooth movement
         float momentumVariable = Mathf.Sqrt((float)Mathf.Pow(size, 1.5f)/10);
         momentum = Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, momentumVariable);
+
+        //Bremsen bei Kollision
         if(IsColliderInFront(momentum.normalized)){
             momentum = Vector3.zero;
         }
@@ -119,17 +121,10 @@ public class CharacterController : MonoBehaviour
             out RaycastHit hit,
             castDistance,
             ~0,
-            QueryTriggerInteraction.Ignore
-        ))
+            QueryTriggerInteraction.Ignore))
         {
-        // Spieler selbst ignorieren
+            // Spieler selbst ignorieren
             if (hit.collider.gameObject == this.gameObject)
-            {
-                return false;
-            }
-
-        // Trigger ignorieren
-            if (hit.collider.isTrigger)
             {
                 return false;
             }
