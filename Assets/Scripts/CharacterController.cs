@@ -37,10 +37,12 @@ public class CharacterController : MonoBehaviour
         //Smooth movement
         float momentumVariable = Mathf.Sqrt((float)Mathf.Pow(size, 1.5f)/10);
         momentum = Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, momentumVariable);
-        Vector3 move = new Vector3(momentum.x, 0, momentum.z);
+        if(IsColliderInFront(momentum.normalized)){
+            momentum = Vector3.zero;
+        }
         
         //Größer werden
-        if(((momentum.x >= 0.1f || momentum.x <= -0.1f) || (momentum.z >= 0.1f || momentum.z <= -0.1f)) && isGrounded && !isInSafeArea && !IsColliderInFront(move.normalized)){
+        if(((momentum.x >= 0.1f || momentum.x <= -0.1f) || (momentum.z >= 0.1f || momentum.z <= -0.1f)) && isGrounded && !isInSafeArea){
             transform.localScale = new Vector3(size, size, size) + new Vector3(growthRate/100*momentum.magnitude, growthRate/100*momentum.magnitude, growthRate/100*momentum.magnitude);
         }
         //Kleiner werden
@@ -62,11 +64,7 @@ public class CharacterController : MonoBehaviour
         }
 
         //Bewegen
-        
-        if (!IsColliderInFront(move.normalized))
-        {
-            transform.Translate(move * speed * Time.deltaTime, Space.World);
-        }
+        transform.Translate(momentum * speed * Time.deltaTime);
 
 
 
