@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CharacterController : MonoBehaviour
 {
@@ -19,11 +18,11 @@ public class CharacterController : MonoBehaviour
     private bool isGrounded = false;
     private bool isSmelting = true;
     private bool isInSafeArea = false;
-    private Slider meltBar;
+    private UnityEngine.UI.Slider meltBar;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake(){
         PlayerManager = FindFirstObjectByType<RespawnController>().gameObject;
-        meltBar = FindFirstObjectByType<Canvas>().GetComponentInChildren<Slider>();
+        meltBar = FindFirstObjectByType<Canvas>().GetComponentInChildren<UnityEngine.UI.Slider>();
 
     }
 
@@ -38,9 +37,10 @@ public class CharacterController : MonoBehaviour
         //Smooth movement
         float momentumVariable = Mathf.Sqrt((float)Mathf.Pow(size, 1.5f)/10);
         momentum = Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, momentumVariable);
+        Vector3 move = new Vector3(momentum.x, 0, momentum.z);
         
         //Größer werden
-        if(((momentum.x >= 0.1f || momentum.x <= -0.1f) || (momentum.z >= 0.1f || momentum.z <= -0.1f)) && isGrounded && !isInSafeArea){
+        if(((momentum.x >= 0.1f || momentum.x <= -0.1f) || (momentum.z >= 0.1f || momentum.z <= -0.1f)) && isGrounded && !isInSafeArea && !IsColliderInFront(move.normalized)){
             transform.localScale = new Vector3(size, size, size) + new Vector3(growthRate/100*momentum.magnitude, growthRate/100*momentum.magnitude, growthRate/100*momentum.magnitude);
         }
         //Kleiner werden
@@ -62,7 +62,13 @@ public class CharacterController : MonoBehaviour
         }
 
         //Bewegen
-        transform.Translate(momentum * speed* Time.deltaTime);
+        
+        if (!IsColliderInFront(move.normalized))
+        {
+            transform.Translate(move * speed * Time.deltaTime, Space.World);
+        }
+
+
 
         //Tod nach Größe
         if(size < minSize || size > maxSize){
@@ -101,6 +107,43 @@ public class CharacterController : MonoBehaviour
             isInSafeArea = false;
         }
     }
+
+    bool IsColliderInFront(Vector3 direction)
+    {
+        float radius = size / 2f;
+        float castDistance = (speed * Time.deltaTime) + 0.05f; // kleine Sicherheitsreserve
+        Vector3 origin = transform.position + direction * 0.01f; // nicht im eigenen Collider starten
+
+        if (Physics.SphereCast(
+            origin,
+            radius,
+            direction,
+            out RaycastHit hit,
+            castDistance,
+            ~0,
+            QueryTriggerInteraction.Ignore
+        ))
+        {
+        // Spieler selbst ignorieren
+            if (hit.collider.gameObject == this.gameObject)
+            {
+                return false;
+            }
+
+        // Trigger ignorieren
+            if (hit.collider.isTrigger)
+            {
+                return false;
+            }
+
+            // Jeder andere Collider blockiert
+            return true;
+        }
+
+        return false;
+    }
+
+
 
     private int toInt(bool b){
         return b ? 1 : 0;
