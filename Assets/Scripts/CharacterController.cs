@@ -18,6 +18,7 @@ public class CharacterController : MonoBehaviour
     private GameObject PlayerManager;
     private bool isGrounded = false;
     private bool isSmelting = true;
+    private bool isInSafeArea = false;
     private Slider meltBar;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake(){
@@ -39,7 +40,7 @@ public class CharacterController : MonoBehaviour
         momentum = Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, momentumVariable);
         
         //Größer werden
-        if(((momentum.x >= 0.1f || momentum.x <= -0.1f) || (momentum.z >= 0.1f || momentum.z <= -0.1f)) && isGrounded){
+        if(((momentum.x >= 0.1f || momentum.x <= -0.1f) || (momentum.z >= 0.1f || momentum.z <= -0.1f)) && isGrounded && !isInSafeArea){
             transform.localScale = new Vector3(size, size, size) + new Vector3(growthRate/100*momentum.magnitude, growthRate/100*momentum.magnitude, growthRate/100*momentum.magnitude);
         }
         //Kleiner werden
@@ -88,9 +89,17 @@ public class CharacterController : MonoBehaviour
         if (other.CompareTag("Shadow")){
             isSmelting = false;
         }
+        if (other.CompareTag("SafeArea")){
+            isInSafeArea = true;
+            isSmelting = false;
+        }
     }
     void OnTriggerExit(Collider other){
         if (other.CompareTag("Shadow")){
+            isSmelting = true;
+        }
+        if (other.CompareTag("SafeArea")){
+            isInSafeArea = false;
             isSmelting = true;
         }
     }
