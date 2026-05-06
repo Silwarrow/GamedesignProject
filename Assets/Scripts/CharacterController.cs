@@ -44,7 +44,7 @@ public class CharacterController : MonoBehaviour
             transform.localScale = new Vector3(size, size, size) + new Vector3(growthRate/100*momentum.magnitude, growthRate/100*momentum.magnitude, growthRate/100*momentum.magnitude);
         }
         //Kleiner werden
-        if(isSmelting){
+        if(isSmelting && !isInSafeArea){
             transform.localScale = (new Vector3(size, size, size) - new Vector3(shrinkRate*Time.deltaTime, shrinkRate*Time.deltaTime, shrinkRate*Time.deltaTime));
         }
 
@@ -91,7 +91,6 @@ public class CharacterController : MonoBehaviour
         }
         if (other.CompareTag("SafeArea")){
             isInSafeArea = true;
-            isSmelting = false;
         }
     }
     void OnTriggerExit(Collider other){
@@ -100,7 +99,6 @@ public class CharacterController : MonoBehaviour
         }
         if (other.CompareTag("SafeArea")){
             isInSafeArea = false;
-            isSmelting = true;
         }
     }
 
