@@ -19,6 +19,7 @@ public class CharacterController : MonoBehaviour
     private bool isSmelting = true;
     private bool isInSafeArea = false;
     private UnityEngine.UI.Slider meltBar;
+    private bool fastGrow = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake(){
         PlayerManager = FindFirstObjectByType<RespawnController>().gameObject;
@@ -42,10 +43,13 @@ public class CharacterController : MonoBehaviour
         if(IsColliderInFront(momentum.normalized)){
             momentum = Vector3.zero;
         }
+        momentum = momentum * (fastGrow ? 0.9f : 1);
+        
         
         //Größer werden
         if(((momentum.x >= 0.1f || momentum.x <= -0.1f) || (momentum.z >= 0.1f || momentum.z <= -0.1f)) && isGrounded && !isInSafeArea){
-            transform.localScale = new Vector3(size, size, size) + new Vector3(growthRate/100*momentum.magnitude, growthRate/100*momentum.magnitude, growthRate/100*momentum.magnitude);
+            float growthMultiplier = fastGrow ? growthRate/2*momentum.magnitude : growthRate/100*momentum.magnitude;
+            transform.localScale = new Vector3(size, size, size) + new Vector3(growthMultiplier, growthMultiplier, growthMultiplier) * Time.deltaTime;
         }
         //Kleiner werden
         if(isSmelting && !isInSafeArea){
@@ -98,6 +102,9 @@ public class CharacterController : MonoBehaviour
         if (other.CompareTag("SafeArea")){
             isInSafeArea = true;
         }
+        if(other.CompareTag("ThickSnow")){
+            fastGrow = true;
+        }
     }
     void OnTriggerExit(Collider other){
         if (other.CompareTag("Shadow")){
@@ -105,6 +112,9 @@ public class CharacterController : MonoBehaviour
         }
         if (other.CompareTag("SafeArea")){
             isInSafeArea = false;
+        }
+        if(other.CompareTag("ThickSnow")){
+            fastGrow = false;
         }
     }
 
