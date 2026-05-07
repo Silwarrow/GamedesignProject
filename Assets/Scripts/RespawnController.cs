@@ -7,6 +7,7 @@ public class RespawnController : MonoBehaviour
     public Vector3 respawnPoint = new Vector3(0, 1, 0);
     public Quaternion respawnRotation = new Quaternion(0, 0, 0, 1);
     public Vector3 respawnScale = new Vector3(1, 1, 1);
+    public float speed = 15f;
     public float growthRate = 0.2f;
     public float shrinkRate = 0.2f;
     public float minSize = 0.1f;
@@ -25,6 +26,7 @@ public class RespawnController : MonoBehaviour
         newPlayer.transform.localScale = respawnScale;
         CharacterController newController = newPlayer.GetComponent<CharacterController>();
 
+        newController.speed = speed;
         newController.growthRate = growthRate;
         newController.shrinkRate = shrinkRate;
         newController.minSize = minSize;
