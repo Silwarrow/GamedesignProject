@@ -4,8 +4,8 @@ public class CharacterController : MonoBehaviour
 {
     public float speed = 5f;
     public bool devOut = false;
-    public float growthRate = 0f;
-    public float shrinkRate = 0f;
+    public float growthRate = 0.5f;
+    public float shrinkRate = 0.2f;
     public float maxSize = 10f;
     public float minSize = 1f;
     public bool canJump = false;
@@ -47,13 +47,13 @@ public class CharacterController : MonoBehaviour
         
         
         //Größer werden
-        if(((momentum.x >= 0.1f || momentum.x <= -0.1f) || (momentum.z >= 0.1f || momentum.z <= -0.1f)) && isGrounded && !isInSafeArea){
-            float growthMultiplier = fastGrow ? growthRate/2*momentum.magnitude : growthRate/100*momentum.magnitude;
-            transform.localScale = new Vector3(size, size, size) + new Vector3(growthMultiplier, growthMultiplier, growthMultiplier) * Time.deltaTime;
+        if(isGrounded && !isInSafeArea){
+            float growthMultiplier = fastGrow ? growthRate*2*Mathf.Pow(momentum.magnitude, 2f) : growthRate*Mathf.Pow(momentum.magnitude, 2f);
+            transform.localScale = Vector3.one * size + Vector3.one * growthMultiplier * Time.deltaTime;
         }
         //Kleiner werden
         if(isSmelting && !isInSafeArea){
-            transform.localScale = (new Vector3(size, size, size) - new Vector3(shrinkRate*Time.deltaTime, shrinkRate*Time.deltaTime, shrinkRate*Time.deltaTime));
+            transform.localScale = Vector3.one * size - Vector3.one * shrinkRate * Time.deltaTime;
         }
 
         //Canvas Slider anpassen
@@ -83,13 +83,17 @@ public class CharacterController : MonoBehaviour
         //Dev output
         if (devOut)
         {
-            Debug.Log("Momentum: " + momentum);
+            Debug.Log("Momentum: " + momentum
+            + " | Size: " + size
+            + " | Grounded: " + isGrounded
+            + " | Smelting: " + isSmelting
+            + " | In Safe Area: " + isInSafeArea
+            + " | Fast Grow: " + fastGrow);
         }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Collided with: " + other.gameObject.tag);
         //Falls Todeszone betreten, Spieler respawnen und aktuelles Objekt zerstören
         if (other.CompareTag("DeathArea"))
         {
