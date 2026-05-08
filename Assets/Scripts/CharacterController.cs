@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class CharacterController : MonoBehaviour
 {
@@ -19,12 +19,12 @@ public class CharacterController : MonoBehaviour
     private bool isGrounded = false;
     private bool isSmelting = true;
     private bool isInSafeArea = false;
-    private UnityEngine.UIElements.Slider meltBar;
+    private UnityEngine.UI.Slider meltBar;
     private bool fastGrow = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake(){
         PlayerManager = FindFirstObjectByType<RespawnController>().gameObject;
-        meltBar = FindFirstObjectByType<Canvas>().GetComponentInChildren<UnityEngine.UIElements.Slider>();
+        meltBar = FindFirstObjectByType<Canvas>().GetComponentInChildren<UnityEngine.UI.Slider>();
 
     }
 
