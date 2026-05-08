@@ -695,8 +695,8 @@ Transform:
   m_GameObject: {fileID: 493293238}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.72, y: 5, z: -6.39}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalPosition: {x: -15, y: 5, z: 0}
+  m_LocalScale: {x: 30, y: 10, z: 60}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1012,8 +1012,9 @@ MonoBehaviour:
   respawnPoint: {x: 0, y: 1, z: 0}
   respawnRotation: {x: 0, y: 0, z: 0, w: 1}
   respawnScale: {x: 5.5, y: 5.5, z: 5.5}
-  growthRate: 0.2
-  shrinkRate: 0.2
+  speed: 15
+  growthRate: 2
+  shrinkRate: 2
   minSize: 1
   maxSize: 10
   canJump: 1
@@ -1281,7 +1282,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 6, y: 2, z: 6}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

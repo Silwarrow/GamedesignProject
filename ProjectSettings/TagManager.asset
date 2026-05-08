@@ -7,6 +7,7 @@ TagManager:
   - DeathArea
   - Shadow
   - SafeArea
+  - ThickSnow
   layers:
   - Default
   - TransparentFX
