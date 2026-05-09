@@ -149,7 +149,8 @@ public class CharacterController : MonoBehaviour
                 continue;
             }
 
-            Vector3 toHit = hit.point - transform.position;
+            Vector3 globalHit = hit.collider.transform.TransformPoint(hit.point);
+            Vector3 toHit = globalHit - transform.position;
             if(toHit.y < -(radius-0.05f))
             {
                 // Boden unter uns, ignorieren
@@ -160,7 +161,7 @@ public class CharacterController : MonoBehaviour
             //Wall Damage Berechnung
             float angle = Vector3.Angle(hit.normal, Vector3.up);
             float hitSpeed = new Vector3(direction.x, 0, direction.z).magnitude;
-            if(angle > 45f && hitSpeed > 0.4f)
+            if(angle > 45f && hitSpeed > 0.4f && !isInSafeArea)
             {
                 Debug.Log("Kollision mit " + hit.collider.name + " | Winkel: " + angle + " | Geschwindigkeit: " + hitSpeed);
                 //je nach geschwindigkeit soo der ball zwischen 0-5% der aktuellen größe schrumpfen
