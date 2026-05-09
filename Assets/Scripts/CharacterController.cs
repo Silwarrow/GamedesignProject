@@ -38,8 +38,10 @@ public class CharacterController : MonoBehaviour
                                         toInt(Input.GetKey(KeyCode.W)) - toInt(Input.GetKey(KeyCode.S)));
 
         //Smooth movement
-        float momentumVariable = Mathf.Pow(size / maxSize, 2f) * 0.6f + 0.05f;
+        //Momentum variable ist größenabhänig und befindet sich bei größe 10 bei wert 2, 0 ist 0 und 5 ist 0.3
+        float momentumVariable = Mathf.Pow(size / maxSize, 2f) * 2f;
         momentum = Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, momentumVariable);
+
 
         //Bremsen bei Kollision
         if(IsColliderInFront(momentum)){
@@ -153,6 +155,7 @@ public class CharacterController : MonoBehaviour
                 // Boden unter uns, ignorieren
                 continue;
             }
+
             
             //Wall Damage Berechnung
             float angle = Vector3.Angle(hit.normal, Vector3.up);
