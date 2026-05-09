@@ -17,7 +17,7 @@ public class CharacterController : MonoBehaviour
     private Vector3 momentumVelocity = Vector3.zero;
     private GameObject PlayerManager;
     private bool isGrounded = false;
-    private bool isSmelting = true;
+    private int shadowCounter = 0;
     private bool isInSafeArea = false;
     private UnityEngine.UI.Slider meltBar;
     private bool fastGrow = false;
@@ -53,7 +53,7 @@ public class CharacterController : MonoBehaviour
             transform.localScale = Vector3.one * size + Vector3.one * growthMultiplier * Time.deltaTime;
         }
         //Kleiner werden
-        if(isSmelting && !isInSafeArea){
+        if(shadowCounter <= 0 && !isInSafeArea){
             transform.localScale = Vector3.one * size - Vector3.one * shrinkRate * Time.deltaTime;
         }
 
@@ -87,7 +87,7 @@ public class CharacterController : MonoBehaviour
             Debug.Log("Momentum: " + momentum
             + " | Size: " + size
             + " | Grounded: " + isGrounded
-            + " | Smelting: " + isSmelting
+            + " | Shadow Counter: " + shadowCounter
             + " | In Safe Area: " + isInSafeArea
             + " | Fast Grow: " + fastGrow);
         }
@@ -102,7 +102,7 @@ public class CharacterController : MonoBehaviour
             Destroy(gameObject);
         }
         if (other.CompareTag("Shadow")){
-            isSmelting = false;
+            shadowCounter++;
         }
         if (other.CompareTag("SafeArea")){
             isInSafeArea = true;
@@ -113,7 +113,7 @@ public class CharacterController : MonoBehaviour
     }
     void OnTriggerExit(Collider other){
         if (other.CompareTag("Shadow")){
-            isSmelting = true;
+            shadowCounter--;
         }
         if (other.CompareTag("SafeArea")){
             isInSafeArea = false;
