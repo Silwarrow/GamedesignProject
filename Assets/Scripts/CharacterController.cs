@@ -38,10 +38,10 @@ public class CharacterController : MonoBehaviour
                                         toInt(Input.GetKey(KeyCode.W)) - toInt(Input.GetKey(KeyCode.S)));
 
         //Smooth movement
-        //Momentum variable ist größenabhänig und befindet sich bei größe 10 bei wert 2, 0 ist 0 und 5 ist 0.3
-        float momentumVariable = Mathf.Pow(size / maxSize, 2f) * 2f;
-        momentum = Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, momentumVariable);
-
+        float x = Mathf.InverseLerp(3f, 13f, size);
+        //inetria ist eine Funktion die zwischen den werten 0 und 1 die werte 0.2 und 3.7 ist und in dem bereich strengmonoton wachsend und konvex ist.
+        float inertia = 0.2f + 3.5f * Mathf.Pow(x, 2.9f);
+        momentum = Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, inertia);
 
         //Bremsen bei Kollision
         if(IsColliderInFront(momentum)){
