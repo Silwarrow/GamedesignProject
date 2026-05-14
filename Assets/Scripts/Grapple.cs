@@ -4,14 +4,12 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Grapple : MonoBehaviour
 {
-    [SerializeField] float pullSpeed = 0.5f;
-    [SerializeField] float stopDistance = 4f;
-    [SerializeField] float hookLifetime = 8f;
+    [SerializeField] float dashForce = 120f;
+    [SerializeField] float hookLifetime = 2f;
     [SerializeField] GameObject hookPrefab;
     [SerializeField] Transform shootTransform;
 
     Hook hook;
-    bool pulling;
     Rigidbody playerRigidbody;
 
 
@@ -19,21 +17,18 @@ public class Grapple : MonoBehaviour
     void Start()
     {
         playerRigidbody = GetComponent<Rigidbody>();
-        if (shootTransform == null)
+        if(shootTransform == null)
         {
             shootTransform = transform;
         }
-
-        pulling = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (hook == null && Input.GetMouseButtonDown(0))
+        if(hook == null && Input.GetMouseButtonDown(0))
         {
             StopAllCoroutines();
-            pulling = false;
             hook = Instantiate(hookPrefab, shootTransform.position, shootTransform.rotation).GetComponent<Hook>();
             hook.Initialize(this, shootTransform);
             StartCoroutine(DestroyHookAfterLifetime());
@@ -42,28 +37,21 @@ public class Grapple : MonoBehaviour
         {
             DestroyHook();
         }
-        
-
-        if (!pulling || hook == null) return;
-        
-        if(Vector3.Distance(transform.position, hook.transform.position) <= stopDistance)
-        {
-            DestroyHook();
-        }
-        else
-        {
-            playerRigidbody.AddForce((hook.transform.position - transform.position).normalized * pullSpeed, ForceMode.VelocityChange);
-        }
     }
+
     public void StartPull()
     {
-        pulling = true;
+        if (hook == null) return;
+
+        Vector3 dashDirection = (hook.transform.position - transform.position).normalized;
+        playerRigidbody.AddForce(dashDirection * dashForce, ForceMode.Impulse);
+
+        DestroyHook();
     }
 
     private void DestroyHook()
     {
-        if (hook == null) return;
-        pulling = false;
+        if(hook == null) return;
         Destroy(hook.gameObject);
         hook = null;
     }

@@ -29,7 +29,7 @@ public class Hook : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (grapple == null || lineRenderer == null)
+        if(grapple == null || lineRenderer == null)
         {
             return;
         }
@@ -44,11 +44,8 @@ public class Hook : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(grappleTag))
+        if(other.CompareTag(grappleTag))
         {
-            rigid.useGravity = false;
-            rigid.isKinematic = true;
-
             if (grapple == null) return;
             grapple.StartPull();
         }

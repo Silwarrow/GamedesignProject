@@ -25,7 +25,7 @@ public class RespawnController : MonoBehaviour
         // destroy any existing hooks in the scene to avoid orphaned hooks after respawn
         foreach (var h in Object.FindObjectsByType<Hook>(FindObjectsSortMode.None))
         {
-            if (h != null && h.gameObject != null)
+            if(h != null && h.gameObject != null)
                 Destroy(h.gameObject);
         }
 
