@@ -31,7 +31,6 @@ public class CharacterController : MonoBehaviour
 
     // Update is called once per frame
     void Update(){
-        size = transform.localScale.x;
 
         //Bewegungsrichtung berechnen
         Vector3 movement = new Vector3( toInt(Input.GetKey(KeyCode.D)) - toInt(Input.GetKey(KeyCode.A)), 0, 
@@ -41,24 +40,29 @@ public class CharacterController : MonoBehaviour
         float x = Mathf.InverseLerp(3f, 13f, size);
         //inetria ist eine Funktion die zwischen den werten 0 und 1 die werte 0.2 und 3.7 ist und in dem bereich strengmonoton wachsend und konvex ist.
         float inertia = 0.2f + 3.5f * Mathf.Pow(x, 2.9f);
-        momentum = Vector3.SmoothDamp(momentum, movement, ref momentumVelocity, inertia);
+        momentum = Vector3.SmoothDamp(momentum, movement.normalized, ref momentumVelocity, inertia);
 
         //Bremsen bei Kollision
         if(IsColliderInFront(momentum)){
             momentum = Vector3.zero;
         }
         momentum = momentum * (fastGrow ? 0.9f : 1);
-        
-        
+
+
         //Größer werden
-        if(isGrounded && !isInSafeArea){
-            float growthMultiplier = fastGrow ? growthRate*2*Mathf.Pow(momentum.magnitude, 2f) : growthRate*Mathf.Pow(momentum.magnitude, 2f);
-            transform.localScale += Vector3.one * growthMultiplier * Time.deltaTime;
+        float growthMultiplier = growthRate*Mathf.Pow(momentum.magnitude, 2f);
+        if(isGrounded && !isInSafeArea && shadowCounter > 0)
+        {
+            transform.localScale += Vector3.one * growthMultiplier* Time.deltaTime;
         }
         //Kleiner werden
         if(shadowCounter <= 0 && !isInSafeArea){
-            transform.localScale -= Vector3.one * shrinkRate * Time.deltaTime;
+            float shrinkMultiplier = 1.9f* (Mathf.Pow(size-3f, 2f)/(Mathf.Pow(size-3f, 2f)+8))*(1-0.625f*growthMultiplier);
+            transform.localScale -= Vector3.one * shrinkMultiplier * Time.deltaTime;
         }
+
+
+
 
         //Canvas Slider anpassen
         meltBar.value = (size - minSize) / (maxSize - minSize) * 200 - 100;
@@ -129,6 +133,7 @@ public class CharacterController : MonoBehaviour
 
     bool IsColliderInFront(Vector3 direction)
     {
+        size = transform.localScale.x;
         float radius = size / 2f;
         float castDistance = (speed * Time.deltaTime) + 0.05f; // kleine Sicherheitsreserve
         Vector3 origin = transform.position + direction.normalized * 0.01f; // nicht im eigenen Collider starten
