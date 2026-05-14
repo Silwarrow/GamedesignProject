@@ -6,7 +6,6 @@ public class CharacterController : MonoBehaviour
     public float speed = 5f;
     public bool devOut = false;
     public float growthRate = 0.5f;
-    public float shrinkRate = 0.2f;
     public float maxWallDamagePercentage = 5f;
     public float maxSize = 10f;
     public float minSize = 1f;

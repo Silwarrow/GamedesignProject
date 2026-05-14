@@ -28,7 +28,6 @@ public class RespawnController : MonoBehaviour
 
         newController.speed = speed;
         newController.growthRate = growthRate;
-        newController.shrinkRate = shrinkRate;
         newController.minSize = minSize;
         newController.maxSize = maxSize;
         newController.canJump = canJump;
