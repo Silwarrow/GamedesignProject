@@ -1,36 +1,40 @@
-using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AdaptivePerformance;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Grapple : MonoBehaviour
 {
     [SerializeField] float pullSpeed = 0.5f;
     [SerializeField] float stopDistance = 4f;
+    [SerializeField] float hookLifetime = 8f;
     [SerializeField] GameObject hookPrefab;
     [SerializeField] Transform shootTransform;
 
     Hook hook;
     bool pulling;
-    Rigidbody rigit;
+    Rigidbody playerRigidbody;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        rigit = GetComponent<Rigidbody>();
+        playerRigidbody = GetComponent<Rigidbody>();
+        if (shootTransform == null)
+        {
+            shootTransform = transform;
+        }
+
         pulling = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(hook == null && Input.GetMouseButtonDown(0))
+        if (hook == null && Input.GetMouseButtonDown(0))
         {
             StopAllCoroutines();
             pulling = false;
-            hook = Instantiate(hookPrefab, shootTransform.position, Quaternion.identity).GetComponent<Hook>();
+            hook = Instantiate(hookPrefab, shootTransform.position, shootTransform.rotation).GetComponent<Hook>();
             hook.Initialize(this, shootTransform);
             StartCoroutine(DestroyHookAfterLifetime());
         }
@@ -48,7 +52,7 @@ public class Grapple : MonoBehaviour
         }
         else
         {
-            rigit.AddForce((hook.transform.position - transform.position).normalized * pullSpeed, ForceMode.VelocityChange);
+            playerRigidbody.AddForce((hook.transform.position - transform.position).normalized * pullSpeed, ForceMode.VelocityChange);
         }
     }
     public void StartPull()
@@ -66,7 +70,7 @@ public class Grapple : MonoBehaviour
 
     private IEnumerator DestroyHookAfterLifetime()
     {
-        yield return new WaitForSeconds(8f);
+        yield return new WaitForSeconds(hookLifetime);
         DestroyHook();
     }
 }

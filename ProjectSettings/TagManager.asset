@@ -8,6 +8,7 @@ TagManager:
   - Shadow
   - SafeArea
   - ThickSnow
+  - grapple
   layers:
   - Default
   - TransparentFX
