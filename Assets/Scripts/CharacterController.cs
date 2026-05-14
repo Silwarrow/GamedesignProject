@@ -56,7 +56,7 @@ public class CharacterController : MonoBehaviour
         }
         //Kleiner werden
         if(shadowCounter <= 0 && !isInSafeArea){
-            float shrinkMultiplier = 1.9f* (Mathf.Pow(size-3f, 2f)/(Mathf.Pow(size-3f, 2f)+8))*(1-0.625f*growthMultiplier);
+            float shrinkMultiplier = 0.3f + 1.691f* (Mathf.Pow(size-3f, 2f)/(Mathf.Pow(size-3f, 2f)+13.7f))*(1-0.625f*growthMultiplier);
             transform.localScale -= Vector3.one * shrinkMultiplier * Time.deltaTime;
         }
 
