@@ -30,7 +30,7 @@ public class Hook : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(grapple == null || lineRenderer == null)
+        if (grapple == null)
         {
             return;
         }

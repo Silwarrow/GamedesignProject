@@ -5,7 +5,6 @@ using UnityEngine;
 public class Grapple : MonoBehaviour
 {
     [SerializeField] float dashForce = 120f;
-    [SerializeField] float hookLifetime = 2f;
     [SerializeField] GameObject hookPrefab;
     [SerializeField] Transform shootTransform;
     [SerializeField] float maxRange = 30f;
@@ -35,11 +34,9 @@ public class Grapple : MonoBehaviour
             Vector3 screenPos = Input.mousePosition;
             if (TryResolveAimFromMouse(screenPos, out Vector3 finalAim))
             {
-                StopAllCoroutines();
                 shootTransform.LookAt(finalAim);
                 hook = Instantiate(hookPrefab, shootTransform.position, shootTransform.rotation).GetComponent<Hook>();
                 hook.Initialize(this, shootTransform, maxRange);
-                StartCoroutine(DestroyHookAfterLifetime());
             }
         }
         else if (hook != null && Input.GetMouseButtonDown(1))
@@ -78,11 +75,7 @@ public class Grapple : MonoBehaviour
         hook = null;
     }
 
-    private IEnumerator DestroyHookAfterLifetime()
-    {
-        yield return new WaitForSeconds(hookLifetime);
-        DestroyHook();
-    }
+    
 
     private bool TryResolveAimFromMouse(Vector3 screenPos, out Vector3 aimPoint)
     {
