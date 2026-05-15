@@ -19,11 +19,10 @@ public class Hook : MonoBehaviour
 
     public void Initialize(Grapple grapple, Transform shootTransform, float maxRange)
     {
-        transform.forward = shootTransform.forward;
         this.grapple = grapple;
         this.maxRange = maxRange;
         this.spawnPosition = transform.position;
-        rigid.AddForce(transform.forward * hookforce, ForceMode.Impulse); // Der Hook wird Impuls-artig in die Richtung geschossen, in die der Spieler schaut
+        rigid.AddForce(shootTransform.forward * hookforce, ForceMode.Impulse); // Der Hook wird Impuls-artig in die Richtung geschossen, in die der Spieler schaut
     }
 
 
