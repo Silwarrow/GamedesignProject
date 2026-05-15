@@ -9,6 +9,8 @@ public class Hook : MonoBehaviour
     Grapple grapple;
     Rigidbody rigid;
     LineRenderer lineRenderer;
+    Vector3 spawnPosition;
+    float maxRange;
 
     private void Awake()
     {
@@ -16,10 +18,12 @@ public class Hook : MonoBehaviour
         lineRenderer = GetComponent<LineRenderer>();
     }
 
-    public void Initialize(Grapple grapple, Transform shootTransform)
+    public void Initialize(Grapple grapple, Transform shootTransform, float maxRange)
     {
         transform.forward = shootTransform.forward;
         this.grapple = grapple;
+        this.maxRange = maxRange;
+        this.spawnPosition = transform.position;
         rigid.linearVelocity = Vector3.zero;
         rigid.angularVelocity = Vector3.zero;
         rigid.AddForce(transform.forward * hookforce, ForceMode.Impulse);   
@@ -31,6 +35,13 @@ public class Hook : MonoBehaviour
     {
         if(grapple == null || lineRenderer == null)
         {
+            return;
+        }
+
+        // Check if hook exceeded max range without hitting a grapple target
+        if (Vector3.Distance(transform.position, spawnPosition) > maxRange)
+        {
+            Destroy(gameObject);
             return;
         }
 

@@ -9,9 +9,12 @@ public class Grapple : MonoBehaviour
     [SerializeField] GameObject hookPrefab;
     [SerializeField] Transform shootTransform;
     [SerializeField] float maxRange = 30f;
+    [SerializeField] float passDistanceThreshold = 1.5f;
 
     Hook hook;
     Rigidbody playerRigidbody;
+    bool isDashing = false;
+    float dashStartDistance = 0f;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -35,13 +38,24 @@ public class Grapple : MonoBehaviour
                 StopAllCoroutines();
                 shootTransform.LookAt(finalAim);
                 hook = Instantiate(hookPrefab, shootTransform.position, shootTransform.rotation).GetComponent<Hook>();
-                hook.Initialize(this, shootTransform);
+                hook.Initialize(this, shootTransform, maxRange);
                 StartCoroutine(DestroyHookAfterLifetime());
             }
         }
         else if (hook != null && Input.GetMouseButtonDown(1))
         {
             DestroyHook();
+        }
+
+        // Check if player has moved past the hook during dash phase
+        if (isDashing && hook != null)
+        {
+            float currentDistance = Vector3.Distance(transform.position, hook.transform.position);
+            if (currentDistance > dashStartDistance * passDistanceThreshold)
+            {
+                DestroyHook();
+                isDashing = false;
+            }
         }
     }
 
@@ -52,7 +66,9 @@ public class Grapple : MonoBehaviour
         Vector3 dashDirection = (hook.transform.position - transform.position).normalized;
         playerRigidbody.AddForce(dashDirection * dashForce, ForceMode.Impulse);
 
-        DestroyHook();
+        // Start distance-based despawn: don't destroy immediately
+        isDashing = true;
+        dashStartDistance = Vector3.Distance(transform.position, hook.transform.position);
     }
 
     private void DestroyHook()
@@ -60,6 +76,7 @@ public class Grapple : MonoBehaviour
         if(hook == null) return;
         Destroy(hook.gameObject);
         hook = null;
+        isDashing = false;
     }
 
     private IEnumerator DestroyHookAfterLifetime()
