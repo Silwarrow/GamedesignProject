@@ -35,7 +35,7 @@ public class Hook : MonoBehaviour
             return;
         }
 
-        // Check if hook exceeded max range without hitting a grapple target
+        // Prüfe ob der Hook die maximale Reichweite überschritten hat ohne ein Grapple-Ziel zu treffen
         if (Vector3.Distance(transform.position, spawnPosition) > maxRange)
         {
             Destroy(gameObject);

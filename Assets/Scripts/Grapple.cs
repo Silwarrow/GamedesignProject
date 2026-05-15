@@ -44,7 +44,7 @@ public class Grapple : MonoBehaviour
             DestroyHook();
         }
 
-        // Check if player has moved past the hook during dash phase
+        // Prüfe, ob der Spieler während des Dashes am Haken vorbeigelaufen ist
         if (isDashing && hook != null)
         {
             float currentDistance = Vector3.Distance(transform.position, hook.transform.position);
@@ -63,7 +63,7 @@ public class Grapple : MonoBehaviour
         Vector3 dashDirection = (hook.transform.position - transform.position).normalized;
         playerRigidbody.AddForce(dashDirection * dashForce, ForceMode.Impulse);
 
-        // Start distance-based despawn: don't destroy immediately
+        // Starte distanzbasiertes Entfernen: nicht sofort zerstören
         isDashing = true;
         dashStartDistance = Vector3.Distance(transform.position, hook.transform.position);
     }
@@ -83,8 +83,7 @@ public class Grapple : MonoBehaviour
         Camera cam = Camera.main;
         if (cam == null) return false;
 
-        // Option 1 (finalized): project camera ray to player-height plane,
-        // cast player-origin ray toward that point with obstacle detection.
+        // Wirf einen Strahl vom Spieler in diese Richtung mit Hinderniserkennung.
         Ray camRay = cam.ScreenPointToRay(screenPos);
         Plane playerPlane = new Plane(Vector3.up, shootTransform.position);
         
