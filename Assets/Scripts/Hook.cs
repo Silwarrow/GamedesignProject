@@ -3,14 +3,14 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody), typeof(LineRenderer))]
 public class Hook : MonoBehaviour
 {
-    [SerializeField] float hookforce = 25f;
-    [SerializeField] string grappleTag = "grapple";
+    [SerializeField] float hookforce = 25f; // Steuert die Geschwindigkeit des Hook-Projektils, also wie schnell das wandert
+    [SerializeField] string grappleTag = "grapple"; // Jedes Objekt, woran man sich ziehen können soll, braucht dieses Tag, sonst fliegt der Grapple durch
 
     Grapple grapple;
     Rigidbody rigid;
     LineRenderer lineRenderer;
     Vector3 spawnPosition;
-    float maxRange;
+    float maxRange; // Reichweite des Grapplinghooks, wenn erreicht -> Hook zerstört
 
     private void Awake()
     {
@@ -24,9 +24,7 @@ public class Hook : MonoBehaviour
         this.grapple = grapple;
         this.maxRange = maxRange;
         this.spawnPosition = transform.position;
-        rigid.linearVelocity = Vector3.zero;
-        rigid.angularVelocity = Vector3.zero;
-        rigid.AddForce(transform.forward * hookforce, ForceMode.Impulse);   
+        rigid.AddForce(transform.forward * hookforce, ForceMode.Impulse); // Der Hook wird Impuls-artig in die Richtung geschossen, in die der Spieler schaut
     }
 
 
