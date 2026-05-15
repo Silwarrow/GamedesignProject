@@ -45,11 +45,10 @@ public class CharacterController : MonoBehaviour
         if(IsColliderInFront(momentum)){
             momentum = Vector3.zero;
         }
-        momentum = momentum * (fastGrow ? 0.9f : 1);
 
 
         //Größer werden
-        float growthMultiplier = growthRate*Mathf.Pow(momentum.magnitude, 2f);
+        float growthMultiplier = growthRate*Mathf.Pow(momentum.magnitude, 2f) * (fastGrow ? 1.5f : 1f);
         if(isGrounded && !isInSafeArea && shadowCounter > 0)
         {
             transform.localScale += Vector3.one * growthMultiplier* Time.deltaTime;
@@ -57,7 +56,7 @@ public class CharacterController : MonoBehaviour
         //Kleiner werden
         if(shadowCounter <= 0 && !isInSafeArea){
             float shrinkMultiplier = 0.3f + 1.691f* (Mathf.Pow(size-3f, 2f)/(Mathf.Pow(size-3f, 2f)+13.7f))*(1-0.625f*growthMultiplier);
-            transform.localScale -= Vector3.one * shrinkMultiplier * Time.deltaTime;
+            transform.localScale -= Vector3.one * shrinkMultiplier * (fastGrow ? 0.5f : 1f) * Time.deltaTime;
         }
 
 
@@ -77,7 +76,7 @@ public class CharacterController : MonoBehaviour
         }
 
         //Bewegen
-        transform.Translate(momentum * speed * Time.deltaTime);
+        transform.Translate(momentum * speed * Time.deltaTime * (fastGrow ? 0.5f : 1f), Space.World);
 
 
 
