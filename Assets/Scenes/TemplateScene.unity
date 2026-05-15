@@ -6464,7 +6464,7 @@ GameObject:
   - component: {fileID: 504161234}
   m_Layer: 0
   m_Name: PolyShape
-  m_TagString: Untagged
+  m_TagString: grapple
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7724,7 +7724,7 @@ GameObject:
   - component: {fileID: 557846177}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: grapple
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

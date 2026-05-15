@@ -206,7 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff3b832ef169a6e4e9062c05581ab5a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hook
-  hookforce: 90
+  hookforce: 120
   grappleTag: grapple
 --- !u!1 &8542012854131430630
 GameObject:
