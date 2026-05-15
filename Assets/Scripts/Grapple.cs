@@ -76,7 +76,6 @@ public class Grapple : MonoBehaviour
         if(hook == null) return;
         Destroy(hook.gameObject);
         hook = null;
-        isDashing = false;
     }
 
     private IEnumerator DestroyHookAfterLifetime()

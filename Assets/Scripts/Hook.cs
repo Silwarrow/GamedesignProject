@@ -42,12 +42,8 @@ public class Hook : MonoBehaviour
             return;
         }
 
-        Vector3[] positions = new Vector3[]
-        {
-            transform.position,
-            grapple.transform.position
-        };
-        lineRenderer.SetPositions(positions);
+        lineRenderer.SetPosition(0, transform.position);
+        lineRenderer.SetPosition(1, grapple.transform.position);
     }
     
     private void OnTriggerEnter(Collider other)
