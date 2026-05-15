@@ -91,34 +91,11 @@ public class Grapple : MonoBehaviour
         Camera cam = Camera.main;
         if (cam == null) return false;
 
+        // Option 1 (finalized): project camera ray to player-height plane,
+        // cast player-origin ray toward that point with obstacle detection.
         Ray camRay = cam.ScreenPointToRay(screenPos);
-
-        // Try a camera ray hit first
-        if (Physics.Raycast(camRay, out RaycastHit camHit, Mathf.Infinity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
-        {
-            if (camHit.collider != null && !camHit.collider.CompareTag("Player"))
-            {
-                Vector3 projectedPoint = camHit.point;
-                Vector3 dir = (projectedPoint - shootTransform.position);
-                if (dir.sqrMagnitude <= 0.0001f) return false;
-                dir.Normalize();
-
-                if (Physics.Raycast(shootTransform.position, dir, out RaycastHit playerHit, maxRange, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
-                {
-                    if (playerHit.collider != null && !playerHit.collider.CompareTag("Player"))
-                    {
-                        aimPoint = playerHit.point;
-                        return true;
-                    }
-                }
-
-                aimPoint = shootTransform.position + dir * maxRange;
-                return true;
-            }
-        }
-
-        // Fallback: project camera ray onto horizontal plane at player height
         Plane playerPlane = new Plane(Vector3.up, shootTransform.position);
+        
         if (playerPlane.Raycast(camRay, out float planeDist))
         {
             Vector3 projectedPoint = camRay.GetPoint(planeDist);
@@ -126,11 +103,11 @@ public class Grapple : MonoBehaviour
             if (dir.sqrMagnitude <= 0.0001f) return false;
             dir.Normalize();
 
-            if (Physics.Raycast(shootTransform.position, dir, out RaycastHit playerHit2, maxRange, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(shootTransform.position, dir, out RaycastHit hit, maxRange, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
             {
-                if (playerHit2.collider != null && !playerHit2.collider.CompareTag("Player"))
+                if (hit.collider != null && !hit.collider.CompareTag("Player"))
                 {
-                    aimPoint = playerHit2.point;
+                    aimPoint = hit.point;
                     return true;
                 }
             }

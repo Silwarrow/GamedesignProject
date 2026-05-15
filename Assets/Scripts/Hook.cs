@@ -3,8 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody), typeof(LineRenderer))]
 public class Hook : MonoBehaviour
 {
-    [SerializeField] float hookforce = 25f; // Steuert die Geschwindigkeit des Hook-Projektils, also wie schnell das wandert
-    [SerializeField] string grappleTag = "grapple"; // Jedes Objekt, woran man sich ziehen können soll, braucht dieses Tag, sonst fliegt der Grapple durch
+    public float hookforce = 25f; // Steuert die Geschwindigkeit des Hook-Projektils, also wie schnell das wandert
 
     Grapple grapple;
     Rigidbody rigid;
@@ -53,7 +52,7 @@ public class Hook : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag(grappleTag))
+        if(other.CompareTag("grapple"))
         {
             if (grapple == null) return;
             grapple.StartPull();
