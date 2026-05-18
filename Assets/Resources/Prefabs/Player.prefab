@@ -246,11 +246,13 @@ MonoBehaviour:
   speed: 25
   devOut: 0
   growthRate: 0.2
-  shrinkRate: 0.2
+  maxWallDamagePercentage: 5
   maxSize: 10
   minSize: 1
-  canJump: 0
-  jumpHeight: 5
+  canJump: 1
+  jumpHeight: 75
+  gravity: 200
+  fallMultiplier: 1
 --- !u!135 &3318153087198161342
 SphereCollider:
   m_ObjectHideFlags: 0

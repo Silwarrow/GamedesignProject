@@ -40873,8 +40873,10 @@ MonoBehaviour:
   shrinkRate: 0.6
   minSize: 3
   maxSize: 13
-  canJump: 0
-  jumpHeight: 5
+  canJump: 1
+  jumpHeight: 75
+  gravity: 200
+  fallMultiplier: 1
 --- !u!4 &1479478374
 Transform:
   m_ObjectHideFlags: 0
@@ -45621,7 +45623,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 1387851116}
+  m_Mesh: {fileID: 1704110601}
 --- !u!33 &1671357048
 MeshFilter:
   m_ObjectHideFlags: 10
@@ -46511,7 +46513,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 1387851116}
+  m_Mesh: {fileID: 1890400048}
 --- !u!33 &1689580676
 MeshFilter:
   m_ObjectHideFlags: 10

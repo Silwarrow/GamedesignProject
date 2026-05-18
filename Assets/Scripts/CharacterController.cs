@@ -11,10 +11,13 @@ public class CharacterController : MonoBehaviour
     public float minSize = 1f;
     public bool canJump = false;
     public float jumpHeight = 750f;
+    public float gravity = 25f;
+    public float fallMultiplier = 2f;
 
     private float size;
     private Vector3 momentum = Vector3.zero;
     private Vector3 momentumVelocity = Vector3.zero;
+    private float verticalVelocity = 0f;
     private GameObject PlayerManager;
     private bool isGrounded = false;
     private int shadowCounter = 0;
@@ -71,12 +74,27 @@ public class CharacterController : MonoBehaviour
         //Springen
         if(Input.GetKeyDown(KeyCode.Space) && isGrounded && canJump)
         {
-            momentum.y = jumpHeight/Mathf.Sqrt(size);
+            verticalVelocity = jumpHeight;
             isGrounded = false;
         }
+        
+        // Gravity: Gravitation wird stärker, wenn der Spieler fällt
+        if (!isGrounded)
+        {
+            float appliedGravity = gravity * (verticalVelocity < 0f ? fallMultiplier : 1f);
+            verticalVelocity -= appliedGravity * Time.deltaTime;
+        }
+        else if (verticalVelocity < 0f)
+        {
+            verticalVelocity = 0f;
+        }
+
+
 
         //Bewegen
-        transform.Translate(momentum * speed * Time.deltaTime * (fastGrow ? 0.5f : 1f), Space.World);
+        Vector3 horizontalMovement = momentum * speed * Time.deltaTime * (fastGrow ? 0.5f : 1f);
+        Vector3 verticalMovement = Vector3.up * verticalVelocity * Time.deltaTime;
+        transform.Translate(horizontalMovement + verticalMovement, Space.World);
 
 
 
@@ -154,9 +172,9 @@ public class CharacterController : MonoBehaviour
 
             Vector3 globalHit = hit.collider.transform.TransformPoint(hit.point);
             Vector3 toHit = globalHit - transform.position;
-            if(toHit.y < -(radius-0.05f))
+            float verticalThreshold = radius * 0.6f;
+            if (toHit.y < -verticalThreshold)
             {
-                // Boden unter uns, ignorieren
                 continue;
             }
 
