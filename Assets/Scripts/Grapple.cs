@@ -1,76 +1,51 @@
-using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody))] // Stellt sicher dass Rigidbody am Spieler existiert
 public class Grapple : MonoBehaviour
 {
     [SerializeField] float dashForce = 120f;
     [SerializeField] GameObject hookPrefab;
     [SerializeField] Transform shootTransform;
     [SerializeField] float maxRange = 30f;
-    [SerializeField] float passDistanceThreshold = 1.5f;
 
     Hook hook;
     Rigidbody playerRigidbody;
-    bool isDashing = false;
-    float dashStartDistance = 0f;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         playerRigidbody = GetComponent<Rigidbody>();
-        if(shootTransform == null)
-        {
-            shootTransform = transform;
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(hook == null && Input.GetMouseButtonDown(0))
+        if(hook == null && Input.GetMouseButtonDown(0)) //Linksklick -> Hook schießen
         {
             Vector3 screenPos = Input.mousePosition;
             if (TryResolveAimFromMouse(screenPos, out Vector3 finalAim))
             {
                 shootTransform.LookAt(finalAim);
-                hook = Instantiate(hookPrefab, shootTransform.position, shootTransform.rotation).GetComponent<Hook>();
-                hook.Initialize(this, shootTransform, maxRange);
+                hook = Instantiate(hookPrefab, shootTransform.position, shootTransform.rotation).GetComponent<Hook>(); // Hook-Objekt wird erstellt
+                hook.Initialize(this, shootTransform, maxRange); //Initialisiert den Hook mit Referenz zum Grapple, damit dieser später die Position des Hooks kennt, um die Line zu ziehen, und damit der Hook dem Grapple sagen kann, wann er ein Ziel getroffen hat
             }
         }
-        else if (hook != null && Input.GetMouseButtonDown(1))
+        else if (hook != null && Input.GetMouseButtonDown(1)) //Rechtsklick -> Hook zerstören bevor ankommt
         {
             DestroyHook();
-        }
-
-        // Prüfe, ob der Spieler während des Dashes am Haken vorbeigelaufen ist
-        if (isDashing && hook != null)
-        {
-            float currentDistance = Vector3.Distance(transform.position, hook.transform.position);
-            if (currentDistance > dashStartDistance * passDistanceThreshold)
-            {
-                DestroyHook();
-                isDashing = false;
-            }
         }
     }
 
     public void StartPull()
     {
-        if (hook == null) return;
-
-        Vector3 dashDirection = (hook.transform.position - transform.position).normalized;
-        playerRigidbody.AddForce(dashDirection * dashForce, ForceMode.Impulse);
-
-        // Starte distanzbasiertes Entfernen: nicht sofort zerstören
-        isDashing = true;
-        dashStartDistance = Vector3.Distance(transform.position, hook.transform.position);
+        if (hook == null) return; //Falls der Hook schon zerstört wurde, bevor er ankommt, soll hier nichts passieren
+        Vector3 dashDirection = (hook.transform.position - transform.position).normalized; //Richtung vom Spieler zum Hook, normalisiert damit es nur die Richtung ist ohne Stärke
+        playerRigidbody.AddForce(dashDirection * dashForce, ForceMode.Impulse); //Impulsartiger Dash wird verwendet
     }
 
     private void DestroyHook()
     {
-        if(hook == null) return;
         Destroy(hook.gameObject);
         hook = null;
     }
@@ -79,31 +54,17 @@ public class Grapple : MonoBehaviour
 
     private bool TryResolveAimFromMouse(Vector3 screenPos, out Vector3 aimPoint)
     {
-        aimPoint = shootTransform.position;
-        Camera cam = Camera.main;
-        if (cam == null) return false;
+        aimPoint = shootTransform.position; //Default-Wert, falls etwas schiefgeht damit der Hook nicht in die Luft geschossen wird
 
-        // Wirf einen Strahl vom Spieler in diese Richtung mit Hinderniserkennung.
-        Ray camRay = cam.ScreenPointToRay(screenPos);
-        Plane playerPlane = new Plane(Vector3.up, shootTransform.position);
+        Ray camRay = Camera.main.ScreenPointToRay(screenPos); //Erstellt einen Ray basierend auf geklickten Punkt der genutzten Kamera
+        Plane playerPlane = new(Vector3.up, shootTransform.position); //Erstellt eine horizontale Ebene auf Höhe des Schusses, damit der Spieler auch auf Wände zielen kann, die sich nicht auf der gleichen Höhe befinden, und damit der Hook nicht in die Luft geschossen wird, wenn auf den Boden gezielt wird
         
         if (playerPlane.Raycast(camRay, out float planeDist))
         {
-            Vector3 projectedPoint = camRay.GetPoint(planeDist);
-            Vector3 dir = (projectedPoint - shootTransform.position);
-            if (dir.sqrMagnitude <= 0.0001f) return false;
-            dir.Normalize();
-
-            if (Physics.Raycast(shootTransform.position, dir, out RaycastHit hit, maxRange, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
-            {
-                if (hit.collider != null && !hit.collider.CompareTag("Player"))
-                {
-                    aimPoint = hit.point;
-                    return true;
-                }
-            }
-
-            aimPoint = shootTransform.position + dir * maxRange;
+            Vector3 projectedPoint = camRay.GetPoint(planeDist); //Der Punkt, auf den der Spieler zielt, basierend auf der Schnittstelle des Rays mit der Ebene
+            Vector3 dir = projectedPoint - shootTransform.position; //Richtung vom Schuss zum Zielpunkt
+            dir.Normalize(); //Normalisiert, damit es nur die Richtung ist ohne Stärke
+            aimPoint = shootTransform.position + dir * maxRange; //Der endgültige Zielpunkt, auf den der Hook geschossen wird, basierend auf der Richtung und der maximalen Reichweite, damit der Hook nicht unendlich weit fliegt, wenn auf einen Punkt gezielt wird, der weiter als die maximale Reichweite entfernt ist
             return true;
         }
 

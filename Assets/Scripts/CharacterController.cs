@@ -33,8 +33,8 @@ public class CharacterController : MonoBehaviour
         size = transform.localScale.x;
 
         //Bewegungsrichtung berechnen
-        Vector3 movement = new Vector3( toInt(Input.GetKey(KeyCode.D)) - toInt(Input.GetKey(KeyCode.A)), 0, 
-                                        toInt(Input.GetKey(KeyCode.W)) - toInt(Input.GetKey(KeyCode.S)));
+        Vector3 movement = new( toInt(Input.GetKey(KeyCode.D)) - toInt(Input.GetKey(KeyCode.A)), 0, 
+                                toInt(Input.GetKey(KeyCode.W)) - toInt(Input.GetKey(KeyCode.S)));
 
         //Smooth movement
         float momentumVariable = Mathf.Sqrt((float)Mathf.Pow(size, 1.5f)/10);
