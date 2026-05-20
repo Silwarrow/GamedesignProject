@@ -22,12 +22,9 @@ public class RespawnController : MonoBehaviour
 
     public void RespawnPlayer()
     {
-        // destroy any existing hooks in the scene to avoid orphaned hooks after respawn
+        // Zerstört verbleibenden Hook, damit dieser nicht nach dem Tod weiter existiert, falls vor dem Toot geschossen wurde
         foreach (var h in Object.FindObjectsByType<Hook>(FindObjectsSortMode.None))
-        {
-            if(h != null && h.gameObject != null)
-                Destroy(h.gameObject);
-        }
+            Destroy(h.gameObject); //Alles was mit dem Hook existiert, wird zerstört
 
         GameObject newPlayer = Instantiate(playerPrefab, respawnPoint, respawnRotation);
         newPlayer.transform.localScale = respawnScale;
