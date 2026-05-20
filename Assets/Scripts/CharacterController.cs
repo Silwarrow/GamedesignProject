@@ -3,15 +3,15 @@ using UnityEngine.UI;
 
 public class CharacterController : MonoBehaviour
 {
-    public float speed = 5f;
+    public float speed = 30f;
     public bool devOut = false;
-    public float growthRate = 0.5f;
+    public float growthRate = 0.8f;
     public float maxWallDamagePercentage = 5f;
-    public float maxSize = 10f;
-    public float minSize = 1f;
+    public float maxSize = 13f;
+    public float minSize = 3f;
     public bool canJump = false;
-    public float jumpHeight = 750f;
-    public float gravity = 25f;
+    public float jumpHeight = 27f;
+    public float gravity = 32f;
     public float fallMultiplier = 2f;
 
     private float size;
@@ -147,7 +147,7 @@ public class CharacterController : MonoBehaviour
         }
         if(other.CompareTag("ThickSnow")){
             fastGrow = false;
-            gravity = 25f;
+            gravity = 32f;
         }
     }
 
