@@ -135,6 +135,7 @@ public class CharacterController : MonoBehaviour
         }
         if(other.CompareTag("ThickSnow")){
             fastGrow = true;
+            gravity = 80f;
         }
     }
     void OnTriggerExit(Collider other){
@@ -146,6 +147,7 @@ public class CharacterController : MonoBehaviour
         }
         if(other.CompareTag("ThickSnow")){
             fastGrow = false;
+            gravity = 25f;
         }
     }
 
