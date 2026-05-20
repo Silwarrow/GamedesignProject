@@ -40874,9 +40874,9 @@ MonoBehaviour:
   minSize: 3
   maxSize: 13
   canJump: 1
-  jumpHeight: 75
-  gravity: 200
-  fallMultiplier: 1
+  jumpHeight: 27
+  gravity: 32
+  fallMultiplier: 2
 --- !u!4 &1479478374
 Transform:
   m_ObjectHideFlags: 0

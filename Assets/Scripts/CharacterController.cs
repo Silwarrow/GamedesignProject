@@ -68,8 +68,9 @@ public class CharacterController : MonoBehaviour
         //Canvas Slider anpassen
         meltBar.value = (size - minSize) / (maxSize - minSize) * 200 - 100;
 
-        //Sprungfähigkeit testen
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, size/2 + 0.1f);
+        //Sprungfähigkeit testen: QueryTriggerInteraction.Ignore heißt, dass Trigger, also die shadow areas und safe zones, sowas halt, ignoriert werden.
+        //Physics.DefaultRaycastLayers nutzt die Standard-Layer-Maske von Unity, nicht wichtig für uns, aber sonst kann ich die Methode nicht überladen um den Triggerignore zu verwenden.
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, size / 2 + 0.9f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
 
         //Springen
         if(Input.GetKeyDown(KeyCode.Space) && isGrounded && canJump)
@@ -110,6 +111,7 @@ public class CharacterController : MonoBehaviour
             Debug.Log("Momentum: " + momentum
             + " | Speed: " + momentum.magnitude
             + " | Size: " + size
+            + " | Vertical Velocity: " + verticalVelocity
             + " | Grounded: " + isGrounded
             + " | Shadow Counter: " + shadowCounter
             + " | In Safe Area: " + isInSafeArea

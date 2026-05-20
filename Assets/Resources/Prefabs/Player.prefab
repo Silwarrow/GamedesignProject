@@ -250,9 +250,9 @@ MonoBehaviour:
   maxSize: 10
   minSize: 1
   canJump: 1
-  jumpHeight: 75
-  gravity: 200
-  fallMultiplier: 1
+  jumpHeight: 27
+  gravity: 32
+  fallMultiplier: 2
 --- !u!135 &3318153087198161342
 SphereCollider:
   m_ObjectHideFlags: 0
