@@ -8,6 +8,7 @@ TagManager:
   - Shadow
   - SafeArea
   - ThickSnow
+  - Water
   layers:
   - Default
   - TransparentFX

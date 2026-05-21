@@ -169,7 +169,10 @@ public class CharacterController : MonoBehaviour
         }
         if(other.CompareTag("Water")){
             waterCounter--;
-            gravity = 32f;
+            if(waterCounter <= 0)
+            {
+                gravity = 32f;
+            }
         }
     }
 
