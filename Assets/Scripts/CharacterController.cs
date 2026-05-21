@@ -107,7 +107,7 @@ public class CharacterController : MonoBehaviour
         //Bewegen
         Vector3 horizontalMovement = momentum * speed * Time.deltaTime * 
                                     (fastGrow ? 0.5f : 1f) * 
-                                    (waterCounter==0 ? 1f : 1.5f);
+                                    (waterCounter==0 ? 1f : 1.7f);
         Vector3 verticalMovement = Vector3.up * verticalVelocity * Time.deltaTime;
         transform.Translate(horizontalMovement + verticalMovement, Space.World);
 
@@ -153,7 +153,7 @@ public class CharacterController : MonoBehaviour
         }
         if(other.CompareTag("Water")){
             waterCounter++;
-            gravity = 80f;
+            gravity = 30f;
         }
     }
     void OnTriggerExit(Collider other){
@@ -165,13 +165,13 @@ public class CharacterController : MonoBehaviour
         }
         if(other.CompareTag("ThickSnow")){
             fastGrow = false;
-            gravity = 32f;
+            gravity = 38f;
         }
         if(other.CompareTag("Water")){
             waterCounter--;
             if(waterCounter <= 0)
             {
-                gravity = 32f;
+                gravity = 38f;
             }
         }
     }
