@@ -28,7 +28,7 @@ public class Grapple : MonoBehaviour
             {
                 shootTransform.LookAt(finalAim);
                 hook = Instantiate(hookPrefab, shootTransform.position, shootTransform.rotation).GetComponent<Hook>(); // Hook-Objekt wird erstellt
-                hook.Initialize(this, shootTransform, maxRange); //Initialisiert den Hook mit Referenz zum Grapple, damit dieser später die Position des Hooks kennt, um die Line zu ziehen, und damit der Hook dem Grapple sagen kann, wann er ein Ziel getroffen hat
+                hook.Initialize(this, shootTransform, maxRange);
             }
         }
         else if (hook != null && Input.GetMouseButtonDown(1)) //Rechtsklick -> Hook zerstören bevor ankommt

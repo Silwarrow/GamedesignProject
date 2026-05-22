@@ -1,15 +1,15 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody), typeof(LineRenderer))]
+[RequireComponent(typeof(Rigidbody), typeof(LineRenderer))] //Stellt sicher dass sowohl Rigidbody und LineRenderer am Hook-Objekt existieren, damit es nicht zu Fehlern kommt, wenn der Hook instanziert wird aka Unity nimmt mir programmierarbeit ab
 public class Hook : MonoBehaviour
 {
-    public float hookforce = 25f; // Steuert die Geschwindigkeit des Hook-Projektils, also wie schnell das wandert
+    public float hookforce = 25f; //Steuert die Geschwindigkeit des Hook-Projektils
 
     Grapple grapple;
     Rigidbody rigid;
     LineRenderer lineRenderer;
-    Vector3 spawnPosition;
-    float maxRange; // Reichweite des Grapplinghooks, wenn erreicht -> Hook zerstört
+    Vector3 spawnPosition; //Position, von der der Hook abgeschossen wurde
+    float maxRange;
 
     private void Awake()
     {
@@ -21,8 +21,8 @@ public class Hook : MonoBehaviour
     {
         this.grapple = grapple;
         this.maxRange = maxRange;
-        this.spawnPosition = transform.position;
-        rigid.AddForce(shootTransform.forward * hookforce, ForceMode.Impulse); // Der Hook wird Impuls-artig in die Richtung geschossen, in die der Spieler schaut
+        spawnPosition = transform.position;
+        rigid.AddForce(shootTransform.forward * hookforce, ForceMode.Impulse); //Hook kriegt die Werte des Mausinputs für die Richtung
     }
 
 
@@ -34,23 +34,20 @@ public class Hook : MonoBehaviour
             return;
         }
 
-        // Prüfe ob der Hook die maximale Reichweite überschritten hat ohne ein Grapple-Ziel zu treffen
+        //Prüfe ob der Hook die maximale Reichweite überschritten hat ohne ein Grapple-Ziel zu treffen
         if (Vector3.Distance(transform.position, spawnPosition) > maxRange)
         {
             Destroy(gameObject);
             return;
         }
 
-        lineRenderer.SetPosition(0, transform.position);
-        lineRenderer.SetPosition(1, grapple.transform.position);
+        lineRenderer.SetPosition(0, transform.position); //Setzt den Startpunkt des LineRenderers auf die aktuelle Position des Hooks, damit der Anfang der Line nicht an der Position des Schusses bleibt, wenn der Spieler sich bewegt
+        lineRenderer.SetPosition(1, grapple.transform.position); //Setzt den Endpunkt des LineRenderers auf die aktuelle Position des Grapple-Ziels
     }
     
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("grapple"))
-        {
-            if (grapple == null) return;
+        if (other.CompareTag("grapple") && grapple != null)
             grapple.StartPull();
-        }
     }
 }
