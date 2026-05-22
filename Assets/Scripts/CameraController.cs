@@ -49,7 +49,7 @@ public class CameraController : MonoBehaviour
     [Tooltip("Abstand der Kamera zum Spieler")]
     public float camDistance = 80f;
 
-    [Tooltip("Vertikaler Winkel in Grad (30 = leicht von oben)")]
+    [Tooltip("Vertikaler Winkel in Grad (60 = von oben)")]
     public float camAngleDegrees = 60f;
 
     [Header("Rail")]
@@ -88,6 +88,7 @@ public class CameraController : MonoBehaviour
         if (allRails.Length == 0)
             Debug.LogWarning("CameraController: Keine Rails mit Tag 'CamRail' gefunden.");
 
+
         // Startposition setzen
         if (activeRail != null)
         {
@@ -102,7 +103,7 @@ public class CameraController : MonoBehaviour
     {
         if (player == null) return;
 
-        // Cooldown runterzählen
+        // Übergangs-Cooldown runterzählen
         if (blendCooldown > 0f)
             blendCooldown -= Time.deltaTime;
 
@@ -129,19 +130,19 @@ public class CameraController : MonoBehaviour
     // Modus-Handler
 
     private void HandleRail()
-{
-    if (activeRail == null) return;
-
-    Vector3 targetPos = GetNearestPointOnRail(activeRail);
+    {
+        if (activeRail == null) return;
+        
+        Vector3 targetPos = GetNearestPointOnRail(activeRail);
     
-    transform.position = Vector3.MoveTowards(
-        transform.position,
-        targetPos,
-        railFollowSpeed * Time.deltaTime
-    );
+        transform.position = Vector3.MoveTowards(
+            transform.position,
+            targetPos,
+            railFollowSpeed * Time.deltaTime
+        );
     
-    transform.rotation = ComputeRotation(transform.position);
-}
+        transform.rotation = ComputeRotation(transform.position);
+    }
 
     private void HandleToOpen()
     {
@@ -221,7 +222,7 @@ public class CameraController : MonoBehaviour
 
     /// Findet die nächste Spline zum Spieler und setzt activeRail.
     private void UpdateActiveRail()
-{
+    {
     if (allRails == null || allRails.Length == 0) return;
     if (player == null) return;
 
@@ -233,6 +234,7 @@ public class CameraController : MonoBehaviour
     float bestDist = float.MaxValue;
     SplineContainer best = null;
 
+    //Allen Rails durchgehen und die nächste zum Suchpunkt finden
     foreach (var rail in allRails)
     {
         if (rail == null) continue;
@@ -273,10 +275,8 @@ public class CameraController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("CamZone")) return;
-        Debug.Log("CameraController: Trigger entered in mode: " + mode);
         if (blendCooldown > 0f) return;
 
-        Debug.Log("CameraController: Trigger entered in mode: " + mode);
         if (mode == CameraMode.Rail || mode == CameraMode.ToRail)
         {
             cachedPositionA = transform.position;
