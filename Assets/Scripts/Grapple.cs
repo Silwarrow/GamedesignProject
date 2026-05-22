@@ -3,10 +3,10 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))] // Stellt sicher dass Rigidbody am Spieler existiert
 public class Grapple : MonoBehaviour
 {
-    [SerializeField] float dashForce = 120f;
-    [SerializeField] GameObject hookPrefab;
-    [SerializeField] Transform shootTransform;
-    [SerializeField] float maxRange = 30f;
+    public float dashForce = 50f;
+    public GameObject hookPrefab;
+    public Transform shootTransform;
+    public float maxRange = 50f;
 
     Hook hook;
     Rigidbody playerRigidbody;
@@ -61,8 +61,7 @@ public class Grapple : MonoBehaviour
         
         if (playerPlane.Raycast(camRay, out float planeDist))
         {
-            Vector3 projectedPoint = camRay.GetPoint(planeDist); //Der Punkt, auf den der Spieler zielt, basierend auf der Schnittstelle des Rays mit der Ebene
-            Vector3 dir = projectedPoint - shootTransform.position; //Richtung vom Schuss zum Zielpunkt
+            Vector3 dir = camRay.GetPoint(planeDist) - shootTransform.position; //Richtung vom Schuss zum Zielpunkt
             dir.Normalize(); //Normalisiert, damit es nur die Richtung ist ohne Stärke
             aimPoint = shootTransform.position + dir * maxRange; //Der endgültige Zielpunkt, auf den der Hook geschossen wird, basierend auf der Richtung und der maximalen Reichweite, damit der Hook nicht unendlich weit fliegt, wenn auf einen Punkt gezielt wird, der weiter als die maximale Reichweite entfernt ist
             return true;
