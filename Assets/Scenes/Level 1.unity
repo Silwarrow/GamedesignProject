@@ -12801,6 +12801,8 @@ MonoBehaviour:
   camDistance: 80
   camAngleDegrees: 60
   railFollowSpeed: 40
+  railSearchOffsetBack: 40
+  railSearchOffsetUp: 100
 --- !u!54 &419576055
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -18873,7 +18875,7 @@ GameObject:
   - component: {fileID: 566270372}
   - component: {fileID: 566270371}
   m_Layer: 0
-  m_Name: Spline
+  m_Name: SplineNormalWay
   m_TagString: CamRail
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18908,9 +18910,9 @@ MonoBehaviour:
   - m_EditModeType: 1
     m_Knots:
     - Position:
-        x: 0
-        y: 0
-        z: 0
+        x: 650
+        y: 100
+        z: 270
       TangentIn:
         x: 0
         y: 0
@@ -18926,9 +18928,9 @@ MonoBehaviour:
           z: -0.00000004582139
           w: 0.7045641
     - Position:
-        x: 270
-        y: 0
-        z: 0
+        x: 920
+        y: 100
+        z: 270
       TangentIn:
         x: 0
         y: 0
@@ -18944,9 +18946,9 @@ MonoBehaviour:
           z: -0.010162021
           w: 0.9171246
     - Position:
-        x: 270
-        y: 0
-        z: 110
+        x: 920
+        y: 100
+        z: 380
       TangentIn:
         x: 0
         y: 0
@@ -18962,9 +18964,9 @@ MonoBehaviour:
           z: -0.010160552
           w: 0.91474104
     - Position:
-        x: 670
-        y: 0
-        z: 110
+        x: 1320
+        y: 100
+        z: 380
       TangentIn:
         x: 0
         y: 0
@@ -19008,7 +19010,7 @@ Transform:
   m_GameObject: {fileID: 566270370}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 650, y: 100, z: 270}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -29604,7 +29606,7 @@ GameObject:
   - component: {fileID: 944752545}
   - component: {fileID: 944752546}
   m_Layer: 0
-  m_Name: Spline
+  m_Name: SplineBeginning
   m_TagString: CamRail
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45729,7 +45731,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RespawnController
   playerPrefab: {fileID: 0}
-  camera: {fileID: 0}
   respawnPoint: {x: 0, y: 10.11, z: 0}
   respawnRotation: {x: 0, y: 0, z: 0, w: 1}
   respawnScale: {x: 8, y: 8, z: 8}
@@ -70726,9 +70727,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 566270372}
-  - {fileID: 607800286}
   - {fileID: 944752545}
+  - {fileID: 607800286}
+  - {fileID: 566270372}
+  - {fileID: 2101457625}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &2087188097
@@ -70909,6 +70911,158 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &2101457624
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2101457625}
+  - component: {fileID: 2101457626}
+  m_Layer: 0
+  m_Name: Spline
+  m_TagString: CamRail
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2101457625
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101457624}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2070450970}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2101457626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101457624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dab5c7d4c32e743048dfca98e2d5914f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Splines::UnityEngine.Splines.SplineContainer
+  m_Spline:
+    m_EditModeType: 1
+    m_Knots: []
+    m_MetaData: []
+    m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
+  m_Splines:
+  - m_EditModeType: 1
+    m_Knots:
+    - Position:
+        x: 650
+        y: 100
+        z: 200
+      TangentIn:
+        x: 0
+        y: 0
+        z: 0
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0
+      Rotation:
+        value:
+          x: -0.0007387562
+          y: 0.712186
+          z: 0.00074948615
+          w: 0.7019901
+    - Position:
+        x: 1100
+        y: 100
+        z: 200
+      TangentIn:
+        x: 0
+        y: 0
+        z: 0
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0
+      Rotation:
+        value:
+          x: 0.010417863
+          y: 0.38097307
+          z: -0.006834478
+          w: 0.92450225
+    - Position:
+        x: 1100
+        y: 100
+        z: 380
+      TangentIn:
+        x: 0
+        y: 0
+        z: 0
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0
+      Rotation:
+        value:
+          x: 0.011204524
+          y: 0.3713743
+          z: -0.006247875
+          w: 0.9283946
+    - Position:
+        x: 1310
+        y: 100
+        z: 380
+      TangentIn:
+        x: 0
+        y: 0
+        z: 0
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0
+      Rotation:
+        value:
+          x: -0.00000014228294
+          y: 0.6975113
+          z: 0.00000013849791
+          w: 0.71657383
+    m_MetaData:
+    - Mode: 1
+      Tension: 0.5
+    - Mode: 1
+      Tension: 0.5
+    - Mode: 1
+      Tension: 0.5
+    - Mode: 1
+      Tension: 0.5
+    m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
+  m_Knots:
+    m_KnotsLink: []
 --- !u!1 &2103342869
 GameObject:
   m_ObjectHideFlags: 0

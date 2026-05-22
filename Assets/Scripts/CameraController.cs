@@ -56,6 +56,13 @@ public class CameraController : MonoBehaviour
     [Tooltip("Geschwindigkeit mit der die Kamera dem Rail-Punkt folgt")]
     public float railFollowSpeed = 40f;
 
+    [Header("Rail Suche")]
+    [Tooltip("Wie weit hinter dem Spieler der Suchpunkt liegt")]
+    public float railSearchOffsetBack = 40f;
+
+    [Tooltip("Wie weit über dem Spieler der Suchpunkt liegt")]
+    public float railSearchOffsetUp = 100f;
+
     // Awake – Initialisierung
 
     public static CameraController Instance { get; private set; }
@@ -76,6 +83,7 @@ public class CameraController : MonoBehaviour
                 Debug.LogWarning($"CameraController: '{obj.name}' hat Tag 'CamRail' aber keinen SplineContainer.");
         }
         allRails = railList.ToArray();
+        Debug.Log($"CameraController: {allRails.Length} Rail(s) gefunden.");
 
         if (allRails.Length == 0)
             Debug.LogWarning("CameraController: Keine Rails mit Tag 'CamRail' gefunden.");
@@ -213,42 +221,50 @@ public class CameraController : MonoBehaviour
 
     /// Findet die nächste Spline zum Spieler und setzt activeRail.
     private void UpdateActiveRail()
+{
+    if (allRails == null || allRails.Length == 0) return;
+    if (player == null) return;
+
+    // Suchpunkt hinter und über dem Spieler
+    Vector3 searchPoint = player.position
+        + Vector3.up * railSearchOffsetUp
+        + Vector3.back * railSearchOffsetBack;
+
+    float bestDist = float.MaxValue;
+    SplineContainer best = null;
+
+    foreach (var rail in allRails)
     {
-        if (allRails == null || allRails.Length == 0) return;
-        if (player == null) return; // <-- das fehlte
-    
-        float bestDist = float.MaxValue;
-        SplineContainer best = null;
-    
-        foreach (var rail in allRails)
+        if (rail == null) continue;
+        Vector3 nearest = GetNearestPointOnRailFromPoint(rail, searchPoint);
+        float dist = Vector3.SqrMagnitude(nearest - searchPoint);
+        if (dist < bestDist)
         {
-            if (rail == null) continue;
-            Vector3 nearest = GetNearestPointOnRail(rail);
-            float dist = Vector3.SqrMagnitude(nearest - player.position);
-            if (dist < bestDist)
-            {
-                bestDist = dist;
-                best = rail;
-            }
+            bestDist = dist;
+            best = rail;
         }
-    
-        activeRail = best;
     }
+
+    activeRail = best;
+}
 
     /// Gibt den nächsten Punkt auf einer Spline zum Spieler zurück (Weltkoordinaten).
     private Vector3 GetNearestPointOnRail(SplineContainer splineContainer)
     {
-        // Spielerposition in lokalem Raum der Spline
-        Vector3 localPlayerPos = splineContainer.transform.InverseTransformPoint(player.position + new Vector3(0,50,-40));
-
+        return GetNearestPointOnRailFromPoint(splineContainer, player.position + new Vector3(0f, railSearchOffsetUp, -railSearchOffsetBack));
+    }
+    
+    private Vector3 GetNearestPointOnRailFromPoint(SplineContainer splineContainer, Vector3 worldPoint)
+    {
+        Vector3 localPoint = splineContainer.transform.InverseTransformPoint(worldPoint);
+    
         SplineUtility.GetNearestPoint(
             splineContainer.Spline,
-            (float3)localPlayerPos,
+            (float3)localPoint,
             out float3 nearestLocal,
             out float t
         );
-
-        // Zurück in Weltkoordinaten
+    
         return splineContainer.transform.TransformPoint((Vector3)nearestLocal);
     }
 

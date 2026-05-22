@@ -188,9 +188,7 @@ public class CharacterController : MonoBehaviour
             float hitSpeed = new Vector3(direction.x, 0, direction.z).magnitude;
             if(angle > 45f && hitSpeed > 0.4f && !isInSafeArea)
             {
-                Debug.Log("Kollision mit " + hit.collider.name + " | Winkel: " + angle + " | Geschwindigkeit: " + hitSpeed);
                 //je nach geschwindigkeit soo der ball zwischen 0-5% der aktuellen größe schrumpfen
-                Debug.Log("Größe vor Kollision: " + (size * Vector3.one - Vector3.one * hitSpeed * (maxWallDamagePercentage / 100f) * size));
                 transform.localScale -= Vector3.one * hitSpeed * (maxWallDamagePercentage / 100f) * size;
             }
 
