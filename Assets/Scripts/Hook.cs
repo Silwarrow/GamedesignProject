@@ -41,7 +41,7 @@ public class Hook : MonoBehaviour
             return;
         }
 
-        lineRenderer.SetPosition(0, transform.position); //Setzt den Startpunkt des LineRenderers auf die aktuelle Position des Hooks, damit der Anfang der Line nicht an der Position des Schusses bleibt, wenn der Spieler sich bewegt
+        lineRenderer.SetPosition(0, transform.position); //Passt den Startpunkt des LineRenderers an, damit der Anfang der Line nicht an der Position des Schusses bleibt, wenn der Spieler sich bewegt
         lineRenderer.SetPosition(1, grapple.transform.position); //Setzt den Endpunkt des LineRenderers auf die aktuelle Position des Grapple-Ziels
     }
     

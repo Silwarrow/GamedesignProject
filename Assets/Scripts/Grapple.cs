@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))] // Stellt sicher dass Rigidbody am Spieler existiert
+[RequireComponent(typeof(Rigidbody))] //Stellt sicher dass Rigidbody am Spieler existiert
 public class Grapple : MonoBehaviour
 {
     public float dashForce = 50f;
@@ -39,7 +39,7 @@ public class Grapple : MonoBehaviour
 
     public void StartPull()
     {
-        if (hook == null) return; //Falls der Hook schon zerstört wurde, bevor er ankommt, soll hier nichts passieren
+        if (hook == null) return;
         Vector3 dashDirection = (hook.transform.position - transform.position).normalized; //Richtung vom Spieler zum Hook, normalisiert damit es nur die Richtung ist ohne Stärke
         playerRigidbody.AddForce(dashDirection * dashForce, ForceMode.Impulse); //Impulsartiger Dash wird verwendet
     }
@@ -54,7 +54,7 @@ public class Grapple : MonoBehaviour
 
     private bool TryResolveAimFromMouse(Vector3 screenPos, out Vector3 aimPoint)
     {
-        aimPoint = shootTransform.position; //Default-Wert, falls etwas schiefgeht damit der Hook nicht in die Luft geschossen wird
+        aimPoint = shootTransform.position;
 
         Ray camRay = Camera.main.ScreenPointToRay(screenPos); //Erstellt einen Ray basierend auf geklickten Punkt der genutzten Kamera
         Plane playerPlane = new(Vector3.up, shootTransform.position); //Erstellt eine horizontale Ebene auf Höhe des Schusses, damit der Spieler auch auf Wände zielen kann, die sich nicht auf der gleichen Höhe befinden, und damit der Hook nicht in die Luft geschossen wird, wenn auf den Boden gezielt wird
