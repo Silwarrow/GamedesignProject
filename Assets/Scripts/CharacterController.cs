@@ -34,6 +34,7 @@ public class CharacterController : MonoBehaviour
     private bool isInSafeArea = false;
     private int shadowCounter = 0;
     private int waterCounter = 0;
+    private bool waterSpeed = false;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -91,6 +92,16 @@ public class CharacterController : MonoBehaviour
             isGrounded = false;
         }
         
+        if(isGrounded && waterCounter <= 0)
+        {
+            waterSpeed = false;
+            Debug.Log("On Ground");
+        }else if(waterCounter > 0 && !waterSpeed)
+        {
+            waterSpeed = true;
+            Debug.Log("In Water");
+        }
+
         // Gravity: Gravitation wird stärker, wenn der Spieler fällt
         if (!isGrounded)
         {
@@ -107,7 +118,8 @@ public class CharacterController : MonoBehaviour
         //Bewegen
         Vector3 horizontalMovement = momentum * speed * Time.deltaTime * 
                                     (fastGrow ? 0.5f : 1f) * 
-                                    (waterCounter==0 ? 1f : 1.7f);
+                                    (waterSpeed ? 1.7f : 1f);
+                                    Debug.Log(horizontalMovement);
         Vector3 verticalMovement = Vector3.up * verticalVelocity * Time.deltaTime;
         transform.Translate(horizontalMovement + verticalMovement, Space.World);
 
@@ -153,7 +165,6 @@ public class CharacterController : MonoBehaviour
         }
         if(other.CompareTag("Water")){
             waterCounter++;
-            gravity = 30f;
         }
     }
     void OnTriggerExit(Collider other){
@@ -169,10 +180,6 @@ public class CharacterController : MonoBehaviour
         }
         if(other.CompareTag("Water")){
             waterCounter--;
-            if(waterCounter <= 0)
-            {
-                gravity = 38f;
-            }
         }
     }
 
