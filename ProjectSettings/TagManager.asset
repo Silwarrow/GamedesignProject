@@ -8,6 +8,8 @@ TagManager:
   - Shadow
   - SafeArea
   - ThickSnow
+  - CamRail
+  - CamZone
   layers:
   - Default
   - TransparentFX
