@@ -348,3 +348,4 @@ MonoBehaviour:
   hookPrefab: {fileID: 5526979125605417114, guid: b92b063722fa91f1ca2208ce9646caa5, type: 3}
   shootTransform: {fileID: 8188404030269918724}
   maxRange: 50
+  grappleCooldown: 5

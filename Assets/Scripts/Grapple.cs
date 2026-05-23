@@ -1,15 +1,17 @@
+using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))] //Stellt sicher dass Rigidbody am Spieler existiert
 public class Grapple : MonoBehaviour
 {
     public float dashForce = 50f;
     public GameObject hookPrefab;
     public Transform shootTransform;
     public float maxRange = 50f;
+    public float grappleCooldown = 5.0f;
 
     Hook hook;
     Rigidbody playerRigidbody;
+    bool isCoolingDown = false;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -21,7 +23,7 @@ public class Grapple : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(hook == null && Input.GetMouseButtonDown(0)) //Linksklick -> Hook schießen
+        if(hook == null && !isCoolingDown && Input.GetMouseButtonDown(0)) //Linksklick -> Hook schießen
         {
             Vector3 screenPos = Input.mousePosition;
             if (TryResolveAimFromMouse(screenPos, out Vector3 finalAim))
@@ -29,6 +31,7 @@ public class Grapple : MonoBehaviour
                 shootTransform.LookAt(finalAim);
                 hook = Instantiate(hookPrefab, shootTransform.position, shootTransform.rotation).GetComponent<Hook>(); // Hook-Objekt wird erstellt
                 hook.Initialize(this, shootTransform, maxRange);
+                StartCoroutine(GrappleCooldownRoutine());
             }
         }
         else if (hook != null && Input.GetMouseButtonDown(1)) //Rechtsklick -> Hook zerstören bevor ankommt
@@ -48,6 +51,13 @@ public class Grapple : MonoBehaviour
     {
         Destroy(hook.gameObject);
         hook = null;
+    }
+
+    private IEnumerator GrappleCooldownRoutine()
+    {
+        isCoolingDown = true;
+        yield return new WaitForSeconds(grappleCooldown);
+        isCoolingDown = false;
     }
 
     
