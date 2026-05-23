@@ -9,6 +9,9 @@ TagManager:
   - SafeArea
   - ThickSnow
   - grapple
+  - Water
+  - CamRail
+  - CamZone
   layers:
   - Default
   - TransparentFX

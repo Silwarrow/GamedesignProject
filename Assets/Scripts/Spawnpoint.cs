@@ -25,7 +25,6 @@ public class Spawnpoint : MonoBehaviour
 
             CharacterController characterController = other.GetComponent<CharacterController>();
             respawnController.growthRate = characterController.growthRate;
-            respawnController.shrinkRate = characterController.shrinkRate;
             respawnController.minSize = characterController.minSize;
             respawnController.maxSize = characterController.maxSize;
             respawnController.canJump = characterController.canJump;

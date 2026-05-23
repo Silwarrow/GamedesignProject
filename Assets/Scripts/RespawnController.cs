@@ -14,6 +14,10 @@ public class RespawnController : MonoBehaviour
     public float maxSize = 10f;
     public bool canJump = false;
     public float jumpHeight = 5f;
+    public float gravity = 25f;
+    public float fallMultiplier = 2f;
+
+
     private void Awake() {
         playerPrefab = Resources.Load<GameObject>("Prefabs/Player");
         Destroy(GameObject.FindGameObjectWithTag("Player"));
@@ -35,11 +39,14 @@ public class RespawnController : MonoBehaviour
 
         newController.speed = speed;
         newController.growthRate = growthRate;
-        newController.shrinkRate = shrinkRate;
         newController.minSize = minSize;
         newController.maxSize = maxSize;
         newController.canJump = canJump;
         newController.jumpHeight = jumpHeight;
+        newController.gravity = gravity;
+        newController.fallMultiplier = fallMultiplier;
+
+        CameraController.Instance?.PlayerRespawned(newPlayer);
     }
 
 }
