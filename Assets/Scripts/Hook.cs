@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody), typeof(LineRenderer))] //Stellt sicher dass sowohl Rigidbody und LineRenderer am Hook-Objekt existieren, damit es nicht zu Fehlern kommt, wenn der Hook instanziert wird aka Unity nimmt mir programmierarbeit ab
 public class Hook : MonoBehaviour
 {
     public float hookforce = 25f; //Steuert die Geschwindigkeit des Hook-Projektils
