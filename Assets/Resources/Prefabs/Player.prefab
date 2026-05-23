@@ -201,9 +201,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 4634756052985132674}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
   - {fileID: 8188404030269918724}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -279,11 +278,13 @@ MonoBehaviour:
   speed: 25
   devOut: 0
   growthRate: 0.2
-  shrinkRate: 0.2
+  maxWallDamagePercentage: 5
   maxSize: 10
   minSize: 1
-  canJump: 0
-  jumpHeight: 5
+  canJump: 1
+  jumpHeight: 27
+  gravity: 32
+  fallMultiplier: 2
 --- !u!135 &3318153087198161342
 SphereCollider:
   m_ObjectHideFlags: 0

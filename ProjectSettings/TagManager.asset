@@ -8,6 +8,9 @@ TagManager:
   - Shadow
   - SafeArea
   - ThickSnow
+  - Water
+  - CamRail
+  - CamZone
   - grapple
   layers:
   - Default

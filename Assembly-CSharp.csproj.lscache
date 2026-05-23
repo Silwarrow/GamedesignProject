@@ -21,7 +21,11 @@ ProjectAssetsFile=<PATH>Temp/obj/Assembly-CSharp/project.assets.json
 RootNamespace=
 RunAnalyzers=
 RunAnalyzersDuringLiveAnalysis=
+<<<<<<< HEAD
 SolutionPath=*Undefined*
+=======
+SolutionPath=<PATH>GamedesignProject.slnx
+>>>>>>> main
 TargetFrameworkIdentifier=.NETStandard
 TargetPath=<PATH>Temp/bin/Debug/Assembly-CSharp.dll
 TargetRefPath=
@@ -52,9 +56,13 @@ TemporaryDependencyNodeTargetIdentifier=netstandard2.1
 [sourceFiles]
 Assets/Scripts/
  CharacterController.cs
+<<<<<<< HEAD
  Grapple.cs
  HandleSizeController.cs
  Hook.cs
+=======
+ HandleSizeController.cs
+>>>>>>> main
  MainMenu.cs
  RespawnController.cs
  SmeltingWall.cs
@@ -99,7 +107,20 @@ Assets/TutorialInfo/Scripts/Readme.cs
 Temp/obj/Assembly-CSharp/.NETStandard,Version=v2.1.AssemblyAttributes.cs
 
 [metadataReferences]
+<<<<<<< HEAD
 ../../../../../Unity/Hub/Editor/6000.3.11f1/Editor/Data/Managed/UnityEngine/
+=======
+../../../../../../Dokumente/RWU/semester_4/gamedesign/project/GamedesignProject/Library/PackageCache/com.unity.collections@aea9d3bd5e19/
+ Unity.Collections.LowLevel.ILSupport/Unity.Collections.LowLevel.ILSupport.dll
+ Unity.Collections.Tests/
+  System.IO.Hashing/System.IO.Hashing.dll
+  System.Runtime.CompilerServices.Unsafe/System.Runtime.CompilerServices.Unsafe.dll
+../../../../../../Dokumente/RWU/semester_4/gamedesign/project/GamedesignProject/Library/PackageCache/
+ com.unity.ext.nunit@ec2d0043d6fc/net40/unity-custom/nunit.framework.dll
+ com.unity.nuget.mono-cecil@ecb9724e46ff/Mono.Cecil.dll
+ com.unity.visualscripting@eb6004dcc707/Runtime/VisualScripting.Flow/Dependencies/NCalc/Unity.VisualScripting.Antlr3.Runtime.dll
+../../../../../../Unity/Hub/Editor/6000.3.11f1/Editor/Data/Managed/UnityEngine/
+>>>>>>> main
  UnityEditor.AccessibilityModule.dll
  UnityEditor.AdaptivePerformanceModule.dll
  UnityEditor.AssetComplianceModule.dll
@@ -231,7 +252,11 @@ Temp/obj/Assembly-CSharp/.NETStandard,Version=v2.1.AssemblyAttributes.cs
  UnityEngine.VRModule.dll
  UnityEngine.WindModule.dll
  UnityEngine.XRModule.dll
+<<<<<<< HEAD
 ../../../../../Unity/Hub/Editor/6000.3.11f1/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/
+=======
+../../../../../../Unity/Hub/Editor/6000.3.11f1/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/
+>>>>>>> main
  mscorlib.dll
  System.ComponentModel.Composition.dll
  System.Core.dll
@@ -249,7 +274,11 @@ Temp/obj/Assembly-CSharp/.NETStandard,Version=v2.1.AssemblyAttributes.cs
  System.Xml.dll
  System.Xml.Linq.dll
  System.Xml.Serialization.dll
+<<<<<<< HEAD
 ../../../../../Unity/Hub/Editor/6000.3.11f1/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/
+=======
+../../../../../../Unity/Hub/Editor/6000.3.11f1/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/
+>>>>>>> main
  Microsoft.Win32.Primitives.dll
  System.AppContext.dll
  System.Buffers.dll
@@ -353,6 +382,7 @@ Temp/obj/Assembly-CSharp/.NETStandard,Version=v2.1.AssemblyAttributes.cs
  System.Xml.XmlSerializer.dll
  System.Xml.XPath.dll
  System.Xml.XPath.XDocument.dll
+<<<<<<< HEAD
 ../../../../../Unity/Hub/Editor/6000.3.11f1/Editor/Data/NetStandard/
  Extensions/2.0.0/System.Runtime.InteropServices.WindowsRuntime.dll
  ref/2.1.0/netstandard.dll
@@ -366,6 +396,18 @@ Library/PackageCache/
  com.unity.nuget.mono-cecil@ecb9724e46ff/Mono.Cecil.dll
  com.unity.visualscripting@eb6004dcc707/Runtime/VisualScripting.Flow/Dependencies/NCalc/Unity.VisualScripting.Antlr3.Runtime.dll
 Library/ScriptAssemblies/
+=======
+../../../../../../Unity/Hub/Editor/6000.3.11f1/Editor/Data/NetStandard/
+ Extensions/2.0.0/System.Runtime.InteropServices.WindowsRuntime.dll
+ ref/2.1.0/netstandard.dll
+../../../../../../Unity/Hub/Editor/6000.3.11f1/Editor/Data/PlaybackEngines/AndroidPlayer/
+ Unity.Android.Gradle.dll
+ Unity.Android.Types.dll
+../../../../../../Unity/Hub/Editor/6000.3.11f1/Editor/Data/PlaybackEngines/VisionOSPlayer/
+ UnityEditor.Apple.Extensions.Common.dll
+ UnityEditor.iOS.Extensions.Xcode.dll
+Temp/bin/Debug/
+>>>>>>> main
  PPv2URPConverters.dll
  Unity.AI.Navigation.dll
  Unity.AI.Navigation.Editor.ConversionSystem.dll
@@ -385,8 +427,17 @@ Library/ScriptAssemblies/
  Unity.PlasticSCM.Editor.dll
  Unity.ProBuilder.AddOns.Editor.dll
  Unity.ProBuilder.AssetIdRemapUtility.dll
+<<<<<<< HEAD
  Unity.ProBuilder.dll
  Unity.ProBuilder.Editor.dll
+=======
+ Unity.ProBuilder.Csg.dll
+ Unity.ProBuilder.dll
+ Unity.ProBuilder.Editor.dll
+ Unity.ProBuilder.KdTree.dll
+ Unity.ProBuilder.Poly2Tri.dll
+ Unity.ProBuilder.Stl.dll
+>>>>>>> main
  Unity.Rendering.LightTransport.Editor.dll
  Unity.RenderPipeline.Universal.ShaderLibrary.dll
  Unity.RenderPipelines.Core.Editor.dll
@@ -406,6 +457,10 @@ Library/ScriptAssemblies/
  Unity.Searcher.Editor.dll
  Unity.Settings.Editor.dll
  Unity.ShaderGraph.Editor.dll
+<<<<<<< HEAD
+=======
+ Unity.ShaderGraph.Utilities.dll
+>>>>>>> main
  Unity.Sysroot.Linux_x86_64.dll
  Unity.SysrootPackage.Editor.dll
  Unity.TextMeshPro.dll
@@ -423,12 +478,23 @@ Library/ScriptAssemblies/
  Unity.VisualScripting.State.dll
  Unity.VisualScripting.State.Editor.dll
  Unity.VisualStudio.Editor.dll
+<<<<<<< HEAD
  UnityEditor.UI.Analytics.dll
  UnityEditor.UI.dll
  UnityEngine.UI.dll
 
 [analyzerReferences]
 ../../../../../
+=======
+ UnityEditor.TestRunner.dll
+ UnityEditor.UI.Analytics.dll
+ UnityEditor.UI.dll
+ UnityEngine.TestRunner.dll
+ UnityEngine.UI.dll
+
+[analyzerReferences]
+../../../../../../
+>>>>>>> main
  .vscode/extensions/visualstudiotoolsforunity.vstuc-1.2.2/Analyzers/Microsoft.Unity.Analyzers.dll
  Unity/Hub/Editor/6000.3.11f1/Editor/Data/Tools/BuildPipeline/Unity.SourceGenerators/
   Unity.Properties.SourceGenerator.dll
