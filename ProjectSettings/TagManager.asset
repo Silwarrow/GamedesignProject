@@ -8,6 +8,7 @@ TagManager:
   - Shadow
   - SafeArea
   - ThickSnow
+  - Water
   - CamRail
   - CamZone
   layers:

@@ -3,12 +3,18 @@ using UnityEngine.UI;
 
 public class CharacterController : MonoBehaviour
 {
+
+    //public Variables
     public float speed = 30f;
     public bool devOut = false;
-    public float growthRate = 0.8f;
     public float maxWallDamagePercentage = 5f;
+    
+    [Header("Size Limits")]
+    public float growthRate = 0.8f;
     public float maxSize = 13f;
     public float minSize = 3f;
+
+    [Header("Jump Settings")]
     public bool canJump = false;
     public float jumpHeight = 27f;
     public float gravity = 32f;
@@ -18,12 +24,19 @@ public class CharacterController : MonoBehaviour
     private Vector3 momentum = Vector3.zero;
     private Vector3 momentumVelocity = Vector3.zero;
     private float verticalVelocity = 0f;
-    private GameObject PlayerManager;
     private bool isGrounded = false;
-    private int shadowCounter = 0;
-    private bool isInSafeArea = false;
+    
+    //Scene Objects
     private UnityEngine.UI.Slider meltBar;
+    private GameObject PlayerManager;
+    //Area Tags
     private bool fastGrow = false;
+    private bool isInSafeArea = false;
+    private int shadowCounter = 0;
+    private int waterCounter = 0;
+    private bool waterSpeed = false;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake(){
         PlayerManager = FindFirstObjectByType<RespawnController>().gameObject;
@@ -79,6 +92,16 @@ public class CharacterController : MonoBehaviour
             isGrounded = false;
         }
         
+        if(isGrounded && waterCounter <= 0)
+        {
+            waterSpeed = false;
+            Debug.Log("On Ground");
+        }else if(waterCounter > 0 && !waterSpeed)
+        {
+            waterSpeed = true;
+            Debug.Log("In Water");
+        }
+
         // Gravity: Gravitation wird stärker, wenn der Spieler fällt
         if (!isGrounded)
         {
@@ -93,7 +116,10 @@ public class CharacterController : MonoBehaviour
 
 
         //Bewegen
-        Vector3 horizontalMovement = momentum * speed * Time.deltaTime * (fastGrow ? 0.5f : 1f);
+        Vector3 horizontalMovement = momentum * speed * Time.deltaTime * 
+                                    (fastGrow ? 0.5f : 1f) * 
+                                    (waterSpeed ? 1.7f : 1f);
+                                    Debug.Log(horizontalMovement);
         Vector3 verticalMovement = Vector3.up * verticalVelocity * Time.deltaTime;
         transform.Translate(horizontalMovement + verticalMovement, Space.World);
 
@@ -137,6 +163,9 @@ public class CharacterController : MonoBehaviour
             fastGrow = true;
             gravity = 80f;
         }
+        if(other.CompareTag("Water")){
+            waterCounter++;
+        }
     }
     void OnTriggerExit(Collider other){
         if (other.CompareTag("Shadow")){
@@ -147,7 +176,10 @@ public class CharacterController : MonoBehaviour
         }
         if(other.CompareTag("ThickSnow")){
             fastGrow = false;
-            gravity = 32f;
+            gravity = 38f;
+        }
+        if(other.CompareTag("Water")){
+            waterCounter--;
         }
     }
 
