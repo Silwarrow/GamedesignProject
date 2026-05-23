@@ -8,10 +8,11 @@ public class Grapple : MonoBehaviour
     public Transform shootTransform;
     public float maxRange = 50f;
     public float grappleCooldown = 5.0f;
+    bool isCoolingDown = false;
+
 
     Hook hook;
     Rigidbody playerRigidbody;
-    bool isCoolingDown = false;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
