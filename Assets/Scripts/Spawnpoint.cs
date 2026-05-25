@@ -29,6 +29,12 @@ public class Spawnpoint : MonoBehaviour
             respawnController.maxSize = characterController.maxSize;
             respawnController.canJump = characterController.canJump;
             respawnController.jumpHeight = characterController.jumpHeight;
+
+            Grapple grapple = other.GetComponent<Grapple>();
+            if (grapple != null)
+            {
+                respawnController.canGrapple = grapple.canGrapple;
+            }
         }
     }
 }

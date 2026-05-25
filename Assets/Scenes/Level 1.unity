@@ -45509,6 +45509,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1479478374}
   - component: {fileID: 1479478373}
+  - component: {fileID: 1479478375}
   m_Layer: 0
   m_Name: PlayerManager
   m_TagString: Untagged
@@ -45537,7 +45538,8 @@ MonoBehaviour:
   shrinkRate: 0.6
   minSize: 3
   maxSize: 13
-  canJump: 1
+  canJump: 0
+  canGrapple: 0
   jumpHeight: 27
   gravity: 32
   fallMultiplier: 2
@@ -45556,6 +45558,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1479478375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1479478372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37ce41c5015b90e2488d64e5ea30a323, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Grapple
+  canGrapple: 0
+  dashForce: 50
+  hookPrefab: {fileID: 5526979125605417114, guid: b92b063722fa91f1ca2208ce9646caa5, type: 3}
+  shootTransform: {fileID: 8188404030269918724, guid: 0a6a727bc53879f54afb0cdc8245e98a, type: 3}
+  maxRange: 50
+  grappleCooldown: 5
 --- !u!1 &1493182183
 GameObject:
   m_ObjectHideFlags: 0

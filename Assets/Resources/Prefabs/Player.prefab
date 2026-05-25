@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4637685220658294745}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.00000003273531, y: 0.3810553, z: -0.000000013491899, w: 0.92455226}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -65,7 +65,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_Children:
   - {fileID: 8188404030269918724}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -140,8 +140,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterController
   speed: 25
   devOut: 0
-  growthRate: 0.2
   maxWallDamagePercentage: 5
+  growthRate: 0.2
   maxSize: 10
   minSize: 1
   canJump: 1
@@ -208,6 +208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ce41c5015b90e2488d64e5ea30a323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Grapple
+  canGrapple: 1
   dashForce: 50
   hookPrefab: {fileID: 5526979125605417114, guid: b92b063722fa91f1ca2208ce9646caa5, type: 3}
   shootTransform: {fileID: 8188404030269918724}

@@ -13,6 +13,7 @@ public class RespawnController : MonoBehaviour
     public float minSize = 0.1f;
     public float maxSize = 10f;
     public bool canJump = false;
+    public bool canGrapple = false;
     public float jumpHeight = 5f;
     public float gravity = 25f;
     public float fallMultiplier = 2f;
@@ -36,6 +37,7 @@ public class RespawnController : MonoBehaviour
         GameObject newPlayer = Instantiate(playerPrefab, respawnPoint, respawnRotation);
         newPlayer.transform.localScale = respawnScale;
         CharacterController newController = newPlayer.GetComponent<CharacterController>();
+        Grapple newGrapple = newPlayer.GetComponent<Grapple>();
 
         newController.speed = speed;
         newController.growthRate = growthRate;
@@ -45,6 +47,11 @@ public class RespawnController : MonoBehaviour
         newController.jumpHeight = jumpHeight;
         newController.gravity = gravity;
         newController.fallMultiplier = fallMultiplier;
+
+        if (newGrapple != null)
+        {
+            newGrapple.canGrapple = canGrapple;
+        }
 
         CameraController.Instance?.PlayerRespawned(newPlayer);
     }

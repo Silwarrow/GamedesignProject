@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Grapple : MonoBehaviour
 {
+    [HideInInspector] public bool canGrapple = false;
     public float dashForce = 50f;
     public GameObject hookPrefab;
     public Transform shootTransform;
@@ -24,7 +25,7 @@ public class Grapple : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(hook == null && !isCoolingDown && Input.GetMouseButtonDown(0)) //Linksklick -> Hook schießen
+        if(hook == null && !isCoolingDown && Input.GetMouseButtonDown(0) && canGrapple) //Linksklick -> Hook schießen
         {
             Vector3 screenPos = Input.mousePosition;
             if (TryResolveAimFromMouse(screenPos, out Vector3 finalAim))
