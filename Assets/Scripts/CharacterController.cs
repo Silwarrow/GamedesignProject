@@ -206,8 +206,7 @@ public class CharacterController : MonoBehaviour
                 continue;
             }
 
-            Vector3 globalHit = hit.collider.transform.TransformPoint(hit.point);
-            Vector3 toHit = globalHit - transform.position;
+            Vector3 toHit = hit.point - transform.position;
             float verticalThreshold = radius * 0.6f;
             if (toHit.y < -verticalThreshold)
             {
