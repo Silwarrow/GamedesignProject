@@ -148,6 +148,10 @@ MonoBehaviour:
   jumpHeight: 27
   gravity: 32
   fallMultiplier: 2
+  canGrapple: 1
+  dashForce: 50
+  maxRange: 50
+  grappleCooldown: 5
 --- !u!135 &3318153087198161342
 SphereCollider:
   m_ObjectHideFlags: 0

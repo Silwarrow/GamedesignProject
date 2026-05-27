@@ -20,6 +20,13 @@ public class CharacterController : MonoBehaviour
     public float gravity = 32f;
     public float fallMultiplier = 2f;
 
+    [Header("Grapple Settings")]
+    public bool canGrapple = false;
+    public float dashForce = 50f;
+    public float maxRange = 50f;
+    public float grappleCooldown = 5.0f;
+
+
     private float size;
     private Vector3 momentum = Vector3.zero;
     private Vector3 momentumVelocity = Vector3.zero;

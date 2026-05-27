@@ -4,11 +4,11 @@ using UnityEngine;
 public class Grapple : MonoBehaviour
 {
     [HideInInspector] public bool canGrapple = false;
-    public float dashForce = 50f;
+    [HideInInspector] public float dashForce = 50f;
     public GameObject hookPrefab;
     public Transform shootTransform;
-    public float maxRange = 50f;
-    public float grappleCooldown = 5.0f;
+    [HideInInspector] public float maxRange = 50f;
+    [HideInInspector] public float grappleCooldown = 5.0f;
     bool isCoolingDown = false;
 
 

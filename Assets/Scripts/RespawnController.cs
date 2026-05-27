@@ -8,15 +8,24 @@ public class RespawnController : MonoBehaviour
     public Quaternion respawnRotation = new(0, 0, 0, 1);
     public Vector3 respawnScale = new(1, 1, 1);
     public float speed = 15f;
+
+    [Header("Size Limits")]
     public float growthRate = 0.2f;
     public float shrinkRate = 0.2f;
     public float minSize = 0.1f;
     public float maxSize = 10f;
+
+    [Header("Jump Settings")]
     public bool canJump = false;
-    public bool canGrapple = false;
     public float jumpHeight = 5f;
     public float gravity = 25f;
     public float fallMultiplier = 2f;
+
+    [Header("Grapple Settings")]
+    public bool canGrapple = false;
+    public float dashForce = 50f;
+    public float maxRange = 50f;
+    public float grappleCooldown = 5.0f;
 
 
     private void Awake() {
@@ -50,8 +59,12 @@ public class RespawnController : MonoBehaviour
 
         if (newGrapple != null)
         {
+            newGrapple.dashForce = dashForce;
             newGrapple.canGrapple = canGrapple;
+            newGrapple.maxRange = maxRange;
+            newGrapple.grappleCooldown = grappleCooldown;
         }
+
 
         CameraController.Instance?.PlayerRespawned(newPlayer);
     }
