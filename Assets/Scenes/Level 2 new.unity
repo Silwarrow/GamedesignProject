@@ -41765,9 +41765,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27d80ace1741ed196bc0439b808038dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Spawnpoint
-  spawnPoint: {x: 0, y: 1, z: 0}
+  spawnPoint: {x: 160, y: -500, z: 0}
   spawnRotation: {x: 0, y: 0, z: 0, w: 1}
-  spawnScale: {x: 1, y: 1, z: 1}
+  spawnScale: {x: 8, y: 8, z: 8}
 --- !u!65 &1066585439
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -60301,6 +60301,10 @@ MonoBehaviour:
   jumpHeight: 28
   gravity: 38
   fallMultiplier: 2
+  canGrapple: 0
+  dashForce: 50
+  maxRange: 50
+  grappleCooldown: 5
 --- !u!4 &1479478374
 Transform:
   m_ObjectHideFlags: 0
