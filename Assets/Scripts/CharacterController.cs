@@ -107,12 +107,10 @@ public class CharacterController : MonoBehaviour
         if(isGrounded && waterCounter <= 0)
         {
             waterSpeed = false;
-            Debug.Log("On Ground");
             gravity = 38f;
         }else if(waterCounter > 0 && !waterSpeed)
         {
             waterSpeed = true;
-            Debug.Log("In Water");
             gravity = 30f;
         }
 
@@ -133,7 +131,6 @@ public class CharacterController : MonoBehaviour
         Vector3 horizontalMovement = momentum * speed * Time.deltaTime * 
                                     (fastGrow ? 0.5f : 1f) * 
                                     (waterSpeed ? 2f : 1f);
-                                    Debug.Log(horizontalMovement);
         Vector3 verticalMovement = Vector3.up * verticalVelocity * Time.deltaTime;
         transform.Translate(horizontalMovement + verticalMovement, Space.World);
 
@@ -226,7 +223,9 @@ public class CharacterController : MonoBehaviour
                 continue;
             }
 
-            Vector3 toHit = hit.point - transform.position;
+            Vector3 globalHit = hit.collider.ClosestPoint(origin);
+            Vector3 toHit = globalHit - transform.position;
+            Debug.DrawLine(transform.position, globalHit, Color.red, 0.1f);
             float verticalThreshold = radius * 0.6f;
             if (toHit.y < -verticalThreshold)
             {
