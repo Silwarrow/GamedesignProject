@@ -36206,6 +36206,10 @@ MonoBehaviour:
   jumpHeight: 27
   gravity: 32
   fallMultiplier: 2
+  canGrapple: 0
+  dashForce: 50
+  maxRange: 50
+  grappleCooldown: 5
 --- !u!4 &1479478374
 Transform:
   m_ObjectHideFlags: 0
