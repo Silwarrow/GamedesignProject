@@ -79796,7 +79796,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1986225128}
   m_Layer: 0
-  m_Name: camera
+  m_Name: cameraRails
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
