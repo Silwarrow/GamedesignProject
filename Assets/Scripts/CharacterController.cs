@@ -108,10 +108,12 @@ public class CharacterController : MonoBehaviour
         {
             waterSpeed = false;
             Debug.Log("On Ground");
+            gravity = 38f;
         }else if(waterCounter > 0 && !waterSpeed)
         {
             waterSpeed = true;
             Debug.Log("In Water");
+            gravity = 30f;
         }
 
         // Gravity: Gravitation wird stärker, wenn der Spieler fällt
@@ -130,7 +132,7 @@ public class CharacterController : MonoBehaviour
         //Bewegen
         Vector3 horizontalMovement = momentum * speed * Time.deltaTime * 
                                     (fastGrow ? 0.5f : 1f) * 
-                                    (waterSpeed ? 1.7f : 1f);
+                                    (waterSpeed ? 2f : 1f);
                                     Debug.Log(horizontalMovement);
         Vector3 verticalMovement = Vector3.up * verticalVelocity * Time.deltaTime;
         transform.Translate(horizontalMovement + verticalMovement, Space.World);
