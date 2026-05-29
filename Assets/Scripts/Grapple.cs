@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class Grapple : MonoBehaviour
 {
-    public float dashForce = 50f;
+    [HideInInspector] public bool canGrapple = false;
+    [HideInInspector] public float dashForce = 50f;
     public GameObject hookPrefab;
     public Transform shootTransform;
-    public float maxRange = 50f;
-    public float grappleCooldown = 5.0f;
+    [HideInInspector] public float maxRange = 50f;
+    [HideInInspector] public float grappleCooldown = 5.0f;
     bool isCoolingDown = false;
 
 
@@ -24,7 +25,7 @@ public class Grapple : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(hook == null && !isCoolingDown && Input.GetMouseButtonDown(0)) //Linksklick -> Hook schießen
+        if(hook == null && !isCoolingDown && Input.GetMouseButtonDown(0) && canGrapple) //Linksklick -> Hook schießen
         {
             Vector3 screenPos = Input.mousePosition;
             if (TryResolveAimFromMouse(screenPos, out Vector3 finalAim))

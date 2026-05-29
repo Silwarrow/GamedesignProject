@@ -21,7 +21,6 @@ ProjectAssetsFile=<PATH>Temp/obj/Assembly-CSharp/project.assets.json
 RootNamespace=
 RunAnalyzers=
 RunAnalyzersDuringLiveAnalysis=
-<<<<<<< HEAD
 SolutionPath=*Undefined*
 =======
 SolutionPath=<PATH>GamedesignProject.slnx
@@ -56,7 +55,6 @@ TemporaryDependencyNodeTargetIdentifier=netstandard2.1
 [sourceFiles]
 Assets/Scripts/
  CharacterController.cs
-<<<<<<< HEAD
  Grapple.cs
  HandleSizeController.cs
  Hook.cs
@@ -109,18 +107,6 @@ Temp/obj/Assembly-CSharp/.NETStandard,Version=v2.1.AssemblyAttributes.cs
 [metadataReferences]
 <<<<<<< HEAD
 ../../../../../Unity/Hub/Editor/6000.3.11f1/Editor/Data/Managed/UnityEngine/
-=======
-../../../../../../Dokumente/RWU/semester_4/gamedesign/project/GamedesignProject/Library/PackageCache/com.unity.collections@aea9d3bd5e19/
- Unity.Collections.LowLevel.ILSupport/Unity.Collections.LowLevel.ILSupport.dll
- Unity.Collections.Tests/
-  System.IO.Hashing/System.IO.Hashing.dll
-  System.Runtime.CompilerServices.Unsafe/System.Runtime.CompilerServices.Unsafe.dll
-../../../../../../Dokumente/RWU/semester_4/gamedesign/project/GamedesignProject/Library/PackageCache/
- com.unity.ext.nunit@ec2d0043d6fc/net40/unity-custom/nunit.framework.dll
- com.unity.nuget.mono-cecil@ecb9724e46ff/Mono.Cecil.dll
- com.unity.visualscripting@eb6004dcc707/Runtime/VisualScripting.Flow/Dependencies/NCalc/Unity.VisualScripting.Antlr3.Runtime.dll
-../../../../../../Unity/Hub/Editor/6000.3.11f1/Editor/Data/Managed/UnityEngine/
->>>>>>> main
  UnityEditor.AccessibilityModule.dll
  UnityEditor.AdaptivePerformanceModule.dll
  UnityEditor.AssetComplianceModule.dll

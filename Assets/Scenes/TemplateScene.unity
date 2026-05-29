@@ -4159,6 +4159,8 @@ MonoBehaviour:
   maxSize: 13
   canJump: 0
   jumpHeight: 5
+  gravity: 25
+  fallMultiplier: 2
 --- !u!4 &1479478374
 Transform:
   m_ObjectHideFlags: 0
@@ -6615,3 +6617,4 @@ SceneRoots:
   - {fileID: 1559208689}
   - {fileID: 1529207267}
   - {fileID: 916446260}
+  - {fileID: 419576052}
