@@ -34,6 +34,7 @@ public class CharacterController : MonoBehaviour
     private bool isInSafeArea = false;
     private int shadowCounter = 0;
     private int waterCounter = 0;
+    private int fireCounter = 0;
     private bool waterSpeed = false;
 
 
@@ -65,14 +66,18 @@ public class CharacterController : MonoBehaviour
 
         //Größer werden
         float growthMultiplier = growthRate*Mathf.Pow(momentum.magnitude, 2f) * (fastGrow ? 1.5f : 1f);
-        if(isGrounded && !isInSafeArea && shadowCounter > 0)
+        if(isGrounded && !isInSafeArea && shadowCounter > 0 && fireCounter <= 0)
         {
             transform.localScale += Vector3.one * growthMultiplier* Time.deltaTime;
         }
+
         //Kleiner werden
+        float shrinkMultiplier = 0.3f + 1.691f* (Mathf.Pow(size-3f, 2f)/(Mathf.Pow(size-3f, 2f)+13.7f))*(1-0.625f*growthMultiplier);
         if(shadowCounter <= 0 && !isInSafeArea){
-            float shrinkMultiplier = 0.3f + 1.691f* (Mathf.Pow(size-3f, 2f)/(Mathf.Pow(size-3f, 2f)+13.7f))*(1-0.625f*growthMultiplier);
             transform.localScale -= Vector3.one * shrinkMultiplier * (fastGrow ? 0.5f : 1f) * Time.deltaTime;
+        }
+        if(fireCounter > 0){
+            transform.localScale -= Vector3.one * shrinkMultiplier * 2f * (fastGrow ? 0.5f : 1f) * Time.deltaTime;
         }
 
 
@@ -166,6 +171,9 @@ public class CharacterController : MonoBehaviour
         if(other.CompareTag("Water")){
             waterCounter++;
         }
+        if(other.CompareTag("Fire")){
+            fireCounter++;
+        }
     }
     void OnTriggerExit(Collider other){
         if (other.CompareTag("Shadow")){
@@ -180,6 +188,9 @@ public class CharacterController : MonoBehaviour
         }
         if(other.CompareTag("Water")){
             waterCounter--;
+        }
+        if(other.CompareTag("Fire")){
+            fireCounter--;
         }
     }
 
@@ -206,8 +217,7 @@ public class CharacterController : MonoBehaviour
                 continue;
             }
 
-            Vector3 globalHit = hit.collider.transform.TransformPoint(hit.point);
-            Vector3 toHit = globalHit - transform.position;
+            Vector3 toHit = hit.point - transform.position;
             float verticalThreshold = radius * 0.6f;
             if (toHit.y < -verticalThreshold)
             {
