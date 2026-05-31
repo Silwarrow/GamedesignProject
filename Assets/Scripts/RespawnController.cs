@@ -26,6 +26,9 @@ public class RespawnController : MonoBehaviour
     public float dashForce = 50f;
     public float maxRange = 50f;
     public float grappleCooldown = 5.0f;
+    public float delayUntilDashBeginsStopping = 1f;
+    public float dashStoppingProcessDuration = 0.35f;
+    public float fireResistanceDuration = 5f;
 
 
     private void Awake() {
@@ -63,6 +66,9 @@ public class RespawnController : MonoBehaviour
             newGrapple.canGrapple = canGrapple;
             newGrapple.maxRange = maxRange;
             newGrapple.grappleCooldown = grappleCooldown;
+            newGrapple.delayUntilDashBeginsStopping = delayUntilDashBeginsStopping;
+            newGrapple.dashStoppingProcessDuration = dashStoppingProcessDuration;
+            newGrapple.fireResistanceDuration = fireResistanceDuration;
         }
 
 

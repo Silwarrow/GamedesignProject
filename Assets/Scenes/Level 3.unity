@@ -22674,6 +22674,9 @@ MonoBehaviour:
   dashForce: 100
   maxRange: 120
   grappleCooldown: 2
+  delayUntilDashBeginsStopping: 1
+  dashStoppingProcessDuration: 0.5
+  fireResistanceDuration: 5
 --- !u!4 &1479478374
 Transform:
   m_ObjectHideFlags: 0

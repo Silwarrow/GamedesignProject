@@ -10,6 +10,10 @@ public class Grapple : MonoBehaviour
     [HideInInspector] public float maxRange = 50f;
     [HideInInspector] public float grappleCooldown = 5.0f;
     bool isCoolingDown = false;
+    private CharacterController characterController;
+    [HideInInspector] public float delayUntilDashBeginsStopping = 1f;
+    [HideInInspector] public float dashStoppingProcessDuration = 0.35f;
+    [HideInInspector] public float fireResistanceDuration = 5f;
 
 
     Hook hook;
@@ -20,6 +24,7 @@ public class Grapple : MonoBehaviour
     void Start()
     {
         playerRigidbody = GetComponent<Rigidbody>();
+        characterController = GetComponent<CharacterController>();
     }
 
     // Update is called once per frame
@@ -34,6 +39,7 @@ public class Grapple : MonoBehaviour
                 hook = Instantiate(hookPrefab, shootTransform.position, shootTransform.rotation).GetComponent<Hook>(); // Hook-Objekt wird erstellt
                 hook.Initialize(this, shootTransform, maxRange);
                 StartCoroutine(GrappleCooldownRoutine());
+                StartCoroutine(GrappleFireresistenceRoutine());
             }
         }
         else if (hook != null && Input.GetMouseButtonDown(1)) //Rechtsklick -> Hook zerstören bevor ankommt
@@ -47,6 +53,7 @@ public class Grapple : MonoBehaviour
         if (hook == null) return;
         Vector3 dashDirection = (hook.transform.position - transform.position).normalized; //Richtung vom Spieler zum Hook, normalisiert damit es nur die Richtung ist ohne Stärke
         playerRigidbody.AddForce(dashDirection * dashForce, ForceMode.Impulse); //Impulsartiger Dash wird verwendet
+        StartCoroutine(DecayDashAfterDelay());
     }
 
     private void DestroyHook()
@@ -60,6 +67,32 @@ public class Grapple : MonoBehaviour
         isCoolingDown = true;
         yield return new WaitForSeconds(grappleCooldown);
         isCoolingDown = false;
+    }
+    private IEnumerator GrappleFireresistenceRoutine()
+    {
+        characterController?.DecrementFireCounter();
+        yield return new WaitForSeconds(fireResistanceDuration);
+        characterController?.IncrementFireCounter();
+    }
+
+    private IEnumerator DecayDashAfterDelay()
+    {
+        float gravity = characterController.gravity;
+        characterController.gravity = 0f;
+        yield return new WaitForSeconds(delayUntilDashBeginsStopping);
+        characterController.gravity = gravity;
+
+        Vector3 startVelocity = playerRigidbody.linearVelocity;
+        float elapsed = 0f;
+
+        while (elapsed < dashStoppingProcessDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / dashStoppingProcessDuration);
+            float easedT = t * t;
+            playerRigidbody.linearVelocity = Vector3.Lerp(startVelocity, Vector3.zero, easedT);
+            yield return null;
+        }
     }
 
     

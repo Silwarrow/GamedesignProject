@@ -25,6 +25,9 @@ public class CharacterController : MonoBehaviour
     public float dashForce = 50f;
     public float maxRange = 50f;
     public float grappleCooldown = 5.0f;
+    public float delayUntilDashBeginsStopping = 1f;
+    public float dashFalloffDuration = 0.35f;
+    public float fireResistanceDuration = 5f;
 
 
     private float size;
@@ -44,6 +47,10 @@ public class CharacterController : MonoBehaviour
     private int fireCounter = 0;
     private bool waterSpeed = false;
 
+    //Zugang für Grapple Script
+    public int GetFireCounter() { return fireCounter; }
+    public void IncrementFireCounter() { fireCounter++; }
+    public void DecrementFireCounter() { fireCounter--; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake(){
