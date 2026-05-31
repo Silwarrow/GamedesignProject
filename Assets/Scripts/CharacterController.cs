@@ -39,6 +39,7 @@ public class CharacterController : MonoBehaviour
     //Scene Objects
     private UnityEngine.UI.Slider meltBar;
     private GameObject PlayerManager;
+    private Collider playerCollider;
     //Area Tags
     private bool fastGrow = false;
     private int safeAreas = 0;
@@ -54,6 +55,7 @@ public class CharacterController : MonoBehaviour
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake(){
+        playerCollider = GetComponent<Collider>();
         PlayerManager = FindFirstObjectByType<RespawnController>().gameObject;
         meltBar = FindFirstObjectByType<Canvas>().GetComponentInChildren<UnityEngine.UI.Slider>();
 
@@ -209,10 +211,11 @@ public class CharacterController : MonoBehaviour
 
     bool IsColliderInFront(Vector3 direction)
     {
+        direction.y = 0; 
         size = transform.localScale.x;
         float radius = size / 2f;
         float castDistance = (speed * Time.deltaTime) + 0.05f; // kleine Sicherheitsreserve
-        Vector3 origin = transform.position + direction.normalized * 0.01f; // nicht im eigenen Collider starten
+        Vector3 origin = transform.position + direction.normalized + Vector3.up * 0.01f; // leicht anheben, um Bodenkollisionen zu vermeiden
 
         RaycastHit[] hits = Physics.SphereCastAll(
             origin,
@@ -225,22 +228,51 @@ public class CharacterController : MonoBehaviour
         foreach (RaycastHit hit in hits)
         {
             // Spieler selbst ignorieren
-            if (hit.collider.gameObject == this.gameObject)
-            {
-                continue;
-            }
+            if (hit.collider.gameObject == this.gameObject) continue;
 
-            Vector3 globalHit = hit.point;
-            Debug.Log(hit.collider is MeshCollider mc && !mc.convex);
-            if(!(hit.collider is MeshCollider mc2 && !mc2.convex)){
-                globalHit = hit.collider.ClosestPoint(origin);
-            }
-            Vector3 toHit = globalHit - transform.position;
-            Debug.DrawLine(transform.position, globalHit, Color.red, 0.1f);
-            float verticalThreshold = radius * 0.6f;
-            if (toHit.y < -verticalThreshold)
-            {
-                continue;
+            if(hit.distance == 0){
+                if(!(hit.collider is MeshCollider mc && !mc.convex)){
+                    Vector3 globalHit = hit.collider.ClosestPoint(origin);
+                    Vector3 toHit = globalHit - transform.position;
+                    float verticalThreshold = radius * 0.6f;
+                    if (toHit.y < -verticalThreshold)
+                    {
+                        continue;
+                    }
+                }else{
+                    Debug.Log("Not performant right now with object " + hit.collider.name);
+                    Vector3 hitDirection = Vector3.zero;
+                    float penetrationDistance = 0f;
+                    bool isPenetrating = Physics.ComputePenetration(
+                        playerCollider,
+                        transform.position + Vector3.up * 0.01f, // leicht anheben, um Bodenkollisionen zu vermeiden
+                        transform.rotation,
+                        hit.collider,
+                        hit.collider.transform.position,
+                        hit.collider.transform.rotation,
+                        out hitDirection,
+                        out penetrationDistance);
+
+                    try{
+                        if(!float.IsNaN(hitDirection.z * penetrationDistance)){
+                            transform.Translate(hitDirection * penetrationDistance, Space.World);
+                        }
+                    }catch{
+                        Debug.Log(hitDirection * penetrationDistance);
+                    }
+
+                    if(!isPenetrating) continue;
+
+                    if(hitDirection.y > 0.05f && isGrounded) continue; // Kollision von unten ignorieren
+                }
+                
+            }else{
+                Vector3 toHit = hit.point - transform.position;
+                float verticalThreshold = radius * 0.6f;
+                if (toHit.y < -verticalThreshold)
+                {
+                    continue;
+                }
             }
 
             
