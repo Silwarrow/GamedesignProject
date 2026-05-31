@@ -84,7 +84,7 @@ public class CharacterController : MonoBehaviour
             transform.localScale -= Vector3.one * shrinkMultiplier * (fastGrow ? 0.5f : 1f) * Time.deltaTime;
         }
         if(fireCounter > 0){
-            transform.localScale -= Vector3.one * shrinkMultiplier * 2f * (fastGrow ? 0.5f : 1f) * Time.deltaTime;
+            transform.localScale -= Vector3.one * shrinkMultiplier * 12f * (fastGrow ? 0.5f : 1f) * Time.deltaTime;
         }
 
 
