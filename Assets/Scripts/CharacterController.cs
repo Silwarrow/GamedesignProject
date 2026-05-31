@@ -38,7 +38,7 @@ public class CharacterController : MonoBehaviour
     private GameObject PlayerManager;
     //Area Tags
     private bool fastGrow = false;
-    private bool isInSafeArea = false;
+    private int safeAreas = 0;
     private int shadowCounter = 0;
     private int waterCounter = 0;
     private int fireCounter = 0;
@@ -73,14 +73,14 @@ public class CharacterController : MonoBehaviour
 
         //Größer werden
         float growthMultiplier = growthRate*Mathf.Pow(momentum.magnitude, 2f) * (fastGrow ? 1.5f : 1f);
-        if(isGrounded && !isInSafeArea && shadowCounter > 0 && fireCounter <= 0)
+        if(isGrounded && safeAreas <= 0 && shadowCounter > 0 && fireCounter <= 0)
         {
             transform.localScale += Vector3.one * growthMultiplier* Time.deltaTime;
         }
 
         //Kleiner werden
         float shrinkMultiplier = 0.3f + 1.691f* (Mathf.Pow(size-3f, 2f)/(Mathf.Pow(size-3f, 2f)+13.7f))*(1-0.625f*growthMultiplier);
-        if(shadowCounter <= 0 && !isInSafeArea){
+        if(shadowCounter <= 0 && safeAreas <= 0){
             transform.localScale -= Vector3.one * shrinkMultiplier * (fastGrow ? 0.5f : 1f) * Time.deltaTime;
         }
         if(fireCounter > 0){
@@ -151,7 +151,7 @@ public class CharacterController : MonoBehaviour
             + " | Vertical Velocity: " + verticalVelocity
             + " | Grounded: " + isGrounded
             + " | Shadow Counter: " + shadowCounter
-            + " | In Safe Area: " + isInSafeArea
+            + " | Safe Areas: " + safeAreas
             + " | Fast Grow: " + fastGrow);
         }
     }
@@ -168,7 +168,7 @@ public class CharacterController : MonoBehaviour
             shadowCounter++;
         }
         if (other.CompareTag("SafeArea")){
-            isInSafeArea = true;
+            safeAreas++;
         }
         if(other.CompareTag("ThickSnow")){
             fastGrow = true;
@@ -186,7 +186,7 @@ public class CharacterController : MonoBehaviour
             shadowCounter--;
         }
         if (other.CompareTag("SafeArea")){
-            isInSafeArea = false;
+            safeAreas--;
         }
         if(other.CompareTag("ThickSnow")){
             fastGrow = false;
@@ -223,7 +223,11 @@ public class CharacterController : MonoBehaviour
                 continue;
             }
 
-            Vector3 globalHit = hit.collider.ClosestPoint(origin);
+            Vector3 globalHit = hit.point;
+            Debug.Log(hit.collider is MeshCollider mc && !mc.convex);
+            if(!(hit.collider is MeshCollider mc2 && !mc2.convex)){
+                globalHit = hit.collider.ClosestPoint(origin);
+            }
             Vector3 toHit = globalHit - transform.position;
             Debug.DrawLine(transform.position, globalHit, Color.red, 0.1f);
             float verticalThreshold = radius * 0.6f;
@@ -236,7 +240,7 @@ public class CharacterController : MonoBehaviour
             //Wall Damage Berechnung
             float angle = Vector3.Angle(hit.normal, Vector3.up);
             float hitSpeed = new Vector3(direction.x, 0, direction.z).magnitude;
-            if(angle > 45f && hitSpeed > 0.4f && !isInSafeArea)
+            if(angle > 45f && hitSpeed > 0.4f && safeAreas <= 0)
             {
                 //je nach geschwindigkeit soo der ball zwischen 0-5% der aktuellen größe schrumpfen
                 transform.localScale -= Vector3.one * hitSpeed * (maxWallDamagePercentage / 100f) * size;
