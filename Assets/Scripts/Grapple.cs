@@ -19,6 +19,8 @@ public class Grapple : MonoBehaviour
     Hook hook;
     Rigidbody playerRigidbody;
 
+    private float lockedY;
+    private bool isYLocked = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -30,6 +32,16 @@ public class Grapple : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isYLocked)
+        {
+            Vector3 position = transform.position;
+            position.y = lockedY;
+            transform.position = position;
+
+            Vector3 velocity = playerRigidbody.linearVelocity;
+            playerRigidbody.linearVelocity = new Vector3(velocity.x, 0f, velocity.z);
+        }
+
         if(hook == null && !isCoolingDown && Input.GetMouseButtonDown(0) && canGrapple) //Linksklick -> Hook schießen
         {
             Vector3 screenPos = Input.mousePosition;
@@ -39,7 +51,6 @@ public class Grapple : MonoBehaviour
                 hook = Instantiate(hookPrefab, shootTransform.position, shootTransform.rotation).GetComponent<Hook>(); // Hook-Objekt wird erstellt
                 hook.Initialize(this, shootTransform, maxRange);
                 StartCoroutine(GrappleCooldownRoutine());
-                StartCoroutine(GrappleFireresistenceRoutine());
             }
         }
         else if (hook != null && Input.GetMouseButtonDown(1)) //Rechtsklick -> Hook zerstören bevor ankommt
@@ -53,6 +64,12 @@ public class Grapple : MonoBehaviour
         if (hook == null) return;
         Vector3 dashDirection = (hook.transform.position - transform.position).normalized; //Richtung vom Spieler zum Hook, normalisiert damit es nur die Richtung ist ohne Stärke
         playerRigidbody.AddForce(dashDirection * dashForce, ForceMode.Impulse); //Impulsartiger Dash wird verwendet
+
+        Vector3 curVel = playerRigidbody.linearVelocity;
+        playerRigidbody.linearVelocity = new Vector3(curVel.x, 0f, curVel.z);
+
+        lockedY = transform.position.y;
+        isYLocked = true;
         StartCoroutine(DecayDashAfterDelay());
     }
 
@@ -68,31 +85,31 @@ public class Grapple : MonoBehaviour
         yield return new WaitForSeconds(grappleCooldown);
         isCoolingDown = false;
     }
-    private IEnumerator GrappleFireresistenceRoutine()
+    public IEnumerator GrappleFireresistenceRoutine()
     {
-        characterController?.DecrementFireCounter();
-        yield return new WaitForSeconds(fireResistanceDuration);
-        characterController?.IncrementFireCounter();
+        if (hook != null)
+        {
+            characterController?.DecrementFireCounter();
+            yield return new WaitForSeconds(fireResistanceDuration);
+            characterController?.IncrementFireCounter();   
+        }
     }
-
     private IEnumerator DecayDashAfterDelay()
     {
-        float gravity = characterController.gravity;
-        characterController.gravity = 0f;
         yield return new WaitForSeconds(delayUntilDashBeginsStopping);
-        characterController.gravity = gravity;
-
         Vector3 startVelocity = playerRigidbody.linearVelocity;
         float elapsed = 0f;
 
         while (elapsed < dashStoppingProcessDuration)
-        {
+        {   
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / dashStoppingProcessDuration);
             float easedT = t * t;
-            playerRigidbody.linearVelocity = Vector3.Lerp(startVelocity, Vector3.zero, easedT);
+            Vector3 lerped = Vector3.Lerp(startVelocity, Vector3.zero, easedT);
+            playerRigidbody.linearVelocity = new Vector3(lerped.x, 0f, lerped.z);
             yield return null;
         }
+        isYLocked = false;
     }
 
     

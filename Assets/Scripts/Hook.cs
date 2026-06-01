@@ -47,6 +47,10 @@ public class Hook : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("grapple") && grapple != null)
+        {   
+            Destroy(gameObject); //Zerstört den Hook, damit er nicht weiterfliegt
             grapple.StartPull();
+            grapple.StartCoroutine(grapple.GrappleFireresistenceRoutine());
+        }
     }
 }
