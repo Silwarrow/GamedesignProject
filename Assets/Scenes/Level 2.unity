@@ -9309,7 +9309,7 @@ GameObject:
   - component: {fileID: 197092662}
   - component: {fileID: 197092667}
   m_Layer: 0
-  m_Name: collectable (1)
+  m_Name: Handschuhe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12242,7 +12242,7 @@ GameObject:
   - component: {fileID: 257606350}
   - component: {fileID: 257606355}
   m_Layer: 0
-  m_Name: collectable (3)
+  m_Name: Knopf 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25549,7 +25549,7 @@ GameObject:
   - component: {fileID: 623385669}
   - component: {fileID: 623385674}
   m_Layer: 0
-  m_Name: collectable (2)
+  m_Name: Knopf 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65888,7 +65888,7 @@ GameObject:
   - component: {fileID: 1637577160}
   - component: {fileID: 1637577165}
   m_Layer: 0
-  m_Name: collectable
+  m_Name: Handschuhe (Gold)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78371,8 +78371,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1637577159}
   - {fileID: 197092661}
+  - {fileID: 1637577159}
   - {fileID: 623385668}
   - {fileID: 257606349}
   m_Father: {fileID: 0}
