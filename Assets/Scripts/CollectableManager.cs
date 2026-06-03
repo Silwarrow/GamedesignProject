@@ -25,7 +25,6 @@ public class CollectableManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake(){
         jsonFile = Resources.Load<TextAsset>("JSONs/Collectable");
-        Debug.Log(jsonFile == null ? "NICHT gefunden" : "Gefunden!");
         root = JsonUtility.FromJson<CollectableRoot>(jsonFile.text);
     }
 

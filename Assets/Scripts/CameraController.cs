@@ -70,7 +70,6 @@ public class CameraController : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        Debug.Log("CameraController: Awake, Instance gesetzt.");
 
         // Alle Rails suchen
         GameObject[] railObjects = GameObject.FindGameObjectsWithTag("CamRail");
@@ -306,18 +305,14 @@ public class CameraController : MonoBehaviour
     public void PlayerRespawned(GameObject newPlayer)
     {
         player = newPlayer.transform;
-        Debug.Log($"CameraController: PlayerRespawned aufgerufen. Player: {newPlayer.name}");
 
 
         // Nächste Rail suchen und Kamera sofort hinbringen
         UpdateActiveRail();
-        Debug.Log($"CameraController: ActiveRail nach Update: {(activeRail != null ? activeRail.name : "NULL")}");
         if (activeRail != null)
         {
             transform.position = GetNearestPointOnRail(activeRail);
-            Debug.Log($"CameraController: Zielposition auf Rail: {transform.position}");
             transform.rotation = ComputeRotation(transform.position);
-            Debug.Log($"CameraController: Kamera gesetzt auf: {transform.position}");
         }
     
 
