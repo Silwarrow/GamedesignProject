@@ -16,9 +16,9 @@ public class Collectable : MonoBehaviour
         myself = collectableManager.GetCollectable(level, position);
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnCollisionEnter(Collision other)
     {
-        if (other.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
             if (myself != null)
             {

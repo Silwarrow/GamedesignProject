@@ -5,7 +5,7 @@ public class MainMenu : MonoBehaviour
 {
     public void PlayGame()
     {
-        SceneManager.LoadSceneAsync(2);
+        SceneManager.LoadScene("Level 1");
         // 0 = Main Menu
         // 1 = SampleScene
         // 2 = Level 1

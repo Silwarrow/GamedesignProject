@@ -31,9 +31,10 @@ public class RespawnController : MonoBehaviour
     public float fireResistanceDuration = 5f;
 
 
-    private void Awake() {
+    private void Start() {
         playerPrefab = Resources.Load<GameObject>("Prefabs/Player");
         Destroy(GameObject.FindGameObjectWithTag("Player"));
+        Debug.Log($"RespawnController: RespawnPlayer aufgerufen. CameraController.Instance = {(CameraController.Instance != null ? "GEFUNDEN" : "NULL")}");
         RespawnPlayer();
     }
 
