@@ -1,13 +1,17 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Collectable : MonoBehaviour
 {
 
     public int level;
     public int position;
+    public Sprite sprite;
+    public Image image;
     
     private CollectableManager collectableManager;
     private Item myself;
+    
 
     void Awake()
     {
@@ -23,6 +27,11 @@ public class Collectable : MonoBehaviour
             if (myself != null)
             {
                 collectableManager.setCollected(myself);
+                if (sprite != null && image != null)
+                {
+                    image.sprite = sprite;
+                }
+
             }
             gameObject.SetActive(false);
         }
