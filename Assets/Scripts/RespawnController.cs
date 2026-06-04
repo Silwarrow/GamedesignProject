@@ -30,6 +30,7 @@ public class RespawnController : MonoBehaviour
     public float dashStoppingProcessDuration = 0.35f;
     public float fireResistanceDuration = 5f;
 
+    public LevelFinishScreen finishScreen;
 
     private void Start() {
         playerPrefab = Resources.Load<GameObject>("Prefabs/Player");
@@ -59,6 +60,7 @@ public class RespawnController : MonoBehaviour
         newController.jumpHeight = jumpHeight;
         newController.gravity = gravity;
         newController.fallMultiplier = fallMultiplier;
+        newController.finishScreen = finishScreen;
 
         if (newGrapple != null)
         {

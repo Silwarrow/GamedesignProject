@@ -24,7 +24,7 @@ public void TryAgainButton()
         }
         else
         {
-            //epische Endszene oder so
+            // epische Endszene oder so
         }
     }
 

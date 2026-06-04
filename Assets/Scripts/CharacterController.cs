@@ -37,9 +37,12 @@ public class CharacterController : MonoBehaviour
     private bool isGrounded = false;
     
     //Scene Objects
-    private UnityEngine.UI.Slider meltBar;
+    private Slider meltBar;
+    private SpriteChanger spriteChanger;
     private GameObject PlayerManager;
     private Collider playerCollider;
+    public LevelFinishScreen finishScreen;
+    
     //Area Tags
     private bool fastGrow = false;
     private int safeAreas = 0;
@@ -57,8 +60,8 @@ public class CharacterController : MonoBehaviour
     void Awake(){
         playerCollider = GetComponent<Collider>();
         PlayerManager = FindFirstObjectByType<RespawnController>().gameObject;
-        meltBar = FindFirstObjectByType<Canvas>().GetComponentInChildren<UnityEngine.UI.Slider>();
-
+        meltBar = FindFirstObjectByType<Canvas>().GetComponentInChildren<Slider>();
+        spriteChanger = FindFirstObjectByType<SpriteChanger>();
     }
 
     // Update is called once per frame
@@ -206,6 +209,10 @@ public class CharacterController : MonoBehaviour
         }
         if(other.CompareTag("Fire")){
             fireCounter--;
+        }
+        if(other.CompareTag("Finish")){
+            int stars = spriteChanger.GetStars();
+            finishScreen.Setup(stars);
         }
     }
 
