@@ -1,4 +1,8 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
+
 
 public class PauseMenu : MonoBehaviour
 {
@@ -8,10 +12,19 @@ public class PauseMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            container.SetActive(true);
-            Time.timeScale = 0;
+            
+            if (container.activeSelf)
+            {
+                Continue(); 
+            }
+            
+            else
+            {
+                container.SetActive(true);
+                Time.timeScale = 0f;
+            }
         }
     }
 
@@ -24,6 +37,11 @@ public class PauseMenu : MonoBehaviour
 
     public void MainMenu()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadSceneAsync(0);
+    }
+
+    public void restartLevel()
+    {
+        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
     }
 }
