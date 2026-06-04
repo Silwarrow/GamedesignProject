@@ -9,15 +9,18 @@ public class LevelFinishScreen : MonoBehaviour
     {
         gameObject.SetActive(true);
         starsText.text = "Stars: " + stars.ToString();
+        Time.timeScale = 0f;
     }
 
 public void TryAgainButton()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void NextLevelButton()
     {
+        Time.timeScale = 1f;
         if(SceneManager.GetActiveScene().buildIndex + 1 != SceneManager.sceneCountInBuildSettings)
         {
             SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
@@ -30,6 +33,7 @@ public void TryAgainButton()
 
     public void ExitButton()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadSceneAsync(0);
     }
 }

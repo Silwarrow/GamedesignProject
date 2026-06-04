@@ -41,6 +41,7 @@ public class CharacterController : MonoBehaviour
     private SpriteChanger spriteChanger;
     private GameObject PlayerManager;
     private Collider playerCollider;
+    [Header("Level Finish")]
     public LevelFinishScreen finishScreen;
     
     //Area Tags

@@ -18,6 +18,7 @@ public class Grapple : MonoBehaviour
 
     Hook hook;
     Rigidbody playerRigidbody;
+    PauseMenu pauseMenu;
 
     private float lockedY;
     private bool isYLocked = false;
@@ -27,6 +28,7 @@ public class Grapple : MonoBehaviour
     {
         playerRigidbody = GetComponent<Rigidbody>();
         characterController = GetComponent<CharacterController>();
+        pauseMenu = FindFirstObjectByType<PauseMenu>();
     }
 
     // Update is called once per frame
@@ -42,7 +44,7 @@ public class Grapple : MonoBehaviour
             playerRigidbody.linearVelocity = new Vector3(velocity.x, 0f, velocity.z);
         }
 
-        if(hook == null && !isCoolingDown && Input.GetMouseButtonDown(0) && canGrapple) //Linksklick -> Hook schießen
+        if (hook == null && !isCoolingDown && Input.GetMouseButtonDown(0) && canGrapple && (pauseMenu == null || pauseMenu.GetScreenStatus() == 0)) //Linksklick -> Hook schießen
         {
             Vector3 screenPos = Input.mousePosition;
             if (TryResolveAimFromMouse(screenPos, out Vector3 finalAim))
