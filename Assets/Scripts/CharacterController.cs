@@ -37,9 +37,13 @@ public class CharacterController : MonoBehaviour
     private bool isGrounded = false;
     
     //Scene Objects
-    private UnityEngine.UI.Slider meltBar;
+    private Slider meltBar;
+    private SpriteChanger spriteChanger;
     private GameObject PlayerManager;
     private Collider playerCollider;
+    [Header("Level Finish")]
+    public LevelFinishScreen finishScreen;
+    
     //Area Tags
     private bool fastGrow = false;
     private int safeAreas = 0;
@@ -57,8 +61,8 @@ public class CharacterController : MonoBehaviour
     void Awake(){
         playerCollider = GetComponent<Collider>();
         PlayerManager = FindFirstObjectByType<RespawnController>().gameObject;
-        meltBar = FindFirstObjectByType<Canvas>().GetComponentInChildren<UnityEngine.UI.Slider>();
-
+        meltBar = FindFirstObjectByType<Canvas>().GetComponentInChildren<Slider>();
+        spriteChanger = FindFirstObjectByType<SpriteChanger>();
     }
 
     // Update is called once per frame
@@ -104,7 +108,7 @@ public class CharacterController : MonoBehaviour
 
         //Sprungfähigkeit testen: QueryTriggerInteraction.Ignore heißt, dass Trigger, also die shadow areas und safe zones, sowas halt, ignoriert werden.
         //Physics.DefaultRaycastLayers nutzt die Standard-Layer-Maske von Unity, nicht wichtig für uns, aber sonst kann ich die Methode nicht überladen um den Triggerignore zu verwenden.
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, size / 2 + 0.9f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, size / 2 + 0.1f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
 
         //Springen
         if(Input.GetKeyDown(KeyCode.Space) && isGrounded && canJump)
@@ -188,6 +192,10 @@ public class CharacterController : MonoBehaviour
         }
         if(other.CompareTag("Fire")){
             fireCounter++;
+        }
+        if(other.CompareTag("Finish")){
+            int stars = spriteChanger.GetStars();
+            finishScreen.Setup(stars);
         }
     }
     void OnTriggerExit(Collider other){
