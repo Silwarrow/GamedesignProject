@@ -20805,7 +20805,7 @@ MonoBehaviour:
           w: 1
     - Position:
         x: -159.97546
-        y: -412
+        y: -368
         z: 1484.0007
       TangentIn:
         x: 0
@@ -24722,7 +24722,7 @@ Transform:
   m_GameObject: {fileID: 686866694}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071071, z: -0, w: 0.7071065}
-  m_LocalPosition: {x: 760.5636, y: -570, z: 891.4492}
+  m_LocalPosition: {x: 764.5636, y: -570, z: 891.4492}
   m_LocalScale: {x: 4.003725, y: 35.99433, z: 3.9803524}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -32444,7 +32444,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Spawnpoint
   spawnPoint: {x: 532, y: -544, z: 792}
   spawnRotation: {x: 0, y: 0, z: 0, w: 1}
-  spawnScale: {x: 1, y: 1, z: 1}
+  spawnScale: {x: 8, y: 8, z: 8}
 --- !u!65 &871387918
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -36851,8 +36851,8 @@ Transform:
   m_GameObject: {fileID: 1016026930}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071071, z: -0, w: 0.7071065}
-  m_LocalPosition: {x: 794.5636, y: -562, z: 879.44916}
-  m_LocalScale: {x: 28.002071, y: 3.995489, z: 71.97744}
+  m_LocalPosition: {x: 796.5636, y: -562, z: 879.44916}
+  m_LocalScale: {x: 28.002071, y: 3.995489, z: 67.975494}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 135535034}
@@ -44982,6 +44982,118 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1310887240}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1311343107
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1311343108}
+  - component: {fileID: 1311343109}
+  m_Layer: 0
+  m_Name: Spline (7)
+  m_TagString: CamRail
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1311343108
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1311343107}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071071, z: -0, w: 0.7071065}
+  m_LocalPosition: {x: -1215.1776, y: -0.00001, z: 495.5067}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1986225128}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &1311343109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1311343107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dab5c7d4c32e743048dfca98e2d5914f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Splines::UnityEngine.Splines.SplineContainer
+  m_Spline:
+    m_EditModeType: 1
+    m_Knots: []
+    m_MetaData: []
+    m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
+  m_Splines:
+  - m_EditModeType: 1
+    m_Knots:
+    - Position:
+        x: 24.000305
+        y: -368
+        z: 503.9982
+      TangentIn:
+        x: 0
+        y: 0
+        z: 0
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0
+      Rotation:
+        value:
+          x: 0
+          y: -0.70710677
+          z: -0
+          w: 0.70710677
+    - Position:
+        x: -83.99902
+        y: -368
+        z: 506.00018
+      TangentIn:
+        x: 0
+        y: 0
+        z: 0
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0
+      Rotation:
+        value:
+          x: -1.2158044e-19
+          y: 0.0000018517948
+          z: -6.565546e-14
+          w: 1
+    m_MetaData:
+    - Mode: 1
+      Tension: 0.5
+    - Mode: 1
+      Tension: 0.5
+    m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
+  m_Knots:
+    m_KnotsLink: []
 --- !u!1 &1313672557
 GameObject:
   m_ObjectHideFlags: 0
@@ -51757,7 +51869,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RespawnController
   playerPrefab: {fileID: 0}
-  respawnPoint: {x: 532, y: -548, z: 792}
+  respawnPoint: {x: -548, y: -512, z: 648}
   respawnRotation: {x: 0, y: 0, z: 0, w: 1}
   respawnScale: {x: 8, y: 8, z: 8}
   speed: 30
@@ -51786,7 +51898,7 @@ Transform:
   m_GameObject: {fileID: 1479478372}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -160, y: -512, z: 772}
+  m_LocalPosition: {x: -548, y: -512, z: 648}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -53446,7 +53558,7 @@ Transform:
   m_GameObject: {fileID: 1555936222}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071071, z: -0, w: 0.7071065}
-  m_LocalPosition: {x: 760.5636, y: -558, z: 881.4492}
+  m_LocalPosition: {x: 764.5636, y: -558, z: 881.4492}
   m_LocalScale: {x: 16.004225, y: 3.9939728, z: 3.9824643}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -62227,8 +62339,8 @@ Transform:
   m_GameObject: {fileID: 1799068471}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071071, z: -0, w: 0.7071065}
-  m_LocalPosition: {x: 804.5636, y: -558, z: 891.44916}
-  m_LocalScale: {x: 4.003725, y: 3.9939728, z: 43.979378}
+  m_LocalPosition: {x: 806.5636, y: -558, z: 891.44916}
+  m_LocalScale: {x: 4.003725, y: 3.9939728, z: 39.977253}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 135535034}
@@ -68507,6 +68619,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 586846803}
+  - {fileID: 1311343108}
   - {fileID: 9801339}
   - {fileID: 724851375}
   - {fileID: 581229671}
