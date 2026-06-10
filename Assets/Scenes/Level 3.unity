@@ -51880,7 +51880,7 @@ MonoBehaviour:
   canJump: 0
   jumpHeight: 28
   gravity: 38
-  fallMultiplier: 2
+  fallMultiplier: 0.7
   canGrapple: 1
   dashForce: 100
   maxRange: 120

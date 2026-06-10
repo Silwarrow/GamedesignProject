@@ -22,6 +22,7 @@ public class Grapple : MonoBehaviour
 
     private float lockedY;
     private bool isYLocked = false;
+    private Coroutine decayCoroutine = null;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -72,7 +73,10 @@ public class Grapple : MonoBehaviour
 
         lockedY = transform.position.y;
         isYLocked = true;
-        StartCoroutine(DecayDashAfterDelay());
+        if(decayCoroutine != null){
+            StopCoroutine(decayCoroutine);
+        }
+        decayCoroutine = StartCoroutine(DecayDashAfterDelay());
     }
 
     private void DestroyHook()
@@ -112,6 +116,7 @@ public class Grapple : MonoBehaviour
             yield return null;
         }
         isYLocked = false;
+        decayCoroutine = null;
     }
 
     
