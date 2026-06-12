@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
 
 
 
 public class PauseMenu : MonoBehaviour
 {
+    [SerializeField] AudioSource ButtonClickSound;
     public GameObject container;
     private bool screenPause = false;
 
@@ -17,7 +19,8 @@ public class PauseMenu : MonoBehaviour
         {
             if (container.activeSelf)
             {
-                Continue();
+                container.SetActive(false);
+                Time.timeScale = 1f;
                 screenPause = false;
             }
             
@@ -33,6 +36,7 @@ public class PauseMenu : MonoBehaviour
 
     public void Continue()
     {
+        ButtonClickSound.Play();
         container.SetActive(false);
         Time.timeScale = 1;
         screenPause = false;
@@ -40,23 +44,45 @@ public class PauseMenu : MonoBehaviour
 
     public void MainMenu()
     {
-        SceneManager.LoadSceneAsync(0);
+        ButtonClickSound.Play();
+        StartCoroutine(LoadSceneAfterDelay(0));
         screenPause = false;
     }
 
     public void restartLevel()
     {
-        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+        ButtonClickSound.Play();
+        StartCoroutine(LoadSceneAfterDelay(SceneManager.GetActiveScene().buildIndex));
         screenPause = false;
+    }
+
+    public void Options()
+    {
+        ButtonClickSound.Play();
     }
 
     public void QuitGame()
     {
-        UnityEditor.EditorApplication.isPlaying = false;
+        ButtonClickSound.Play();
+        StartCoroutine(QuitAfterDelay());
+        screenPause = false;
     }
 
     public int GetScreenStatus()
     {
         return screenPause ? 1 : 0;
+    }
+
+    private IEnumerator LoadSceneAfterDelay(int sceneIndex)
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
+        Time.timeScale = 1f;
+        SceneManager.LoadSceneAsync(sceneIndex);
+    }
+
+    private IEnumerator QuitAfterDelay()
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
+        UnityEditor.EditorApplication.isPlaying = false;
     }
 }
