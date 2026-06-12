@@ -48,9 +48,13 @@ public class Hook : MonoBehaviour
     {
         if (other.CompareTag("grapple") && grapple != null)
         {   
-            Destroy(gameObject); //Zerstört den Hook, damit er nicht weiterfliegt
+            Destroy(gameObject);
             grapple.StartPull();
             grapple.StartCoroutine(grapple.GrappleFireresistenceRoutine());
+        }
+        if (other.CompareTag("Untagged") && grapple != null)
+        {
+            Destroy(gameObject);
         }
     }
 }
