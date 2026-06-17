@@ -57,19 +57,6 @@ public class CharacterController : MonoBehaviour
     public void IncrementFireCounter() { fireCounter++; }
     public void DecrementFireCounter() { fireCounter--; }
 
-    //SFX
-    AudioSource CheckpointReached;
-    AudioSource CollectingSomething;
-    AudioSource DashAfterHookConnects;
-    AudioSource Fire;
-    AudioSource Jumping;
-    AudioSource LevelendJingle;
-    AudioSource OpeningGate;
-    AudioSource RollingIntoPuddle;
-    AudioSource RollingThroughSnow;
-    AudioSource Walldamage;
-    AudioSource WaterfallRiver;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake(){
         playerCollider = GetComponent<Collider>();
