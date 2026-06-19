@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 3b1e9ae09e0820a4da7f4c4867d2c0b4, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: eff9bd1fc3971e7499e63b512110dfef, type: 2}
     - target: {fileID: 919132149155446097, guid: 3b1e9ae09e0820a4da7f4c4867d2c0b4, type: 3}
       propertyPath: m_Name
       value: SnowEdge
