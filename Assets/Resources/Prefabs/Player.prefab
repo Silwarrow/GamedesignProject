@@ -152,6 +152,10 @@ MonoBehaviour:
   dashForce: 50
   maxRange: 50
   grappleCooldown: 5
+  delayUntilDashBeginsStopping: 1
+  dashFalloffDuration: 0.35
+  fireResistanceDuration: 5
+  finishScreen: {fileID: 0}
 --- !u!135 &3318153087198161342
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -218,3 +222,6 @@ MonoBehaviour:
   shootTransform: {fileID: 8188404030269918724}
   maxRange: 50
   grappleCooldown: 5
+  delayUntilDashBeginsStopping: 1
+  dashStoppingProcessDuration: 0.35
+  fireResistanceDuration: 5
