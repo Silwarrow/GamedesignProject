@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class RespawnController : MonoBehaviour
 {
@@ -33,7 +35,19 @@ public class RespawnController : MonoBehaviour
     public LevelFinishScreen finishScreen;
 
     private void Start() {
-        playerPrefab = Resources.Load<GameObject>("Prefabs/Player");
+        switch (SceneManager.GetActiveScene().buildIndex)
+        {
+            case 1:
+                playerPrefab = Resources.Load<GameObject>("Prefabs/PlayerLvl1");
+                break;
+            case 2:
+                playerPrefab = Resources.Load<GameObject>("Prefabs/PlayerLvl2");
+                break;
+            case 3:
+                playerPrefab = Resources.Load<GameObject>("Prefabs/PlayerLvl3");
+                break;
+        }
+        
         Destroy(GameObject.FindGameObjectWithTag("Player"));
         RespawnPlayer();
     }

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class CharacterController : MonoBehaviour
 {
 
+    private Animator animator;
     //public Variables
     public float speed = 30f;
     public bool devOut = false;
@@ -63,6 +64,7 @@ public class CharacterController : MonoBehaviour
         PlayerManager = FindFirstObjectByType<RespawnController>().gameObject;
         meltBar = FindFirstObjectByType<Canvas>().GetComponentInChildren<Slider>();
         spriteChanger = FindFirstObjectByType<SpriteChanger>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -189,6 +191,7 @@ public class CharacterController : MonoBehaviour
         }
         if(other.CompareTag("Water")){
             waterCounter++;
+            
         }
         if(other.CompareTag("Fire")){
             fireCounter++;
