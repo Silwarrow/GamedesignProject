@@ -52,6 +52,7 @@ public class CharacterController : MonoBehaviour
     private int waterCounter = 0;
     private int fireCounter = 0;
     private bool waterSpeed = false;
+    private GameObject playerModell;
 
     //Zugang für Grapple Script
     public int GetFireCounter() { return fireCounter; }
@@ -65,6 +66,7 @@ public class CharacterController : MonoBehaviour
         meltBar = FindFirstObjectByType<Canvas>().GetComponentInChildren<Slider>();
         spriteChanger = FindFirstObjectByType<SpriteChanger>();
         animator = GetComponent<Animator>();
+        playerModell = transform.GetChild(0).gameObject;
     }
 
     // Update is called once per frame
@@ -149,6 +151,36 @@ public class CharacterController : MonoBehaviour
         Vector3 verticalMovement = Vector3.up * verticalVelocity * Time.deltaTime;
         transform.Translate(horizontalMovement + verticalMovement, Space.World);
 
+
+        //Modell drehen, wenn sich der Spieler bewegt
+        if(horizontalMovement.magnitude > 0.01f){
+            
+            Vector3 lookDirection = new Vector3(-horizontalMovement.x, 0, horizontalMovement.z);
+            playerModell.transform.rotation = Quaternion.LookRotation(lookDirection);
+        }
+
+        
+        //Animations
+        int state = 0;
+
+        if(horizontalMovement.magnitude > 0.01f && isGrounded)
+        {
+            if(waterCounter > 0)
+                state = 2; // Wasser
+            else
+                state = 1; // Move
+        }
+        if (!isGrounded)
+        {
+            state = 3; // Jump
+        }
+        
+        Debug.Log("Animation State: " + state);
+        animator.SetInteger("state", state);
+        Debug.Log("Animator param: " + animator.GetInteger("state"));
+
+        
+        
 
 
         //Tod nach Größe

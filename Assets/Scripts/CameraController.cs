@@ -305,6 +305,7 @@ public class CameraController : MonoBehaviour
     public void PlayerRespawned(GameObject newPlayer)
     {
         player = newPlayer.transform;
+        Debug.Log($"CameraController: Spieler respawned, neue Referenz: {player.name}");
 
 
         // Nächste Rail suchen und Kamera sofort hinbringen
