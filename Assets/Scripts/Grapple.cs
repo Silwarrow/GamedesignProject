@@ -19,6 +19,7 @@ public class Grapple : MonoBehaviour
     Hook hook;
     Rigidbody playerRigidbody;
     PauseMenu pauseMenu;
+    GameObject nose;
 
     private float lockedY;
     private bool isYLocked = false;
@@ -30,11 +31,13 @@ public class Grapple : MonoBehaviour
         playerRigidbody = GetComponent<Rigidbody>();
         characterController = GetComponent<CharacterController>();
         pauseMenu = FindFirstObjectByType<PauseMenu>();
+        nose = GameObject.Find("Carrot");
     }
 
     // Update is called once per frame
     void Update()
     {
+        nose.SetActive(hook == null);
         if (isYLocked)
         {
             Vector3 position = transform.position;
