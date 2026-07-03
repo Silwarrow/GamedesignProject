@@ -155,7 +155,7 @@ public class CharacterController : MonoBehaviour
         //Modell drehen, wenn sich der Spieler bewegt
         if(horizontalMovement.magnitude > 0.01f){
             
-            Vector3 lookDirection = new Vector3(-horizontalMovement.x, 0, horizontalMovement.z);
+            Vector3 lookDirection = new Vector3(-horizontalMovement.x, 0, -horizontalMovement.z);
             playerModell.transform.rotation = Quaternion.LookRotation(lookDirection);
         }
 
@@ -175,9 +175,7 @@ public class CharacterController : MonoBehaviour
             state = 3; // Jump
         }
         
-        Debug.Log("Animation State: " + state);
         animator.SetInteger("state", state);
-        Debug.Log("Animator param: " + animator.GetInteger("state"));
 
         
         
