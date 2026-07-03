@@ -25,10 +25,6 @@ public void TryAgainButton()
         {
             SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
         }
-        else
-        {
-            // epische Endszene oder so
-        }
     }
 
     public void ExitButton()
