@@ -37,7 +37,10 @@ public class Grapple : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        nose.SetActive(hook == null);
+        if (nose != null)
+        {
+            nose.SetActive(hook == null);
+        }
         if (isYLocked)
         {
             Vector3 position = transform.position;
@@ -59,7 +62,7 @@ public class Grapple : MonoBehaviour
                 StartCoroutine(GrappleCooldownRoutine());
             }
         }
-        else if (hook != null && Input.GetMouseButtonDown(1)) //Rechtsklick -> Hook zerstören bevor ankommt
+        else if (hook != null && Input.GetMouseButtonDown(1))
         {
             DestroyHook();
         }
