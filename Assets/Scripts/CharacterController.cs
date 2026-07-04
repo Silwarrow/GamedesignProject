@@ -46,6 +46,7 @@ public class CharacterController : MonoBehaviour
     public LevelFinishScreen finishScreen;
     [SerializeField] AudioSource JumpSound;
     [SerializeField] AudioSource FireSound;
+    [SerializeField] AudioSource RollingThroughWaterSound;
     
     //Area Tags
     private bool fastGrow = false;
@@ -227,7 +228,10 @@ public class CharacterController : MonoBehaviour
         }
         if(other.CompareTag("Water")){
             waterCounter++;
-            
+            if (RollingThroughWaterSound != null && RollingThroughWaterSound.isActiveAndEnabled)
+            {
+                RollingThroughWaterSound.Play();
+            }
         }
         if(other.CompareTag("Fire")){
             fireCounter++;
@@ -255,6 +259,10 @@ public class CharacterController : MonoBehaviour
         }
         if(other.CompareTag("Water")){
             waterCounter--;
+            if (RollingThroughWaterSound != null && RollingThroughWaterSound.isActiveAndEnabled)
+            {
+                RollingThroughWaterSound.Stop();
+            }
         }
         if(other.CompareTag("Fire")){
             fireCounter--;
