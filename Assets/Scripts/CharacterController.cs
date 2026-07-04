@@ -45,6 +45,7 @@ public class CharacterController : MonoBehaviour
     [Header("Level Finish")]
     public LevelFinishScreen finishScreen;
     [SerializeField] AudioSource JumpSound;
+    [SerializeField] AudioSource FireSound;
     
     //Area Tags
     private bool fastGrow = false;
@@ -230,6 +231,10 @@ public class CharacterController : MonoBehaviour
         }
         if(other.CompareTag("Fire")){
             fireCounter++;
+            if (FireSound != null && FireSound.isActiveAndEnabled)
+            {
+                FireSound.Play();
+            }
         }
         if(other.CompareTag("Finish")){
             int stars = spriteChanger.GetStars();
@@ -253,6 +258,13 @@ public class CharacterController : MonoBehaviour
         }
         if(other.CompareTag("Fire")){
             fireCounter--;
+            if (fireCounter <= 0)
+            {
+                if (FireSound != null && FireSound.isActiveAndEnabled)
+                {
+                    FireSound.Stop();
+                }
+            }
         }
     }
 
