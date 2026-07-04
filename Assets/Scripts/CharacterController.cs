@@ -44,6 +44,7 @@ public class CharacterController : MonoBehaviour
     private Collider playerCollider;
     [Header("Level Finish")]
     public LevelFinishScreen finishScreen;
+    [SerializeField] AudioSource JumpSound;
     
     //Area Tags
     private bool fastGrow = false;
@@ -117,6 +118,10 @@ public class CharacterController : MonoBehaviour
         //Springen
         if(Input.GetKeyDown(KeyCode.Space) && isGrounded && canJump)
         {
+            if (JumpSound != null && JumpSound.isActiveAndEnabled)
+            {
+                JumpSound.Play();
+            }
             verticalVelocity = jumpHeight;
             isGrounded = false;
         }
