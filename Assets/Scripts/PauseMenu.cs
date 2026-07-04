@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
+    [SerializeField] AudioSource buttonClickSound;
     public GameObject container;
     private bool screenPause = false;
 
@@ -33,6 +34,7 @@ public class PauseMenu : MonoBehaviour
 
     public void Continue()
     {
+        buttonClickSound.Play();
         container.SetActive(false);
         Time.timeScale = 1;
         screenPause = false;
@@ -40,19 +42,27 @@ public class PauseMenu : MonoBehaviour
 
     public void MainMenu()
     {
+        buttonClickSound.Play();
         SceneManager.LoadSceneAsync(0);
         screenPause = false;
     }
 
     public void restartLevel()
     {
+        buttonClickSound.Play();
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
         screenPause = false;
     }
 
     public void QuitGame()
     {
+        buttonClickSound.Play();
         UnityEditor.EditorApplication.isPlaying = false;
+    }
+
+    public void PlayButtonSound()
+    {
+        buttonClickSound.Play();
     }
 
     public int GetScreenStatus()
