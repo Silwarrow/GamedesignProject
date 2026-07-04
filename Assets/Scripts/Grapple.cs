@@ -20,6 +20,7 @@ public class Grapple : MonoBehaviour
     Rigidbody playerRigidbody;
     PauseMenu pauseMenu;
     GameObject nose;
+    [SerializeField] AudioSource DashSound;
 
     private float lockedY;
     private bool isYLocked = false;
@@ -71,6 +72,10 @@ public class Grapple : MonoBehaviour
     public void StartPull()
     {
         if (hook == null) return;
+        if (DashSound != null && DashSound.isActiveAndEnabled)
+        {
+            DashSound.Play();
+        }
         Vector3 dashDirection = (hook.transform.position - transform.position).normalized; //Richtung vom Spieler zum Hook, normalisiert damit es nur die Richtung ist ohne Stärke
         playerRigidbody.AddForce(dashDirection * dashForce, ForceMode.Impulse); //Impulsartiger Dash wird verwendet
 
