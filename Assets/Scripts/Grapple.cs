@@ -38,6 +38,10 @@ public class Grapple : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (nose == null)
+        {
+            nose = GameObject.Find("Carrot");
+        }
         if (nose != null)
         {
             nose.SetActive(hook == null);
@@ -104,12 +108,9 @@ public class Grapple : MonoBehaviour
     }
     public IEnumerator GrappleFireresistenceRoutine()
     {
-        if (hook != null)
-        {
-            characterController?.DecrementFireCounter();
-            yield return new WaitForSeconds(fireResistanceDuration);
-            characterController?.IncrementFireCounter();   
-        }
+        characterController?.DecrementFireCounter();
+        yield return new WaitForSeconds(fireResistanceDuration);
+        characterController?.IncrementFireCounter();
     }
     private IEnumerator DecayDashAfterDelay()
     {
