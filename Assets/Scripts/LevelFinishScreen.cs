@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class LevelFinishScreen : MonoBehaviour
 {
     [SerializeField] AudioSource buttonClickSound;
+    [SerializeField] AudioSource levelCompleteSound;
     public Text starsText;
     public void Setup(int stars)
     {
@@ -17,6 +18,7 @@ public class LevelFinishScreen : MonoBehaviour
         {
             grapple.canGrapple = false;
         }
+        levelCompleteSound.Play();
     }
 
 public void TryAgainButton()

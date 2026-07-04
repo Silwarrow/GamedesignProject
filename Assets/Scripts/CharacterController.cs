@@ -234,6 +234,7 @@ public class CharacterController : MonoBehaviour
         if(other.CompareTag("Finish")){
             int stars = spriteChanger.GetStars();
             finishScreen.Setup(stars);
+            
         }
     }
     void OnTriggerExit(Collider other){
