@@ -11,7 +11,8 @@ public class Collectable : MonoBehaviour
     
     private CollectableManager collectableManager;
     private Item myself;
-    
+
+    [SerializeField] AudioSource collectingSound;
 
     void Awake()
     {
@@ -33,6 +34,7 @@ public class Collectable : MonoBehaviour
                 }
 
             }
+            collectingSound.Play();
             gameObject.SetActive(false);
         }
         
