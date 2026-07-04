@@ -36,6 +36,7 @@ public class CharacterController : MonoBehaviour
     private Vector3 momentumVelocity = Vector3.zero;
     private float verticalVelocity = 0f;
     private bool isGrounded = false;
+    private bool wasColliding = false;
     
     //Scene Objects
     private Slider meltBar;
@@ -47,6 +48,7 @@ public class CharacterController : MonoBehaviour
     [SerializeField] AudioSource JumpSound;
     [SerializeField] AudioSource FireSound;
     [SerializeField] AudioSource RollingThroughWaterSound;
+    [SerializeField] AudioSource WallDamageSound;
     
     //Area Tags
     private bool fastGrow = false;
@@ -86,9 +88,15 @@ public class CharacterController : MonoBehaviour
         momentum = Vector3.SmoothDamp(momentum, movement.normalized, ref momentumVelocity, inertia);
 
         //Bremsen bei Kollision
-        if(IsColliderInFront(momentum)){
+        bool isColliding = IsColliderInFront(momentum);
+        if(isColliding){
+            if(!wasColliding)
+            {
+                WallDamageSound.Play();
+            }
             momentum = Vector3.zero;
         }
+        wasColliding = isColliding;
 
 
         //Größer werden
@@ -342,7 +350,7 @@ public class CharacterController : MonoBehaviour
                 }
             }
 
-            
+
             //Wall Damage Berechnung
             float angle = Vector3.Angle(hit.normal, Vector3.up);
             float hitSpeed = new Vector3(direction.x, 0, direction.z).magnitude;
