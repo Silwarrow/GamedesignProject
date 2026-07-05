@@ -34,7 +34,10 @@ public class Collectable : MonoBehaviour
                 }
 
             }
-            collectingSound.Play();
+            if (collectingSound != null)
+            {
+                collectingSound.Play();
+            }
             gameObject.SetActive(false);
         }
         
