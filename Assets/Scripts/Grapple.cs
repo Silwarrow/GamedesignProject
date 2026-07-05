@@ -106,12 +106,6 @@ public class Grapple : MonoBehaviour
         yield return new WaitForSeconds(grappleCooldown);
         isCoolingDown = false;
     }
-    public IEnumerator GrappleFireresistenceRoutine()
-    {
-        characterController?.DecrementFireCounter();
-        yield return new WaitForSeconds(fireResistanceDuration);
-        characterController?.IncrementFireCounter();
-    }
     private IEnumerator DecayDashAfterDelay()
     {
         yield return new WaitForSeconds(delayUntilDashBeginsStopping);

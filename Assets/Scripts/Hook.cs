@@ -50,7 +50,7 @@ public class Hook : MonoBehaviour
         {   
             Destroy(gameObject);
             grapple.StartPull();
-            grapple.StartCoroutine(grapple.GrappleFireresistenceRoutine());
+            grapple.GetComponent<CharacterController>()?.ActivateFireResistance(grapple.fireResistanceDuration);
         }else if (other.CompareTag("Untagged"))
         {
             Destroy(gameObject);

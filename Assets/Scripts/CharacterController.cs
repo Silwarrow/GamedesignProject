@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,6 +38,8 @@ public class CharacterController : MonoBehaviour
     private float verticalVelocity = 0f;
     private bool isGrounded = false;
     private bool wasColliding = false;
+    private bool isFireResistant = false;
+    private Coroutine fireResistanceCoroutine = null;
     
     //Scene Objects
     private Slider meltBar;
@@ -59,10 +62,23 @@ public class CharacterController : MonoBehaviour
     private bool waterSpeed = false;
     private GameObject playerModell;
 
-    //Zugang für Grapple Script
-    public int GetFireCounter() { return fireCounter; }
-    public void IncrementFireCounter() { fireCounter++; }
-    public void DecrementFireCounter() { fireCounter--; }
+    public void ActivateFireResistance(float duration)
+    {
+        if (fireResistanceCoroutine != null)
+        {
+            StopCoroutine(fireResistanceCoroutine);
+        }
+
+        fireResistanceCoroutine = StartCoroutine(FireResistanceRoutine(duration));
+    }
+
+    private IEnumerator FireResistanceRoutine(float duration)
+    {
+        isFireResistant = true;
+        yield return new WaitForSeconds(duration);
+        isFireResistant = false;
+        fireResistanceCoroutine = null;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake(){
@@ -101,7 +117,8 @@ public class CharacterController : MonoBehaviour
 
         //Größer werden
         float growthMultiplier = growthRate*Mathf.Pow(momentum.magnitude, 2f) * (fastGrow ? 1.5f : 1f);
-        if(isGrounded && safeAreas <= 0 && shadowCounter > 0 && fireCounter <= 0)
+        bool fireDamaging = fireCounter > 0 && !isFireResistant;
+        if(isGrounded && safeAreas <= 0 && shadowCounter > 0 && !fireDamaging)
         {
             transform.localScale += Vector3.one * growthMultiplier* Time.deltaTime;
         }
@@ -111,7 +128,7 @@ public class CharacterController : MonoBehaviour
         if(shadowCounter <= 0 && safeAreas <= 0){
             transform.localScale -= Vector3.one * shrinkMultiplier * (fastGrow ? 0.5f : 1f) * Time.deltaTime;
         }
-        if(fireCounter > 0){
+        if(fireDamaging){
             transform.localScale -= Vector3.one * shrinkMultiplier * 12f * (fastGrow ? 0.5f : 1f) * Time.deltaTime;
         }
 
@@ -243,6 +260,7 @@ public class CharacterController : MonoBehaviour
         }
         if(other.CompareTag("Fire")){
             fireCounter++;
+            ActivateFireResistance(fireResistanceDuration);
             if (FireSound != null && FireSound.isActiveAndEnabled)
             {
                 FireSound.Play();
