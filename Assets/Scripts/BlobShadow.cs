@@ -12,23 +12,20 @@ public class BlobShadow: MonoBehaviour
     {
         Ray downRay = new Ray(new Vector3(this.transform.position.x, this.transform.position.y - offset, this.transform.position.z), -Vector3.up);
 
-        if(hit.transform.tag == "DeathArea")
-        {
-            Vector3 hitPosition = hit.point + Vector3.down*1000;
-            //transform the shadow to the location
-            shadow.transform.position = hitPosition;
-        }else{
-            //gets the hit from the raycast and converts it unto a vector3
-            Vector3 hitPosition = hit.point;
-            //transform the shadow to the location
-            shadow.transform.position = hitPosition;
-        }
-        
-
         //Cast a ray straight downwards, reads back where it lands (this is optional but reccomended)
         if(Physics.Raycast(downRay, out hit))
         {
-            print(hit.transform);
+            if(hit.transform.tag == "DeathArea")
+            {
+                Vector3 hitPosition = hit.point + Vector3.down*1000;
+                //transform the shadow to the location
+                shadow.transform.position = hitPosition;
+            }else{
+                //gets the hit from the raycast and converts it unto a vector3
+                Vector3 hitPosition = hit.point;
+                //transform the shadow to the location
+                shadow.transform.position = hitPosition;
+            }
         }
     }
 }
