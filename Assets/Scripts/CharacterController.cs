@@ -1,9 +1,11 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CharacterController : MonoBehaviour
 {
 
+    private Animator animator;
     //public Variables
     public float speed = 30f;
     public bool devOut = false;
@@ -25,6 +27,9 @@ public class CharacterController : MonoBehaviour
     public float dashForce = 50f;
     public float maxRange = 50f;
     public float grappleCooldown = 5.0f;
+    public float delayUntilDashBeginsStopping = 1f;
+    public float dashFalloffDuration = 0.35f;
+    public float fireResistanceDuration = 5f;
 
 
     private float size;
@@ -32,24 +37,59 @@ public class CharacterController : MonoBehaviour
     private Vector3 momentumVelocity = Vector3.zero;
     private float verticalVelocity = 0f;
     private bool isGrounded = false;
+    private bool wasColliding = false;
+    private bool isFireResistant = false;
+    private Coroutine fireResistanceCoroutine = null;
     
     //Scene Objects
-    private UnityEngine.UI.Slider meltBar;
+    private Slider meltBar;
+    private SpriteChanger spriteChanger;
     private GameObject PlayerManager;
+    private Collider playerCollider;
+    [Header("Level Finish")]
+    public LevelFinishScreen finishScreen;
+    [SerializeField] AudioSource JumpSound;
+    [SerializeField] AudioSource FireSound;
+    [SerializeField] AudioSource RollingThroughWaterSound;
+    [SerializeField] AudioSource WallDamageSound;
+    [SerializeField] AudioSource ThickSnowSound;
+
+    
     //Area Tags
-    private bool fastGrow = false;
-    private bool isInSafeArea = false;
+    private int thickSnowCounter = 0;
+    private int safeAreas = 0;
     private int shadowCounter = 0;
     private int waterCounter = 0;
     private int fireCounter = 0;
     private bool waterSpeed = false;
+    private GameObject playerModell;
 
+    public void ActivateFireResistance(float duration)
+    {
+        if (fireResistanceCoroutine != null)
+        {
+            StopCoroutine(fireResistanceCoroutine);
+        }
+
+        fireResistanceCoroutine = StartCoroutine(FireResistanceRoutine(duration));
+    }
+
+    private IEnumerator FireResistanceRoutine(float duration)
+    {
+        isFireResistant = true;
+        yield return new WaitForSeconds(duration);
+        isFireResistant = false;
+        fireResistanceCoroutine = null;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake(){
+        playerCollider = GetComponent<Collider>();
         PlayerManager = FindFirstObjectByType<RespawnController>().gameObject;
-        meltBar = FindFirstObjectByType<Canvas>().GetComponentInChildren<UnityEngine.UI.Slider>();
-
+        meltBar = FindFirstObjectByType<Canvas>().GetComponentInChildren<Slider>();
+        spriteChanger = FindFirstObjectByType<SpriteChanger>();
+        animator = GetComponent<Animator>();
+        playerModell = transform.GetChild(0).gameObject;
     }
 
     // Update is called once per frame
@@ -66,25 +106,32 @@ public class CharacterController : MonoBehaviour
         momentum = Vector3.SmoothDamp(momentum, movement.normalized, ref momentumVelocity, inertia);
 
         //Bremsen bei Kollision
-        if(IsColliderInFront(momentum)){
+        bool isColliding = IsColliderInFront(momentum);
+        if(isColliding){
+            if(!wasColliding)
+            {
+                WallDamageSound.Play();
+            }
             momentum = Vector3.zero;
         }
+        wasColliding = isColliding;
 
 
         //Größer werden
-        float growthMultiplier = growthRate*Mathf.Pow(momentum.magnitude, 2f) * (fastGrow ? 1.5f : 1f);
-        if(isGrounded && !isInSafeArea && shadowCounter > 0 && fireCounter <= 0)
+        float growthMultiplier = growthRate*Mathf.Pow(momentum.magnitude, 2f) * (thickSnowCounter > 0 ? 1.5f : 1f);
+        bool fireDamaging = fireCounter > 0 && !isFireResistant;
+        if(isGrounded && safeAreas <= 0 && shadowCounter > 0 && !fireDamaging)
         {
             transform.localScale += Vector3.one * growthMultiplier* Time.deltaTime;
         }
 
         //Kleiner werden
         float shrinkMultiplier = 0.3f + 1.691f* (Mathf.Pow(size-3f, 2f)/(Mathf.Pow(size-3f, 2f)+13.7f))*(1-0.625f*growthMultiplier);
-        if(shadowCounter <= 0 && !isInSafeArea){
-            transform.localScale -= Vector3.one * shrinkMultiplier * (fastGrow ? 0.5f : 1f) * Time.deltaTime;
+        if(shadowCounter <= 0 && safeAreas <= 0){
+            transform.localScale -= Vector3.one * shrinkMultiplier * (thickSnowCounter > 0 ? 0.5f : 1f) * Time.deltaTime;
         }
-        if(fireCounter > 0){
-            transform.localScale -= Vector3.one * shrinkMultiplier * 2f * (fastGrow ? 0.5f : 1f) * Time.deltaTime;
+        if(fireDamaging){
+            transform.localScale -= Vector3.one * shrinkMultiplier * 12f * (thickSnowCounter > 0 ? 0.5f : 1f) * Time.deltaTime;
         }
 
 
@@ -95,11 +142,15 @@ public class CharacterController : MonoBehaviour
 
         //Sprungfähigkeit testen: QueryTriggerInteraction.Ignore heißt, dass Trigger, also die shadow areas und safe zones, sowas halt, ignoriert werden.
         //Physics.DefaultRaycastLayers nutzt die Standard-Layer-Maske von Unity, nicht wichtig für uns, aber sonst kann ich die Methode nicht überladen um den Triggerignore zu verwenden.
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, size / 2 + 0.9f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, size / 2 + 0.1f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
 
         //Springen
         if(Input.GetKeyDown(KeyCode.Space) && isGrounded && canJump)
         {
+            if (JumpSound != null && JumpSound.isActiveAndEnabled)
+            {
+                JumpSound.Play();
+            }
             verticalVelocity = jumpHeight;
             isGrounded = false;
         }
@@ -129,11 +180,39 @@ public class CharacterController : MonoBehaviour
 
         //Bewegen
         Vector3 horizontalMovement = momentum * speed * Time.deltaTime * 
-                                    (fastGrow ? 0.5f : 1f) * 
+                                    (thickSnowCounter > 0 ? 0.5f : 1f) * 
                                     (waterSpeed ? 2f : 1f);
         Vector3 verticalMovement = Vector3.up * verticalVelocity * Time.deltaTime;
         transform.Translate(horizontalMovement + verticalMovement, Space.World);
 
+
+        //Modell drehen, wenn sich der Spieler bewegt
+        if(horizontalMovement.magnitude > 0.01f){
+            
+            Vector3 lookDirection = new Vector3(-horizontalMovement.x, 0, -horizontalMovement.z);
+            playerModell.transform.rotation = Quaternion.LookRotation(lookDirection);
+        }
+
+        
+        //Animations
+        int state = 0;
+
+        if(horizontalMovement.magnitude > 0.01f && isGrounded)
+        {
+            if(waterCounter > 0)
+                state = 2; // Wasser
+            else
+                state = 1; // Move
+        }
+        if (!isGrounded)
+        {
+            state = 3; // Jump
+        }
+        
+        animator.SetInteger("state", state);
+
+        
+        
 
 
         //Tod nach Größe
@@ -151,8 +230,8 @@ public class CharacterController : MonoBehaviour
             + " | Vertical Velocity: " + verticalVelocity
             + " | Grounded: " + isGrounded
             + " | Shadow Counter: " + shadowCounter
-            + " | In Safe Area: " + isInSafeArea
-            + " | Fast Grow: " + fastGrow);
+            + " | Safe Areas: " + safeAreas
+            + " | Thick Snow Counter: " + thickSnowCounter);
         }
     }
 
@@ -168,17 +247,31 @@ public class CharacterController : MonoBehaviour
             shadowCounter++;
         }
         if (other.CompareTag("SafeArea")){
-            isInSafeArea = true;
+            safeAreas++;
         }
         if(other.CompareTag("ThickSnow")){
-            fastGrow = true;
+            thickSnowCounter++;
             gravity = 80f;
+            ThickSnowSound.Play();
         }
         if(other.CompareTag("Water")){
             waterCounter++;
+            if (RollingThroughWaterSound != null && RollingThroughWaterSound.isActiveAndEnabled)
+            {
+                RollingThroughWaterSound.Play();
+            }
         }
         if(other.CompareTag("Fire")){
             fireCounter++;
+            if (FireSound != null && FireSound.isActiveAndEnabled)
+            {
+                FireSound.Play();
+            }
+        }
+        if(other.CompareTag("Finish")){
+            int stars = spriteChanger.GetStars();
+            finishScreen.Setup(stars);
+            
         }
     }
     void OnTriggerExit(Collider other){
@@ -186,26 +279,39 @@ public class CharacterController : MonoBehaviour
             shadowCounter--;
         }
         if (other.CompareTag("SafeArea")){
-            isInSafeArea = false;
+            safeAreas--;
         }
         if(other.CompareTag("ThickSnow")){
-            fastGrow = false;
+            thickSnowCounter--;
             gravity = 38f;
+            ThickSnowSound.Stop();
         }
         if(other.CompareTag("Water")){
             waterCounter--;
+            if (RollingThroughWaterSound != null && RollingThroughWaterSound.isActiveAndEnabled)
+            {
+                RollingThroughWaterSound.Stop();
+            }
         }
         if(other.CompareTag("Fire")){
             fireCounter--;
+            if (fireCounter <= 0)
+            {
+                if (FireSound != null && FireSound.isActiveAndEnabled)
+                {
+                    FireSound.Stop();
+                }
+            }
         }
     }
 
     bool IsColliderInFront(Vector3 direction)
     {
+        direction.y = 0; 
         size = transform.localScale.x;
         float radius = size / 2f;
         float castDistance = (speed * Time.deltaTime) + 0.05f; // kleine Sicherheitsreserve
-        Vector3 origin = transform.position + direction.normalized * 0.01f; // nicht im eigenen Collider starten
+        Vector3 origin = transform.position + direction.normalized + Vector3.up * 0.01f; // leicht anheben, um Bodenkollisionen zu vermeiden
 
         RaycastHit[] hits = Physics.SphereCastAll(
             origin,
@@ -218,25 +324,58 @@ public class CharacterController : MonoBehaviour
         foreach (RaycastHit hit in hits)
         {
             // Spieler selbst ignorieren
-            if (hit.collider.gameObject == this.gameObject)
-            {
-                continue;
+            if (hit.collider.gameObject == this.gameObject) continue;
+
+            if(hit.distance == 0){
+                if(!(hit.collider is MeshCollider mc && !mc.convex)){
+                    Vector3 globalHit = hit.collider.ClosestPoint(origin);
+                    Vector3 toHit = globalHit - transform.position;
+                    float verticalThreshold = radius * 0.6f;
+                    if (toHit.y < -verticalThreshold)
+                    {
+                        continue;
+                    }
+                }else{
+                    Debug.Log("Not performant right now with object " + hit.collider.name);
+                    Vector3 hitDirection = Vector3.zero;
+                    float penetrationDistance = 0f;
+                    bool isPenetrating = Physics.ComputePenetration(
+                        playerCollider,
+                        transform.position + Vector3.up * 0.01f, // leicht anheben, um Bodenkollisionen zu vermeiden
+                        transform.rotation,
+                        hit.collider,
+                        hit.collider.transform.position,
+                        hit.collider.transform.rotation,
+                        out hitDirection,
+                        out penetrationDistance);
+
+                    try{
+                        if(!float.IsNaN(hitDirection.z * penetrationDistance)){
+                            transform.Translate(hitDirection * penetrationDistance, Space.World);
+                        }
+                    }catch{
+                        Debug.Log(hitDirection * penetrationDistance);
+                    }
+
+                    if(!isPenetrating) continue;
+
+                    if(hitDirection.y > 0.05f && isGrounded) continue; // Kollision von unten ignorieren
+                }
+                
+            }else{
+                Vector3 toHit = hit.point - transform.position;
+                float verticalThreshold = radius * 0.6f;
+                if (toHit.y < -verticalThreshold)
+                {
+                    continue;
+                }
             }
 
-            Vector3 globalHit = hit.collider.ClosestPoint(origin);
-            Vector3 toHit = globalHit - transform.position;
-            Debug.DrawLine(transform.position, globalHit, Color.red, 0.1f);
-            float verticalThreshold = radius * 0.6f;
-            if (toHit.y < -verticalThreshold)
-            {
-                continue;
-            }
 
-            
             //Wall Damage Berechnung
             float angle = Vector3.Angle(hit.normal, Vector3.up);
             float hitSpeed = new Vector3(direction.x, 0, direction.z).magnitude;
-            if(angle > 45f && hitSpeed > 0.4f && !isInSafeArea)
+            if(angle > 45f && hitSpeed > 0.4f && safeAreas <= 0)
             {
                 //je nach geschwindigkeit soo der ball zwischen 0-5% der aktuellen größe schrumpfen
                 transform.localScale -= Vector3.one * hitSpeed * (maxWallDamagePercentage / 100f) * size;

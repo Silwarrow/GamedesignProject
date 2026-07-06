@@ -10,22 +10,53 @@ public class Grapple : MonoBehaviour
     [HideInInspector] public float maxRange = 50f;
     [HideInInspector] public float grappleCooldown = 5.0f;
     bool isCoolingDown = false;
+    private CharacterController characterController;
+    [HideInInspector] public float delayUntilDashBeginsStopping = 1f;
+    [HideInInspector] public float dashStoppingProcessDuration = 0.35f;
+    [HideInInspector] public float fireResistanceDuration = 5f;
 
 
     Hook hook;
     Rigidbody playerRigidbody;
+    PauseMenu pauseMenu;
+    GameObject nose;
+    [SerializeField] AudioSource DashSound;
 
+    private float lockedY;
+    private bool isYLocked = false;
+    private Coroutine decayCoroutine = null;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         playerRigidbody = GetComponent<Rigidbody>();
+        characterController = GetComponent<CharacterController>();
+        pauseMenu = FindFirstObjectByType<PauseMenu>();
+        nose = GameObject.Find("Carrot");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(hook == null && !isCoolingDown && Input.GetMouseButtonDown(0) && canGrapple) //Linksklick -> Hook schießen
+        if (nose == null)
+        {
+            nose = GameObject.Find("Carrot");
+        }
+        if (nose != null)
+        {
+            nose.SetActive(hook == null);
+        }
+        if (isYLocked)
+        {
+            Vector3 position = transform.position;
+            position.y = lockedY;
+            transform.position = position;
+
+            Vector3 velocity = playerRigidbody.linearVelocity;
+            playerRigidbody.linearVelocity = new Vector3(velocity.x, 0f, velocity.z);
+        }
+
+        if (hook == null && !isCoolingDown && Input.GetMouseButtonDown(0) && canGrapple && (pauseMenu == null || pauseMenu.GetScreenStatus() == 0)) //Linksklick -> Hook schießen
         {
             Vector3 screenPos = Input.mousePosition;
             if (TryResolveAimFromMouse(screenPos, out Vector3 finalAim))
@@ -36,7 +67,7 @@ public class Grapple : MonoBehaviour
                 StartCoroutine(GrappleCooldownRoutine());
             }
         }
-        else if (hook != null && Input.GetMouseButtonDown(1)) //Rechtsklick -> Hook zerstören bevor ankommt
+        else if (hook != null && Input.GetMouseButtonDown(1))
         {
             DestroyHook();
         }
@@ -45,8 +76,22 @@ public class Grapple : MonoBehaviour
     public void StartPull()
     {
         if (hook == null) return;
+        if (DashSound != null && DashSound.isActiveAndEnabled)
+        {
+            DashSound.Play();
+        }
         Vector3 dashDirection = (hook.transform.position - transform.position).normalized; //Richtung vom Spieler zum Hook, normalisiert damit es nur die Richtung ist ohne Stärke
         playerRigidbody.AddForce(dashDirection * dashForce, ForceMode.Impulse); //Impulsartiger Dash wird verwendet
+
+        Vector3 curVel = playerRigidbody.linearVelocity;
+        playerRigidbody.linearVelocity = new Vector3(curVel.x, 0f, curVel.z);
+
+        lockedY = transform.position.y;
+        isYLocked = true;
+        if(decayCoroutine != null){
+            StopCoroutine(decayCoroutine);
+        }
+        decayCoroutine = StartCoroutine(DecayDashAfterDelay());
     }
 
     private void DestroyHook()
@@ -60,6 +105,24 @@ public class Grapple : MonoBehaviour
         isCoolingDown = true;
         yield return new WaitForSeconds(grappleCooldown);
         isCoolingDown = false;
+    }
+    private IEnumerator DecayDashAfterDelay()
+    {
+        yield return new WaitForSeconds(delayUntilDashBeginsStopping);
+        Vector3 startVelocity = playerRigidbody.linearVelocity;
+        float elapsed = 0f;
+
+        while (elapsed < dashStoppingProcessDuration)
+        {   
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / dashStoppingProcessDuration);
+            float easedT = t * t;
+            Vector3 lerped = Vector3.Lerp(startVelocity, Vector3.zero, easedT);
+            playerRigidbody.linearVelocity = new Vector3(lerped.x, 0f, lerped.z);
+            yield return null;
+        }
+        isYLocked = false;
+        decayCoroutine = null;
     }
 
     

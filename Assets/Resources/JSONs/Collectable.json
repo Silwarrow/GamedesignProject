@@ -1,0 +1,76 @@
+{
+    "Collectables" : [
+        {
+            "Name": "Button1",
+            "Level": 1,
+            "Position": 1,
+            "Collected": false
+        },
+        {
+            "Name": "Button2",
+            "Level": 1,
+            "Position": 2,
+            "Collected": false
+        },
+        {
+            "Name": "Button3",
+            "Level": 1,
+            "Position": 3,
+            "Collected": false
+        },
+        {
+            "Name": "Item4",
+            "Level": 1,
+            "Position": 4,
+            "Collected": false
+        },
+        {
+            "Name": "Button5",
+            "Level": 2,
+            "Position": 1,
+            "Collected": false
+        },
+        {
+            "Name": "Button6",
+            "Level": 2,
+            "Position": 2,
+            "Collected": false
+        },
+        {
+            "Name": "Gloves",
+            "Level": 2,
+            "Position": 3,
+            "Collected": false
+        },
+        {
+            "Name": "Item8",
+            "Level": 2,
+            "Position": 4,
+            "Collected": false
+        },
+        {
+            "Name": "TopHat",
+            "Level": 3,
+            "Position": 1,
+            "Collected": false
+        },
+        {
+            "Name": "Item10",
+            "Level": 3,
+            "Position": 2,
+            "Collected": false
+        },
+        {
+            "Name": "Item11",
+            "Level": 3,
+            "Position": 3,
+            "Collected": false
+        },
+        {
+            "Name": "Item12",
+            "Level": 3,
+            "Position": 4,
+            "Collected": false
+        }
+    ]
+}

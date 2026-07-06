@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class RespawnController : MonoBehaviour
 {
@@ -26,10 +28,26 @@ public class RespawnController : MonoBehaviour
     public float dashForce = 50f;
     public float maxRange = 50f;
     public float grappleCooldown = 5.0f;
+    public float delayUntilDashBeginsStopping = 1f;
+    public float dashStoppingProcessDuration = 0.35f;
+    public float fireResistanceDuration = 5f;
 
+    public LevelFinishScreen finishScreen;
 
-    private void Awake() {
-        playerPrefab = Resources.Load<GameObject>("Prefabs/Player");
+    private void Start() {
+        switch (SceneManager.GetActiveScene().buildIndex)
+        {
+            case 1:
+                playerPrefab = Resources.Load<GameObject>("Prefabs/PlayerLvl1");
+                break;
+            case 2:
+                playerPrefab = Resources.Load<GameObject>("Prefabs/PlayerLvl2");
+                break;
+            case 3:
+                playerPrefab = Resources.Load<GameObject>("Prefabs/PlayerLvl3");
+                break;
+        }
+        
         Destroy(GameObject.FindGameObjectWithTag("Player"));
         RespawnPlayer();
     }
@@ -56,6 +74,7 @@ public class RespawnController : MonoBehaviour
         newController.jumpHeight = jumpHeight;
         newController.gravity = gravity;
         newController.fallMultiplier = fallMultiplier;
+        newController.finishScreen = finishScreen;
 
         if (newGrapple != null)
         {
@@ -63,6 +82,9 @@ public class RespawnController : MonoBehaviour
             newGrapple.canGrapple = canGrapple;
             newGrapple.maxRange = maxRange;
             newGrapple.grappleCooldown = grappleCooldown;
+            newGrapple.delayUntilDashBeginsStopping = delayUntilDashBeginsStopping;
+            newGrapple.dashStoppingProcessDuration = dashStoppingProcessDuration;
+            newGrapple.fireResistanceDuration = fireResistanceDuration;
         }
 
 

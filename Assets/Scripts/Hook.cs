@@ -47,6 +47,13 @@ public class Hook : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("grapple") && grapple != null)
+        {   
+            Destroy(gameObject);
             grapple.StartPull();
+            grapple.GetComponent<CharacterController>()?.ActivateFireResistance(grapple.fireResistanceDuration);
+        }else if (other.CompareTag("Untagged"))
+        {
+            Destroy(gameObject);
+        }
     }
 }
