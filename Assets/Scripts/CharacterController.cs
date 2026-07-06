@@ -52,6 +52,8 @@ public class CharacterController : MonoBehaviour
     [SerializeField] AudioSource FireSound;
     [SerializeField] AudioSource RollingThroughWaterSound;
     [SerializeField] AudioSource WallDamageSound;
+    [SerializeField] AudioSource ThickSnowSound;
+
     
     //Area Tags
     private bool fastGrow = false;
@@ -250,6 +252,7 @@ public class CharacterController : MonoBehaviour
         if(other.CompareTag("ThickSnow")){
             fastGrow = true;
             gravity = 80f;
+            ThickSnowSound.Play();
         }
         if(other.CompareTag("Water")){
             waterCounter++;
@@ -282,6 +285,7 @@ public class CharacterController : MonoBehaviour
         if(other.CompareTag("ThickSnow")){
             fastGrow = false;
             gravity = 38f;
+            ThickSnowSound.Stop();
         }
         if(other.CompareTag("Water")){
             waterCounter--;
