@@ -260,7 +260,6 @@ public class CharacterController : MonoBehaviour
         }
         if(other.CompareTag("Fire")){
             fireCounter++;
-            ActivateFireResistance(fireResistanceDuration);
             if (FireSound != null && FireSound.isActiveAndEnabled)
             {
                 FireSound.Play();
