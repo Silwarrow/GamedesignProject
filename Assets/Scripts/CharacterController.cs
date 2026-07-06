@@ -56,7 +56,7 @@ public class CharacterController : MonoBehaviour
 
     
     //Area Tags
-    private bool fastGrow = false;
+    private int thickSnowCounter = 0;
     private int safeAreas = 0;
     private int shadowCounter = 0;
     private int waterCounter = 0;
@@ -118,7 +118,7 @@ public class CharacterController : MonoBehaviour
 
 
         //Größer werden
-        float growthMultiplier = growthRate*Mathf.Pow(momentum.magnitude, 2f) * (fastGrow ? 1.5f : 1f);
+        float growthMultiplier = growthRate*Mathf.Pow(momentum.magnitude, 2f) * (thickSnowCounter > 0 ? 1.5f : 1f);
         bool fireDamaging = fireCounter > 0 && !isFireResistant;
         if(isGrounded && safeAreas <= 0 && shadowCounter > 0 && !fireDamaging)
         {
@@ -128,10 +128,10 @@ public class CharacterController : MonoBehaviour
         //Kleiner werden
         float shrinkMultiplier = 0.3f + 1.691f* (Mathf.Pow(size-3f, 2f)/(Mathf.Pow(size-3f, 2f)+13.7f))*(1-0.625f*growthMultiplier);
         if(shadowCounter <= 0 && safeAreas <= 0){
-            transform.localScale -= Vector3.one * shrinkMultiplier * (fastGrow ? 0.5f : 1f) * Time.deltaTime;
+            transform.localScale -= Vector3.one * shrinkMultiplier * (thickSnowCounter > 0 ? 0.5f : 1f) * Time.deltaTime;
         }
         if(fireDamaging){
-            transform.localScale -= Vector3.one * shrinkMultiplier * 12f * (fastGrow ? 0.5f : 1f) * Time.deltaTime;
+            transform.localScale -= Vector3.one * shrinkMultiplier * 12f * (thickSnowCounter > 0 ? 0.5f : 1f) * Time.deltaTime;
         }
 
 
@@ -180,7 +180,7 @@ public class CharacterController : MonoBehaviour
 
         //Bewegen
         Vector3 horizontalMovement = momentum * speed * Time.deltaTime * 
-                                    (fastGrow ? 0.5f : 1f) * 
+                                    (thickSnowCounter > 0 ? 0.5f : 1f) * 
                                     (waterSpeed ? 2f : 1f);
         Vector3 verticalMovement = Vector3.up * verticalVelocity * Time.deltaTime;
         transform.Translate(horizontalMovement + verticalMovement, Space.World);
@@ -231,7 +231,7 @@ public class CharacterController : MonoBehaviour
             + " | Grounded: " + isGrounded
             + " | Shadow Counter: " + shadowCounter
             + " | Safe Areas: " + safeAreas
-            + " | Fast Grow: " + fastGrow);
+            + " | Thick Snow Counter: " + thickSnowCounter);
         }
     }
 
@@ -250,7 +250,7 @@ public class CharacterController : MonoBehaviour
             safeAreas++;
         }
         if(other.CompareTag("ThickSnow")){
-            fastGrow = true;
+            thickSnowCounter++;
             gravity = 80f;
             ThickSnowSound.Play();
         }
@@ -282,7 +282,7 @@ public class CharacterController : MonoBehaviour
             safeAreas--;
         }
         if(other.CompareTag("ThickSnow")){
-            fastGrow = false;
+            thickSnowCounter--;
             gravity = 38f;
             ThickSnowSound.Stop();
         }
