@@ -43,6 +43,7 @@ public class PauseMenu : MonoBehaviour
     public void MainMenu()
     {
         buttonClickSound.Play();
+        Time.timeScale = 1;
         SceneManager.LoadSceneAsync(0);
         screenPause = false;
     }
