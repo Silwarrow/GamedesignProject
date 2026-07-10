@@ -1,6 +1,9 @@
 # GamedesignProject
 
-## Soundtrack
+## Sources
+All Sounds originate from www.weloveindies.com
+
+### Soundtrack
 |Usecase|Name|
 |---|---|
 | Menu | Aurora Polaris |
@@ -9,7 +12,7 @@
 | Level 3 | Gentle Wind |
 
 
-## Soundeffects
+### Soundeffects
 |Usecase|Name|
 |---|---|
 | Rolling into puddle | ANIMAL HORSE Step Water 03 |
